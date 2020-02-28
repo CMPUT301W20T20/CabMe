@@ -1,53 +1,58 @@
 package com.example.cabme;
 
-import com.google.firebase.firestore.FirebaseFirestore;
+public class User {
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String userName;
+	private String phone;
+	private String password;
 
-import java.io.Serializable;
+	User (String firstName,String lastName, String email, String userName, String phone, String password) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.userName = userName;
+		this.phone = phone;
+		this.password = password;
+	}
 
-public class User extends CModel implements Serializable {
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String uid;
-    private String phone;
-    private int balance;
-    private FirebaseFirestore db;
+	public String getFirstName() {
+		return this.firstName;
+	}
+	public String getLastName() {
+		return this.lastName;
+	}
+	public String getEmail() {
+		return this.email;
+	}
+	public String getUserName() {
+		return this.userName;
+	}
+	public String getPhone() {
+		return this.phone;
+	}
+	public String getPassword() {
+		return this.password;
+	}
 
-    User (String email, String password) {
-        // ToDo : Add authentication and retrieval of profile info from FireBase and set user data to such
 
-    }
-
-    User (String email, String password, String firstName, String lastName, String username, String phone, int balance) {
-        // ToDo : Add authentication and setting of profile info to FireBase
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public int getBalance() {
-        return balance;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
