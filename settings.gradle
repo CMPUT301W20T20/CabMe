@@ -1,2 +1,2 @@
+rootProject.name='XML_Project'
 include ':app'
-rootProject.name='CabMe'
