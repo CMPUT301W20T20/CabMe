@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-    private User user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        user = new User(auth.getCurrentUser().getUid());
+                                        User user = new User(auth.getCurrentUser().getUid());
                                         startTitleActivity(user);
 
                                     } else {
