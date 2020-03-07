@@ -18,7 +18,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import javax.xml.validation.Validator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-
 
 
         emailEditText = findViewById(R.id.email);
@@ -59,7 +60,9 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        //startTitleActivity();
+                                        user = new User(auth.getCurrentUser().getUid());
+                                        startTitleActivity(user);
+
                                     } else {
                                         Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
@@ -72,17 +75,46 @@ public class LoginActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(this, SignUpActivity.class));
+                startActivity(new Intent(this, SignUpActivity.class));
             }
         });
     }
-
+    // https://emailregex.com/
     public boolean valid(String email, String password) {
-        // TODO
-        return false;
+        String emailRegex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)" +
+                 "*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|" +
+                "\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]" +
+                "*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]" +
+                "|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*" +
+                "[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\" +
+                "[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+        String passRegex = "^[/S]+$";
+        String error = "";
+        Pattern emailPattern = Pattern.compile(emailRegex);
+        Pattern passPattern = Pattern.compile(passRegex);
+
+        Matcher emailMatcher = emailPattern.matcher(email);
+        Matcher passMatcher = passPattern.matcher(password);
+
+        if (!emailMatcher.matches() || !passMatcher.matches()) {
+            if (!emailMatcher.matches() && !email.isEmpty()) {
+                error += "Invalid characters used in the email \n";
+            } else if (!passMatcher.matches() && !password.isEmpty()) {
+                error += "Invalid characters used in the password \n";
+            } else if (email.isEmpty()) {
+                error += "Email field is empty \n";
+            } else if (password.isEmpty()) {
+                error += "Password field is empty \n";
+            }
+            Toast.makeText(LoginActivity.this, error, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
     
-    public void startTitleActivity() {
-        // TODO
+    public void startTitleActivity(User user) {
+        Intent intent = new Intent(this, TitleActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
     }
 }
