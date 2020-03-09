@@ -2,6 +2,7 @@ package com.example.cabme;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -29,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button signupButton;
     private Button loginButton;
     private FirebaseFirestore db;
-    private FirebaseAuth auth;
+    private FirebaseAuth mauth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login);
 
         db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
+        mauth = FirebaseAuth.getInstance();
 
         final CollectionReference collectionReference = db.collection("Users");
 
@@ -52,16 +54,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+                final String msg;
 
                 if (valid(email, password)) {
-                    auth.signInWithEmailAndPassword(email, password)
+                    mauth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        User user = new User(auth.getCurrentUser().getUid());
+                                        User user = new User(mauth.getCurrentUser().getUid());
                                         startTitleActivity(user);
-
                                     } else {
                                         Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
@@ -74,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(this, SignUpActivity.class));
+                //startActivity(new Intent(this, SignUpActivity.class));
             }
         });
     }
@@ -87,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                 "|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*" +
                 "[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\" +
                 "[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-        String passRegex = "^[/S]+$";
+        String passRegex = "^[\\S]+$";
         String error = "";
         Pattern emailPattern = Pattern.compile(emailRegex);
         Pattern passPattern = Pattern.compile(passRegex);
@@ -98,11 +100,11 @@ public class LoginActivity extends AppCompatActivity {
         if (!emailMatcher.matches() || !passMatcher.matches()) {
             if (!emailMatcher.matches() && !email.isEmpty()) {
                 error += "Invalid characters used in the email \n";
-            } else if (!passMatcher.matches() && !password.isEmpty()) {
+            } if (!passMatcher.matches() && !password.isEmpty()) {
                 error += "Invalid characters used in the password \n";
-            } else if (email.isEmpty()) {
+            } if (email.isEmpty()) {
                 error += "Email field is empty \n";
-            } else if (password.isEmpty()) {
+            } if (password.isEmpty()) {
                 error += "Password field is empty \n";
             }
             Toast.makeText(LoginActivity.this, error, Toast.LENGTH_LONG).show();

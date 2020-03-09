@@ -42,7 +42,7 @@ public class User extends CModel implements Serializable {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-
+        Log.d("OOOOOOOOO", uid);
         collectionReference
                 .document(uid)
                 .get()
@@ -56,6 +56,7 @@ public class User extends CModel implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
+                        Log.d("OOOOOOOOO", email);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -64,6 +65,7 @@ public class User extends CModel implements Serializable {
                         Log.d(TAG, "Data retrieval failed " + e.toString());
                     }
                 });
+        Log.d("OOOOOOOOO", uid);
         setDocumentListener(uid);
     }
 

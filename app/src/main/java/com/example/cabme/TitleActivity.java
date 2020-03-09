@@ -2,6 +2,7 @@ package com.example.cabme;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -26,10 +27,12 @@ public class TitleActivity extends AppCompatActivity {
         riderButton = findViewById(R.id.rider);
         driverButton = findViewById(R.id.driver);
 
+        Log.d("AAAAAAAAAAAA", user.getEmail());
+
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(this, ProfileActivity.class);
+                Intent intent = new Intent(TitleActivity.this, ProfileActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
             }
