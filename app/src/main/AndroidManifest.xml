@@ -17,6 +17,7 @@
                 </intent-filter>
         </activity>
         <activity android:name=".r_historylist_activity" />
+        <activity android:name=".r_newrideinfo_activity" />
     </application>
 
 

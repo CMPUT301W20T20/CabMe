@@ -18,10 +18,10 @@ public class r_historylist_activity extends AppCompatActivity {
         setContentView(R.layout.r_historylist_activity);
 
         //onclick listener for newRideButton to start r_newrideinfo_activity
-        newRideButton.findViewById(R.id.newRideButton);
+        newRideButton = findViewById(R.id.newRideButton);
         newRideButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent = new Intent(r_historylist_activity.this, r_newrideinfo_activity.class);
                 startActivity(intent);
             }

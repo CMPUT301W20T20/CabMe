@@ -16,12 +16,13 @@ public class r_newrideinfo_activity extends AppCompatActivity {
         super.onCreate(savedInstance);
         setContentView(R.layout.r_newrideinfo_activity);
 
-        r_RequestRideButton.findViewById(R.id.r_RequestRideButton);
+        r_RequestRideButton = findViewById(R.id.r_RequestRideButton);
         r_RequestRideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(r_newrideinfo_activity.this, r_historylist_activity.class);
-                startActivity(intent);
+                finish();
+                //Intent intent = new Intent(r_newrideinfo_activity.this, r_historylist_activity.class);
+                //startActivity(intent);
             }
         });
 
