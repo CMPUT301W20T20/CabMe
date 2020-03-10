@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -62,8 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        User user = new User(mauth.getCurrentUser().getUid());
-                                        startTitleActivity(user);
+                                        startTitleActivity(mauth.getCurrentUser().getUid());
                                     } else {
                                         Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
@@ -113,9 +111,9 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
     
-    public void startTitleActivity(User user) {
+    public void startTitleActivity(String uid) {
         Intent intent = new Intent(this, TitleActivity.class);
-        intent.putExtra("user", user);
+        intent.putExtra("user", uid);
         startActivity(intent);
     }
 }

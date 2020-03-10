@@ -4,8 +4,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -38,11 +42,10 @@ public class User extends CModel implements Serializable {
      *
      * @param uid
      */
-    User (String uid) {
+    public User (String uid) {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-        Log.d("OOOOOOOOO", uid);
         collectionReference
                 .document(uid)
                 .get()
@@ -65,7 +68,6 @@ public class User extends CModel implements Serializable {
                         Log.d(TAG, "Data retrieval failed " + e.toString());
                     }
                 });
-        Log.d("OOOOOOOOO", uid);
         setDocumentListener(uid);
     }
 

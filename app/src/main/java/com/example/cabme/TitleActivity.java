@@ -15,19 +15,20 @@ public class TitleActivity extends AppCompatActivity {
     private Button riderButton;
     private Button driverButton;
     private User user;
+    private String uid;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
-        user = (User)getIntent().getSerializableExtra("user");
+        uid = (String)getIntent().getStringExtra("user");
+        user = new User(uid);
 
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
         riderButton = findViewById(R.id.rider);
         driverButton = findViewById(R.id.driver);
 
-        Log.d("AAAAAAAAAAAA", user.getEmail());
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
