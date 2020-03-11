@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "667168248624",
+    "firebase_url": "https://cabme-e77c5.firebaseio.com",
+    "project_id": "cabme-e77c5",
+    "storage_bucket": "cabme-e77c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667168248624:android:ccf3f6b3a1d00fe3b82ef5",
+        "android_client_info": {
+          "package_name": "com.example.cabme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667168248624-90g70h46a7uiq7n5cna2jh1m6ehr10hj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cabme",
+            "certificate_hash": "d2265304b77f0d20170c57b29f0cae32748d8ffc"
+          }
+        },
+        {
+          "client_id": "667168248624-j5k5vvoa3b0at5jjr4bo4mnep448mtdj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-xcJl-k1HTM8D73srBHA7XdwC8LXVto8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667168248624-j5k5vvoa3b0at5jjr4bo4mnep448mtdj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

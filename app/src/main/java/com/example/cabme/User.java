@@ -5,8 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -39,11 +42,10 @@ public class User extends CModel implements Serializable {
      *
      * @param uid
      */
-    User (String uid) {
+    public User (String uid) {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-
         collectionReference
                 .document(uid)
                 .get()
@@ -57,6 +59,7 @@ public class User extends CModel implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
+                        Log.d("OOOOOOOOO","" + email);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -78,13 +81,13 @@ public class User extends CModel implements Serializable {
      * @param username
      * @param phone
      */
-    User (String uid, String email, String firstName, String lastName, String username, String phone) {
+    public User (String uid, String email, String firstName, String lastName, String username, String phone) {
 
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
 
-        Map<String, Object> userData = new HashMap<>();
+        HashMap<String, Object> userData = new HashMap<>();
         userData.put("email", email);
         userData.put("first", firstName);
         userData.put("last", lastName);
@@ -137,6 +140,9 @@ public class User extends CModel implements Serializable {
         });
 
     }
+	public User() {
+		// Default constructor required for calls to DataSnapshot.getValue(User.class)
+	}
 
     public String getEmail() {
         return email;

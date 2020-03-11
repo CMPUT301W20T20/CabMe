@@ -15,7 +15,7 @@
         android:layout_marginEnd="130dp"
         android:layout_marginRight="130dp"
         android:background="#FFFFFF"
-        android:text="@string/cabme"
+        android:text="@string/app_name"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/currentUserEmail"
+        android:id="@+id/email"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginStart="40dp"
@@ -33,13 +33,14 @@
         android:layout_marginRight="40dp"
         android:ems="10"
         android:hint="Email"
+        android:enabled="false"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentUserLastName" />
+        app:layout_constraintTop_toBottomOf="@+id/lastname" />
 
     <EditText
-        android:id="@+id/currentUserUserName"
+        android:id="@+id/username"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginStart="40dp"
@@ -49,13 +50,14 @@
         android:layout_marginRight="40dp"
         android:ems="10"
         android:hint="User Name"
+        android:enabled="false"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentUserEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <EditText
-        android:id="@+id/currentUserPhone"
+        android:id="@+id/phone"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginStart="40dp"
@@ -65,45 +67,15 @@
         android:layout_marginRight="40dp"
         android:ems="10"
         android:hint="Phone"
+        android:enabled="false"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentUserUserName" />
+        app:layout_constraintTop_toBottomOf="@+id/username" />
 
-    <EditText
-        android:id="@+id/currentUserPassword"
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentUserPhone" />
-
-    <EditText
-        android:id="@+id/currentUserREpassword"
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:hint="Re-Enter Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentUserPassword" />
 
     <Button
-        android:id="@+id/SaveViewProfile"
+        android:id="@+id/saveprofile"
         android:layout_width="200dp"
         android:layout_height="55dp"
         android:layout_marginStart="100dp"
@@ -112,13 +84,29 @@
         android:layout_marginEnd="100dp"
         android:layout_marginRight="100dp"
         android:text="Save Changes"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentUserREpassword" />
+        app:layout_constraintTop_toBottomOf="@+id/phone" />
 
     <Button
-        android:id="@+id/deleteProfile"
+        android:id="@+id/editprofile"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:text="Edit Profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone" />
+
+    <Button
+        android:id="@+id/deletedprofile"
         android:layout_width="140dp"
         android:layout_height="40dp"
         android:layout_marginStart="100dp"
@@ -128,13 +116,14 @@
         android:layout_marginRight="100dp"
         android:background="#F44336"
         android:text="Delete Profile"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SaveViewProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/saveprofile" />
 
     <EditText
-        android:id="@+id/currentUserLastName"
+        android:id="@+id/lastname"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginStart="40dp"
@@ -144,13 +133,14 @@
         android:layout_marginRight="40dp"
         android:ems="10"
         android:hint="Last Name"
+        android:enabled="false"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentUserFirstName" />
+        app:layout_constraintTop_toBottomOf="@+id/firstname" />
 
     <EditText
-        android:id="@+id/currentUserFirstName"
+        android:id="@+id/firstname"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginStart="40dp"
@@ -160,6 +150,7 @@
         android:layout_marginRight="40dp"
         android:ems="10"
         android:hint="First Name"
+        android:enabled="false"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
