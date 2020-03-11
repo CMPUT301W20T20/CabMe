@@ -1,5 +1,9 @@
 <resources>
 	<string name="app_name">CabMe</string>
+
+	<!-- Strings related to Google Maps -->
+	<string name="google_map_api_key">AIzaSyB10CYAYRVmpwgl3pR-9uX5U21kERZNFyo</string>
+
 	<!-- Strings related to login -->
 	<string name="prompt_email">Email</string>
 	<string name="prompt_password">Password</string>
@@ -15,4 +19,5 @@
 	<string name="last_name">Last Name</string>
 	<string name="retype_password">Retype Password</string>
 	<string name="user_name">User Name</string>
+
 </resources>
