@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mauth = FirebaseAuth.getInstance();
 
-        final CollectionReference collectionReference = db.collection("Users");
+        final CollectionReference collectionReference = db.collection("users");
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(this, SignUpActivity.class));
+                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             }
         });
     }
@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         return true;
     }
-    
+
     public void startTitleActivity(String uid) {
         Intent intent = new Intent(this, TitleActivity.class);
         intent.putExtra("user", uid);

@@ -59,7 +59,7 @@ public class User extends CModel implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
-                        Log.d("OOOOOOOOO", email);
+                        Log.d("OOOOOOOOO","" + email);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -81,13 +81,13 @@ public class User extends CModel implements Serializable {
      * @param username
      * @param phone
      */
-    User (String uid, String email, String firstName, String lastName, String username, String phone) {
+    public User (String uid, String email, String firstName, String lastName, String username, String phone) {
 
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
 
-        Map<String, Object> userData = new HashMap<>();
+        HashMap<String, Object> userData = new HashMap<>();
         userData.put("email", email);
         userData.put("first", firstName);
         userData.put("last", lastName);
@@ -140,6 +140,9 @@ public class User extends CModel implements Serializable {
         });
 
     }
+	public User() {
+		// Default constructor required for calls to DataSnapshot.getValue(User.class)
+	}
 
     public String getEmail() {
         return email;
