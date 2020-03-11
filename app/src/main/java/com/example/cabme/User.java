@@ -43,6 +43,7 @@ public class User extends CModel implements Serializable {
      * @param uid
      */
     public User (String uid) {
+        //FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;

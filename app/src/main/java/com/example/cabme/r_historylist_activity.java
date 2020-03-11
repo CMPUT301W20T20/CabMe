@@ -19,6 +19,9 @@ public class r_historylist_activity extends AppCompatActivity {
 
         //onclick listener for newRideButton to start r_newrideinfo_activity
         newRideButton = findViewById(R.id.newRideButton);
+
+
+        //Button click will start new activity
         newRideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
