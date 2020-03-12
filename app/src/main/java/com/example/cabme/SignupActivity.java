@@ -3,30 +3,23 @@ package com.example.cabme;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-
 public class SignupActivity extends AppCompatActivity {
+
 	String TAG = "Sample";
 
 	private EditText firstNameEditText;
@@ -42,7 +35,7 @@ public class SignupActivity extends AppCompatActivity {
 	Button signupButton;
 	private User user;
 	private String uid;
-	private DatabaseReference mDatabase;
+	//private DatabaseReference mDatabase;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +50,7 @@ public class SignupActivity extends AppCompatActivity {
 		passwordEditText = findViewById(R.id.SignupPassword);
 		repasswordEditText = findViewById(R.id.SignupREpassword);
 		signupButton = findViewById(R.id.signUpButton);
-		mDatabase = FirebaseDatabase.getInstance().getReference();
+		//mDatabase = FirebaseDatabase.getInstance().getReference();
 
 		db = FirebaseFirestore.getInstance();
 		mauth = FirebaseAuth.getInstance();
@@ -77,38 +70,16 @@ public class SignupActivity extends AppCompatActivity {
 					final String spass = passwordEditText.getText().toString();
 					final String srepass = repasswordEditText.getText().toString();
 
-					//Upload data to the database
-					final HashMap<String, String> data = new HashMap<>();
-					data.put("first_name", sfname);
-					data.put("last_name",slname);
-					data.put("e_mail",semail);
-					data.put("user_name",sphone);
-					data.put("phone_number",suname);
-
-					collectionReference
-						.document(semail)
-						.set(data)
-						.addOnSuccessListener(new OnSuccessListener<Void>() {
-							@Override
-							public void onSuccess(Void aVoid) {
-								Log.d(TAG, "Data addition successful");
-							}
-						})
-						.addOnFailureListener(new OnFailureListener() {
-							@Override
-							public void onFailure(@NonNull Exception e) {
-								Log.d(TAG,"Data addition failed" + e.toString());
-							}
-						});
-
-					mauth.createUserWithEmailAndPassword(semail, spass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+					mauth.createUserWithEmailAndPassword(semail,spass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 						@Override
 						public void onComplete(@NonNull Task<AuthResult> task) {
 
 							if (task.isSuccessful()) {
 								Toast.makeText(SignupActivity.this, "Successfully Registered, Upload complete!", Toast.LENGTH_SHORT).show();
+								String uid = mauth.getCurrentUser().getUid();
+								user = new User(uid,semail, sfname, slname, suname, sphone);
 								finish();
-								startActivity(new Intent(SignupActivity.this, TitleActivity.class));
+								//startActivity(new Intent(MainActivity.this, TitleActivity.class));
 							} else {
 								FirebaseAuthException e = (FirebaseAuthException) task.getException();
 								String s = "Sign up Failed" + task.getException();
