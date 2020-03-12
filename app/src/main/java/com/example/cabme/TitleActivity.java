@@ -30,12 +30,14 @@ public class TitleActivity extends AppCompatActivity {
         driverButton = findViewById(R.id.driver);
 
 
+
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, ProfileActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
+                Log.d("T", user.getLastName());
             }
         });
 

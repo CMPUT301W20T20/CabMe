@@ -46,14 +46,11 @@ public class LoginActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mauth = FirebaseAuth.getInstance();
 
-        final CollectionReference collectionReference = db.collection("Users");
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailEditText.getText().toString();
+                final String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                final String msg;
 
                 if (valid(email, password)) {
                     mauth.signInWithEmailAndPassword(email, password)
@@ -61,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+                                        emailEditText.setText("");
+                                        passwordEditText.setText("");
                                         startTitleActivity(mauth.getCurrentUser().getUid());
                                     } else {
                                         Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -74,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(this, SignUpActivity.class));
+                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             }
         });
     }
