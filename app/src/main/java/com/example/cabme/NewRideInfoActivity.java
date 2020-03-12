@@ -30,8 +30,8 @@ public class NewRideInfoActivity extends AppCompatActivity {
 
     Button SearchRideButton;
     PlacesClient placesClient;
-    private StringBuilder mResult;
-
+    LongLat destLngLat;
+    LongLat startLngLat;
 
     @Override
     public void onCreate(Bundle savedInstance){
@@ -42,14 +42,14 @@ public class NewRideInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewRideInfoActivity.this, MapViewActivity.class);
+                intent.putExtra("destLongLat", destLngLat);
+                intent.putExtra("startLongLat", startLngLat);
                 startActivity(intent);
             }
         });
 
-        String apiKey = getResources().getString(R.string.google_map_api_key);
-
         if(!Places.isInitialized()){
-            Places.initialize(getApplicationContext(), apiKey);
+            Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
         }
 
         placesClient = Places.createClient(this);
@@ -77,10 +77,11 @@ public class NewRideInfoActivity extends AppCompatActivity {
             public void onPlaceSelected(@NonNull Place place) {
                 final LatLng latLing = place.getLatLng();
                 Log.d("Starting Location", "StartLatLng: "+ latLing.latitude + "\n" + latLing.longitude);
+                startLngLat = new LongLat(latLing.longitude, latLing.latitude);
             }
             @Override
             public void onError(@NonNull Status status) {
-
+                Log.d("Error", "Error");
             }
         });
     }
@@ -104,10 +105,11 @@ public class NewRideInfoActivity extends AppCompatActivity {
             public void onPlaceSelected(@NonNull Place place) {
                 final LatLng latLing = place.getLatLng();
                 Log.d("Destination Location", "DestLatLng: "+ latLing.latitude + "\n" + latLing.longitude);
+                destLngLat = new LongLat(latLing.longitude, latLing.latitude);
             }
             @Override
             public void onError(@NonNull Status status) {
-
+                Log.d("Error", "Error");
             }
         });
     }
