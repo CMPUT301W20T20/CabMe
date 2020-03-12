@@ -109,8 +109,8 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     public void addMarkers(GoogleMap map, LatLng start, LatLng dest){
-        Log.wtf("MVA Start", "StartLatLng: "+ startLngLat.getLat() + "\n" + startLngLat.getLng());
-        Log.wtf("MVA Dest", "StartLatLng: "+ startLngLat.getLat() + "\n" + startLngLat.getLng());
+        Log.wtf("MAPSLOG-MVA Start", "StartLatLng: "+ startLngLat.getLat() + "\n" + startLngLat.getLng());
+        Log.wtf("MAPSLOG-MVA Dest", "StartLatLng: "+ startLngLat.getLat() + "\n" + startLngLat.getLng());
         map.addMarker(markStart);
         map.addMarker(markDest);
     }

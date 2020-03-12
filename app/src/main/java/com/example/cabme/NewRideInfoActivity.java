@@ -76,7 +76,6 @@ public class NewRideInfoActivity extends AppCompatActivity {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 final LatLng latLing = place.getLatLng();
-                Log.d("Starting Location", "StartLatLng: "+ latLing.latitude + "\n" + latLing.longitude);
                 startLngLat = new LongLat(latLing.longitude, latLing.latitude);
             }
             @Override
@@ -104,12 +103,11 @@ public class NewRideInfoActivity extends AppCompatActivity {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 final LatLng latLing = place.getLatLng();
-                Log.d("Destination Location", "DestLatLng: "+ latLing.latitude + "\n" + latLing.longitude);
                 destLngLat = new LongLat(latLing.longitude, latLing.latitude);
             }
             @Override
             public void onError(@NonNull Status status) {
-                Log.d("Error", "Error");
+                Log.d("MAPSLOG", "Error onPlaceSelected");
             }
         });
     }
