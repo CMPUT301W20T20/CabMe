@@ -25,7 +25,7 @@ public class r_historylist_activity extends AppCompatActivity {
         newRideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(r_historylist_activity.this, r_newrideinfo_activity.class);
+                Intent intent = new Intent(r_historylist_activity.this, NewRideInfoActivity.class);
                 startActivity(intent);
             }
         });
