@@ -5,11 +5,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -19,13 +16,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
 /**
  *  User class meant to pull and provide information to the FireBase database about the users
  *  involved in the CabMe application
  */
-public class User extends CModel implements Serializable {
-    final  private String TAG = "User";
+public class User extends Observable implements Serializable {
+    final private String TAG = "User";
     private String email;
     private String firstName;
     private String lastName;
@@ -60,7 +58,6 @@ public class User extends CModel implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
-                        Log.d("OOOOOOOOO","" + email);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -69,7 +66,7 @@ public class User extends CModel implements Serializable {
                         Log.d(TAG, "Data retrieval failed " + e.toString());
                     }
                 });
-        setDocumentListener(uid);
+        setDocumentListener();
     }
 
     /**
@@ -112,7 +109,7 @@ public class User extends CModel implements Serializable {
                     }
                 });
 
-        setDocumentListener(uid);
+        //setDocumentListener(uid);
 
     }
 
@@ -120,9 +117,11 @@ public class User extends CModel implements Serializable {
      * This method sets a listener to the user's document in the database to retrieve real-time
      * updates from the database
      *
-     * @param uid
+     *
      */
-    public void setDocumentListener(String uid) {
+    public void setDocumentListener() {
+        db = FirebaseFirestore.getInstance();
+        collectionReference = db.collection("users");
         collectionReference.document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
@@ -135,8 +134,8 @@ public class User extends CModel implements Serializable {
                 lastName = documentSnapshot.getString("last");
                 email = documentSnapshot.getString("email");
                 phone = documentSnapshot.getString("phone");
-
-                notifyViews();
+                Log.d("BIG", "UPDATE");
+                notifyObservers();
             }
         });
 
@@ -169,98 +168,26 @@ public class User extends CModel implements Serializable {
         return uid;
     }
 
-    public void setEmail(String email) {
+    public void updateData(Map<String, Object> data) {
+        db = FirebaseFirestore.getInstance();
+        collectionReference = db.collection("users");
         collectionReference
                 .document(uid)
-                .update("email", email)
+                .update(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Email update successful");
+                        Log.d(TAG, "Data update successful");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Email update failed "+ e.toString());
+                        Log.d(TAG, "Data update failed "+ e.toString());
                     }
                 });
     }
 
-    public void setPhone(String phone) {
-        collectionReference
-                .document(uid)
-                .update("phone", phone)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Phone update successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Phone update failed "+ e.toString());
-                    }
-                });
-    }
 
-    public void setUsername(String username) {
-        collectionReference
-                .document(uid)
-                .update("username", username)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Username update successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Username update failed "+ e.toString());
-                    }
-                });
-    }
-
-    public void setFirstName(String firstName) {
-        collectionReference
-                .document(uid)
-                .update("first", firstName)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "First name update successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "First name update failed "+ e.toString());
-                    }
-                });
-    }
-
-    public void setLastName(String lastName) {
-        collectionReference
-                .document(uid)
-                .update("last", lastName)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Last name update successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Last name update failed "+ e.toString());
-                    }
-                });
-    }
-
-    //public int getBalance() {
-    //    return balance;
-    //}
 
 }

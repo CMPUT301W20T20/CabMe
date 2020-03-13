@@ -5,6 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Return"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/cabMeTitle4"
         android:layout_width="147dp"
@@ -35,6 +46,7 @@
         android:hint="Email"
         android:enabled="false"
         android:inputType="textEmailAddress"
+        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lastname" />
@@ -52,6 +64,9 @@
         android:hint="User Name"
         android:enabled="false"
         android:inputType="textPersonName"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
+        android:maxLength="15"
+        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email" />
@@ -69,6 +84,8 @@
         android:hint="Phone"
         android:enabled="false"
         android:inputType="phone"
+        android:maxLength="10"
+        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username" />
@@ -135,6 +152,9 @@
         android:hint="Last Name"
         android:enabled="false"
         android:inputType="textPersonName"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-"
+        android:maxLength="20"
+        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/firstname" />
@@ -152,6 +172,9 @@
         android:hint="First Name"
         android:enabled="false"
         android:inputType="textPersonName"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-"
+        android:maxLength="20"
+        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cabMeTitle4" />

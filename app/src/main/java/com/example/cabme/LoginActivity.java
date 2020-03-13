@@ -46,14 +46,11 @@ public class LoginActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mauth = FirebaseAuth.getInstance();
 
-        final CollectionReference collectionReference = db.collection("users");
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailEditText.getText().toString();
+                final String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                final String msg;
 
                 if (valid(email, password)) {
                     mauth.signInWithEmailAndPassword(email, password)
@@ -61,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+                                        emailEditText.setText("");
+                                        passwordEditText.setText("");
                                         startTitleActivity(mauth.getCurrentUser().getUid());
                                     } else {
                                         Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -79,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     // https://emailregex.com/
-    public boolean valid(String email, String password) {
+    private boolean valid(String email, String password) {
         String emailRegex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)" +
                  "*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|" +
                 "\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]" +
@@ -111,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    public void startTitleActivity(String uid) {
+    private void startTitleActivity(String uid) {
         Intent intent = new Intent(this, TitleActivity.class);
         intent.putExtra("user", uid);
         startActivity(intent);
