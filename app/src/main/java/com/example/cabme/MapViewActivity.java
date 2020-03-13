@@ -49,6 +49,8 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
     MarkerOptions markStart;
     MarkerOptions markDest;
 
+    Boolean Rider = true;
+
     /**
      * Checks for the bundle.
      *
@@ -78,10 +80,21 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
                 .execute(getUrl(markStart.getPosition(), markDest.getPosition(), "driving"), "driving");
 
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MapViewActivity.this, NewRideInfoActivity.class);
-            startActivity(intent);
+            if(Rider == true){
+                Intent intent = new Intent(MapViewActivity.this, NewRideInfoActivity.class);
+                startActivity(intent);
+
+            } else if (Rider == false){
+                Intent intent = new Intent(MapViewActivity.this, DriverRequestListActivity.class);
+                startActivity(intent);
+            }
             finish();
+
         });
+    }
+
+    void setRiderFalse(){
+        Rider = false;
     }
 
     /**
@@ -110,7 +123,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
 
     public void addMarkers(GoogleMap map, LatLng start, LatLng dest){
         Log.wtf("MAPSLOG-MVA Start", "StartLatLng: "+ startLngLat.getLat() + "\n" + startLngLat.getLng());
-        Log.wtf("MAPSLOG-MVA Dest", "StartLatLng: "+ startLngLat.getLat() + "\n" + startLngLat.getLng());
+        Log.wtf("MAPSLOG-MVA Dest", "DestLatLng: "+ destLngLat.getLat() + "\n" + destLngLat.getLng());
         map.addMarker(markStart);
         map.addMarker(markDest);
     }

@@ -1,12 +1,12 @@
 package com.example.cabme;
 
 import android.content.Intent;
+import android.icu.text.CaseMap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TitleActivity extends AppCompatActivity {
@@ -21,7 +21,7 @@ public class TitleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
-        //uid = (String)getIntent().getStringExtra("user");
+        uid = getIntent().getStringExtra("user");
         //user = new User(uid);
 
         profileButton = findViewById(R.id.profile);
@@ -29,7 +29,7 @@ public class TitleActivity extends AppCompatActivity {
         riderButton = findViewById(R.id.rider);
         driverButton = findViewById(R.id.driver);
 
-        profileButton.setOnClickListener(new View.OnClickListener() {
+        riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
@@ -51,16 +51,18 @@ public class TitleActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+
+                Intent intent = new Intent(TitleActivity.this, NewRideInfoActivity.class);
+                startActivity(intent);
             }
         });
 
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(this, ListActivity.class);
-                //intent.putExtra("driver", new Driver(user.getUid()));
-                //startActivity(intent);
+                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
+                intent.putExtra("Driver-UID", uid);
+                startActivity(intent);
             }
         });
 
