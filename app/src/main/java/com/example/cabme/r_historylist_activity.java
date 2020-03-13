@@ -78,10 +78,13 @@ public class r_historylist_activity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderRequestsModel model) {
                 holder.status.setText(model.getStatus());
 
+                /**
+                 * implement later
                 if(holder.status.getText() == "Cancelled" ){
                     holder.status.setText(model.getStatus());
                     holder.status.setTextColor(getResources().getColor(R.color.red));
                 }
+                 **/
 
                 holder.toFrom.setText("FROM: " + String.valueOf(model.getStartLocation()) + "| TO:" + String.valueOf(model.getEndLocation()));
 
