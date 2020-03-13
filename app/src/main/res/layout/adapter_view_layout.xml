@@ -3,12 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp"
     android:weightSum="100">
 
 
     <TextView
-        android:id="@+id/first"
+        android:id="@+id/status"
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:layout_weight="66.6"
@@ -23,25 +22,22 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/lname"
+            android:id="@+id/toFrom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="TextView2" />
+            android:gravity="center" />
 
         <TextView
-            android:id="@+id/email"
+            android:id="@+id/driverName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="TextView3" />
+            android:gravity="center" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/distance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="TextView4" />
+            android:gravity="center" />
 
     </LinearLayout>
 
