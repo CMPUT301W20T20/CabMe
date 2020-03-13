@@ -65,7 +65,7 @@ public class User extends Observable implements Serializable {
                         Log.d(TAG, "Data retrieval failed " + e.toString());
                     }
                 });
-        setDocumentListener(uid);
+        setDocumentListener();
     }
 
     /**
@@ -116,9 +116,11 @@ public class User extends Observable implements Serializable {
      * This method sets a listener to the user's document in the database to retrieve real-time
      * updates from the database
      *
-     * @param uid
+     *
      */
-    public void setDocumentListener(String uid) {
+    public void setDocumentListener() {
+        db = FirebaseFirestore.getInstance();
+        collectionReference = db.collection("users");
         collectionReference.document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
