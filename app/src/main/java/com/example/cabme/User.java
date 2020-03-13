@@ -23,7 +23,7 @@ import java.util.Observable;
  *  involved in the CabMe application
  */
 public class User extends Observable implements Serializable {
-    final  private String TAG = "User";
+    final private String TAG = "User";
     private String email;
     private String firstName;
     private String lastName;
@@ -188,9 +188,5 @@ public class User extends Observable implements Serializable {
     }
 
 
-
-    //public int getBalance() {
-    //    return balance;
-    //}
 
 }

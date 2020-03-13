@@ -51,9 +51,8 @@ public class TitleActivity extends AppCompatActivity {
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(this, MapActivity.class);
-                //intent.putExtra("rider", new Rider(user.getUid()));
-                //startActivity(intent);
+                Intent intent = new Intent(TitleActivity.this, NewRideInfoActivity.class);
+                startActivity(intent);
             }
         });
 
