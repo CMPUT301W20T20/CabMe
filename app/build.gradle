@@ -40,11 +40,11 @@ dependencies {
     
 
     // Firebase Services
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
     implementation 'com.google.firebase:firebase-firestore:21.4.1'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.firebase:firebase-database:19.2.1'
-    implementation 'com.google.firebase:firebase-messaging:15.0.2'
+    implementation 'com.google.firebase:firebase-messaging:20.1.2'
 
     //Google Play Services
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
@@ -52,7 +52,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-places:17.0.0'
     implementation 'com.google.android.libraries.places:places:2.2.0'
     
-    implementation 'com.google.gms:google-services:4.0.0'
+    implementation 'com.google.gms:google-services:4.3.3'
 }
 apply plugin: 'com.google.gms.google-services'
 
