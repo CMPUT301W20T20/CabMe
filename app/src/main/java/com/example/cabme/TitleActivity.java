@@ -56,14 +56,14 @@ public class TitleActivity extends AppCompatActivity {
 			}
 		});
 
-		driverButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//Intent intent = new Intent(this, ListActivity.class);
-				//intent.putExtra("driver", new Driver(user.getUid()));
-				//startActivity(intent);
-			}
-		});
-
-	}
-}
+//		driverButton.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				//Intent intent = new Intent(this, ListActivity.class);
+//				//intent.putExtra("driver", new Driver(user.getUid()));
+//				//startActivity(intent);
+//			}
+//		});
+//
+//	}
+//}
