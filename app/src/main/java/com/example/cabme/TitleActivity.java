@@ -19,12 +19,12 @@ public class TitleActivity extends AppCompatActivity {
 	private String uid;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.title_activity);
-        uid = getIntent().getStringExtra("user");
-        //user = new User(uid);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.title_activity);
+		uid = getIntent().getStringExtra("user");
+		//user = new User(uid);
 
 		profileButton = findViewById(R.id.profile);
 		logoutButton = findViewById(R.id.logout);
@@ -58,14 +58,14 @@ public class TitleActivity extends AppCompatActivity {
 			}
 		});
 
-        driverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
-                intent.putExtra("Driver-UID", uid);
-                startActivity(intent);
-            }
-        });
+		driverButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
+				intent.putExtra("Driver-UID", uid);
+				startActivity(intent);
+			}
+		});
 
-    }
+	}
 }

@@ -66,6 +66,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
 
         destLngLat = (LongLat) getIntent().getSerializableExtra("destLongLat");
         startLngLat = (LongLat) getIntent().getSerializableExtra("startLongLat");
+        Rider = (Boolean) getIntent().getSerializableExtra("isRider");
 
         startLatLng = new LatLng(startLngLat.getLat(), startLngLat.getLng());
         destLatLng = new LatLng(destLngLat.getLat(), destLngLat.getLng());
@@ -81,15 +82,10 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
 
         backButton.setOnClickListener(v -> {
             if(Rider == true){
-                Intent intent = new Intent(MapViewActivity.this, NewRideInfoActivity.class);
-                startActivity(intent);
-
+                finish();
             } else if (Rider == false){
-                Intent intent = new Intent(MapViewActivity.this, DriverRequestListActivity.class);
-                startActivity(intent);
+                finish();
             }
-            finish();
-
         });
     }
 
@@ -115,10 +111,14 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(startLatLng);
         builder.include(destLatLng);
-
         addMarkers(map, startLatLng, destLatLng);
 
-        map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 10));
+        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 10));
+            }
+        });
     }
 
     public void addMarkers(GoogleMap map, LatLng start, LatLng dest){
