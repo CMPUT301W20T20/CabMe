@@ -32,7 +32,7 @@ public class TitleActivity extends AppCompatActivity {
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
+                Intent intent = new Intent(TitleActivity.this, NewRideInfoActivity.class);
                 startActivity(intent);
                 Log.d("T", user.getLastName());
             }
