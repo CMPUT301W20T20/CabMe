@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -49,7 +50,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
     private FirebaseAuth mauth;
     private FirebaseFirestore db;
     private CollectionReference collectionReference;
-    private List<String> usernames;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,24 +60,9 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         user.addObserver(this);
         mauth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        usernames = new ArrayList<String>();
-        collectionReference = db.collection("usernames");
+        collectionReference = db.collection("users");
         user.setDocumentListener();
 
-        collectionReference
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                usernames.add(document.getId());
-                            }
-                        } else {
-                            Log.d(TAG, "Failed with: ", task.getException());
-                        }
-                    }
-                });
 
         saveButton = findViewById(R.id.saveprofile);
         backButton = findViewById(R.id.back);
@@ -125,54 +110,62 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                 nusername = usernameEditText.getText().toString();
                 nlname = lnameEditText.getText().toString();
                 nfname = fnameEditText.getText().toString();
-                final Map<String, Object> exist = new HashMap<String, Object>();
-                exist.put("exists", "true");
-
+                Query query = collectionReference.whereEqualTo("username",nusername);
                 Log.d(TAG, user.getUsername());
 
-                if (valid(nusername, nphone, nlname, nfname)) {
+                if (valid(nemail, nusername, nphone, nlname, nfname)) {
+                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                if (!task.getResult().isEmpty() && !user.getUsername().equals(nusername)) {
+                                    Toast.makeText(ProfileActivity.this, "Username is taken", Toast.LENGTH_LONG).show();
+                                } else {
+                                    mauth.getCurrentUser().updateEmail(nemail)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        data.put("email", nemail);
+                                                        if (!user.getPhone().equals(nphone)) {
+                                                            data.put("phone", nphone);
+                                                        }
+                                                        if (!user.getUsername().equals(nusername)) {
+                                                            data.put("username", nusername);
+                                                        }
+                                                        if (!user.getLastName().equals(nlname)) {
+                                                            data.put("last", nlname);
+                                                        }
+                                                        if (!user.getFirstName().equals(nfname)) {
+                                                            data.put("first", nfname);
+                                                        }
 
-                    mauth.getCurrentUser().updateEmail(nemail)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        data.put("email", nemail);
-                                        if (!user.getPhone().equals(nphone)) {
-                                            data.put("phone", nphone);
-                                        }
-                                        if (!user.getUsername().equals(nusername)) {
-                                            data.put("username", nusername);
-                                            collectionReference.document(nusername)
-                                                    .set(exist);
-                                            collectionReference.document(user.getUsername())
-                                                    .delete();
-                                        }
-                                        if (!user.getLastName().equals(nlname)) {
-                                            data.put("last", nlname);
-                                        }
-                                        if (!user.getFirstName().equals(nfname)) {
-                                            data.put("first", nfname);
-                                        }
+
+                                                        user.updateData(data);
 
 
-                                        user.updateData(data);
+                                                        emailEditText.setEnabled(false);
+                                                        phoneEditText.setEnabled(false);
+                                                        usernameEditText.setEnabled(false);
+                                                        lnameEditText.setEnabled(false);
+                                                        fnameEditText.setEnabled(false);
 
+                                                        saveButton.setVisibility(View.GONE);
+                                                        deleteButton.setVisibility(View.GONE);
+                                                        editButton.setVisibility(View.VISIBLE);
 
-                                        emailEditText.setEnabled(false);
-                                        phoneEditText.setEnabled(false);
-                                        usernameEditText.setEnabled(false);
-                                        lnameEditText.setEnabled(false);
-                                        fnameEditText.setEnabled(false);
-
-                                        saveButton.setVisibility(View.GONE);
-                                        deleteButton.setVisibility(View.GONE);
-                                        editButton.setVisibility(View.VISIBLE);
-                                    } else {
-                                        Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                    }
+                                                    } else {
+                                                        Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            });
                                 }
-                            });
+                            } else {
+                                Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
 
 
 
@@ -196,9 +189,13 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
 
     }
 
-    public boolean valid(String username, String phone, String lastname, String firstname) {
+    public boolean valid(String email, String username, String phone, String lastname, String firstname) {
         boolean valid = true;
         String error = "";
+        if (email.isEmpty()) {
+            error += "Email field is empty \n";
+            valid = false;
+        }
         if (username.isEmpty()) {
             error += "Email field is empty \n";
             valid = false;
@@ -212,12 +209,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
             error += "First name field is empty \n";
             valid = false;
         }
-        if (!user.getUsername().equals(username)) {
-            if (usernames.contains(username)) {
-                error += "Username is taken \n";
-                valid = false;
-            }
-        }
+
         if (!valid) {
             Toast.makeText(ProfileActivity.this, error, Toast.LENGTH_LONG).show();
         }
