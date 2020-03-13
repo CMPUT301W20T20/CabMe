@@ -1,5 +1,8 @@
 package com.example.cabme;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,7 +52,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
     private User user;
     private FirebaseAuth mauth;
     private FirebaseFirestore db;
-    private CollectionReference collectionReference;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         user.addObserver(this);
         mauth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        collectionReference = db.collection("users");
+        CollectionReference collectionReference = db.collection("users");
         user.setDocumentListener();
 
 
@@ -102,6 +104,29 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
             }
         });
 
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                builder
+                        .setTitle("DELETE PROFILE")
+                        .setMessage("Are you sure you wish to delete your profile")
+                        .setNegativeButton("Cancel", null)
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        mauth.getCurrentUser().delete();
+                                        collectionReference.document(user.getUid()).delete();
+                                        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                        startActivity(intent);
+                                    }
+                        })
+                        .show();
+
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,9 +165,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                                                             data.put("first", nfname);
                                                         }
 
-
                                                         user.updateData(data);
-
 
                                                         emailEditText.setEnabled(false);
                                                         phoneEditText.setEnabled(false);
@@ -189,7 +212,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
 
     }
 
-    public boolean valid(String email, String username, String phone, String lastname, String firstname) {
+    private boolean valid(String email, String username, String phone, String lastname, String firstname) {
         boolean valid = true;
         String error = "";
         if (email.isEmpty()) {

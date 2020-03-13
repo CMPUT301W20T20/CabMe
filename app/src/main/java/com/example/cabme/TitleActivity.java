@@ -51,7 +51,9 @@ public class TitleActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+
+                Intent intent = new Intent(TitleActivity.this, NewRideInfoActivity.class);
+                startActivity(intent);
             }
         });
 
