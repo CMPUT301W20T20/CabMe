@@ -47,6 +47,7 @@ public class DriverRequestListActivity extends AppCompatActivity{
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
     private CollectionReference collectionReference;
+    Query query;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class DriverRequestListActivity extends AppCompatActivity{
         recyclerView = findViewById(R.id.request_list);
 
         //Query
-        Query query = firebaseFirestore.collection("requests");
+        query = firebaseFirestore.collection("requests");
 
         //recycler options
         FirestoreRecyclerOptions<Request> options = new FirestoreRecyclerOptions.Builder<Request>()
@@ -74,8 +75,17 @@ public class DriverRequestListActivity extends AppCompatActivity{
 
             @Override
             protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull Request model) {
-                holder.riderName.setText("Rider Name");
+                DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                holder.riderName.setText(snapshot.getId());
                 holder.distanceAway.setText("Distance Away");
+
+                holder.itemView.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                        holder.riderName.setText(snapshot.getId());
+                    }
+                });
             }
 
         };
@@ -98,8 +108,10 @@ public class DriverRequestListActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v){
                     int position = getAdapterPosition();
-                    Log.wtf("POS", ""+position);
-//                    firebaseFirestore.collection("");
+                    Log.wtf("POS", ""+ position);
+
+//                    collectionReference = firebaseFirestore.collection("requests");
+//                    collectionReference.document()
                     Intent intent = new Intent(itemView.getContext(), MapViewActivity.class);
                 }
             });
