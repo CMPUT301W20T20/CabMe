@@ -76,12 +76,10 @@ public class r_historylist_activity extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderRequestsModel model) {
-                holder.fname.setText(model.getFname());
+                holder.first.setText(model.getFirst());
                 holder.lname.setText(model.getLname());
                 holder.email.setText(model.getEmail());
-
             }
-
 
         };
 
@@ -108,14 +106,14 @@ public class r_historylist_activity extends AppCompatActivity {
     }
 
     private class RiderRequestsViewHolder extends RecyclerView.ViewHolder{
-        private TextView fname;
+        private TextView first;
         private TextView lname;
         private TextView email;
 
         public RiderRequestsViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            fname = itemView.findViewById(R.id.fname);
+            first = itemView.findViewById(R.id.first);
             lname = itemView.findViewById(R.id.lname);
             email = itemView.findViewById(R.id.email);
 

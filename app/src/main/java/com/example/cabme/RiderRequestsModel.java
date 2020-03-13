@@ -2,23 +2,23 @@ package com.example.cabme;
 
 public class RiderRequestsModel {
 
-    private String fname;
+    private String first;
     private String lname;
     private String email;
 
     private RiderRequestsModel(){}
-    private RiderRequestsModel(String fname, String lname, String email){
-        setFname(fname);
+    private RiderRequestsModel(String first, String lname, String email){
+        setFname(first);
         setLname(lname);
         setEmail(email);
     }
 
-    public String getFname() {
-        return fname;
+    public String getFirst() {
+        return first;
     }
 
     public void setFname(String fname) {
-        this.fname = fname;
+        this.first = fname;
     }
 
     public String getLname() {
