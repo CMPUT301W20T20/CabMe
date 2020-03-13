@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TitleActivity extends AppCompatActivity {
@@ -29,7 +28,7 @@ public class TitleActivity extends AppCompatActivity {
         riderButton = findViewById(R.id.rider);
         driverButton = findViewById(R.id.driver);
 
-        profileButton.setOnClickListener(new View.OnClickListener() {
+        riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
