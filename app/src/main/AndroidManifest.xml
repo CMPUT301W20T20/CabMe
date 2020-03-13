@@ -53,6 +53,9 @@
             android:name=".MapViewActivity"
             android:label="Map View" />
         <activity
+            android:name=".DriverRequestListActivity"
+            android:label="Driver Request List Activity"/>
+        <activity
             android:name=".NewRideInfoActivity"
             android:label="Ride Info" />
 
