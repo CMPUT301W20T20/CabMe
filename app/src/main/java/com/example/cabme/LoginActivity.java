@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         return true;
     }
-    
+
     public void startTitleActivity(String uid) {
         Intent intent = new Intent(this, TitleActivity.class);
         intent.putExtra("user", uid);
