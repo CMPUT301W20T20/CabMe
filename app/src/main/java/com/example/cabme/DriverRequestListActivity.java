@@ -75,17 +75,31 @@ public class DriverRequestListActivity extends AppCompatActivity{
 
             @Override
             protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull Request model) {
-                DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
-                holder.riderName.setText(snapshot.getId());
-                holder.distanceAway.setText("Distance Away");
-
                 holder.itemView.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
                         DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
-                        holder.riderName.setText(snapshot.getId());
+                        GeoPoint startLoc = snapshot.getGeoPoint("startLocation");
+                        GeoPoint destLoc = snapshot.getGeoPoint("endLocation");
+                        if(destLoc != null && startLoc != null){
+                            Intent intent = new Intent(DriverRequestListActivity.this, MapViewActivity.class);
+
+                            LongLat startLongLat = new LongLat(startLoc.getLongitude(), startLoc.getLatitude());
+                            LongLat destLongLat = new LongLat(destLoc.getLongitude(), destLoc.getLatitude());
+
+                            intent.putExtra("startLongLat", startLongLat);
+                            intent.putExtra("destLongLat", destLongLat);
+                            intent.putExtra("isRider", false);
+
+                            startActivity(intent);
+
+                            Log.wtf("LOG-LATLNG",  startLoc.toString()+" "+destLoc.toString());
+                        }
+
                     }
                 });
+                holder.riderName.setText(getSnapshots().getSnapshot(holder.getAdapterPosition()).getId());
+                holder.distanceAway.setText("Distance Away");
             }
 
         };
@@ -103,18 +117,6 @@ public class DriverRequestListActivity extends AppCompatActivity{
             super(itemView);
             riderName = itemView.findViewById(R.id.rider_name);
             distanceAway = itemView.findViewById(R.id.rider_distance_away);
-
-            itemView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    int position = getAdapterPosition();
-                    Log.wtf("POS", ""+ position);
-
-//                    collectionReference = firebaseFirestore.collection("requests");
-//                    collectionReference.document()
-                    Intent intent = new Intent(itemView.getContext(), MapViewActivity.class);
-                }
-            });
         }
     }
 
