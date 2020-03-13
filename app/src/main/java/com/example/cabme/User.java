@@ -41,6 +41,7 @@ public class User extends Observable implements Serializable {
      * @param uid
      */
     public User (String uid) {
+        //FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
