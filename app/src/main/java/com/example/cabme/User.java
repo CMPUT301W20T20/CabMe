@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -52,7 +53,6 @@ public class User extends Observable implements Serializable {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Log.d(TAG, "Data retrieval successful");
-
                         email = documentSnapshot.getString("email");
                         firstName = documentSnapshot.getString("first");
                         lastName = documentSnapshot.getString("last");
