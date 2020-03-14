@@ -18,26 +18,16 @@ public class TitleActivity extends AppCompatActivity {
     private String uid;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
-        //uid = (String)getIntent().getStringExtra("user");
-        //user = new User(uid);
+        uid = (String)getIntent().getStringExtra("user");
+        user = new User(uid);
 
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
         riderButton = findViewById(R.id.rider);
         driverButton = findViewById(R.id.driver);
-
-        riderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
-                startActivity(intent);
-            }
-        });
-
-
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +47,14 @@ public class TitleActivity extends AppCompatActivity {
             }
         });
 
+        riderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
+                startActivity(intent);
+            }
+        });
+
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +63,5 @@ public class TitleActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }
