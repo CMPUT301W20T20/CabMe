@@ -62,7 +62,7 @@ public class r_historylist_activity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycleView);
 
         //Query
-        Query query = mFirestore.collection("users");
+        Query query = mFirestore.collection("requests");
         //Recycler Options
         FirestoreRecyclerOptions<RiderRequestsModel> options = new FirestoreRecyclerOptions.Builder<RiderRequestsModel>().setQuery(query, RiderRequestsModel.class).build();
 
@@ -76,10 +76,19 @@ public class r_historylist_activity extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderRequestsModel model) {
-                holder.fname.setText(model.getFname());
-                holder.lname.setText(model.getLname());
-                holder.email.setText(model.getEmail());
+                holder.status.setText(model.getStatus());
 
+                /**
+                 * implement later
+                 if(holder.status.getText() == "Cancelled" ){
+                 holder.status.setText(model.getStatus());
+                 holder.status.setTextColor(getResources().getColor(R.color.red));
+                 }
+                 **/
+
+                holder.toFrom.setText("FROM: " + String.valueOf(model.getStartLocation()) + "| TO:" + String.valueOf(model.getEndLocation()));
+
+                holder.driverName.setText("Driver ID: " + model.getDriverID());
             }
 
         };
@@ -99,7 +108,7 @@ public class r_historylist_activity extends AppCompatActivity {
         newRideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(r_historylist_activity.this, r_newrideinfo_activity.class);
+                Intent intent = new Intent(r_historylist_activity.this, NewRideInfoActivity.class);
                 startActivity(intent);
             }
         });
@@ -107,16 +116,16 @@ public class r_historylist_activity extends AppCompatActivity {
     }
 
     private class RiderRequestsViewHolder extends RecyclerView.ViewHolder{
-        private TextView fname;
-        private TextView lname;
-        private TextView email;
+        private TextView status;
+        private TextView toFrom;
+        private TextView driverName;
 
         public RiderRequestsViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            fname = itemView.findViewById(R.id.fname);
-            lname = itemView.findViewById(R.id.lname);
-            email = itemView.findViewById(R.id.email);
+            status = itemView.findViewById(R.id.status);
+            toFrom= itemView.findViewById(R.id.toFrom);
+            driverName = itemView.findViewById(R.id.driverName);
 
         }
     }
