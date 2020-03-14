@@ -49,6 +49,8 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
     MarkerOptions markStart;
     MarkerOptions markDest;
 
+    Boolean Rider = true;
+
     /**
      * Checks for the bundle.
      *
@@ -64,6 +66,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
 
         destLngLat = (LongLat) getIntent().getSerializableExtra("destLongLat");
         startLngLat = (LongLat) getIntent().getSerializableExtra("startLongLat");
+        Rider = (Boolean) getIntent().getSerializableExtra("isRider");
 
         startLatLng = new LatLng(startLngLat.getLat(), startLngLat.getLng());
         destLatLng = new LatLng(destLngLat.getLat(), destLngLat.getLng());
@@ -78,10 +81,16 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
                 .execute(getUrl(markStart.getPosition(), markDest.getPosition(), "driving"), "driving");
 
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MapViewActivity.this, NewRideInfoActivity.class);
-            startActivity(intent);
-            finish();
+            if(Rider == true){
+                finish();
+            } else if (Rider == false){
+                finish();
+            }
         });
+    }
+
+    void setRiderFalse(){
+        Rider = false;
     }
 
     /**
@@ -102,15 +111,19 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(startLatLng);
         builder.include(destLatLng);
-
         addMarkers(map, startLatLng, destLatLng);
 
-        map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 10));
+        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 10));
+            }
+        });
     }
 
     public void addMarkers(GoogleMap map, LatLng start, LatLng dest){
         Log.wtf("MAPSLOG-MVA Start", "StartLatLng: "+ startLngLat.getLat() + "\n" + startLngLat.getLng());
-        Log.wtf("MAPSLOG-MVA Dest", "StartLatLng: "+ startLngLat.getLat() + "\n" + startLngLat.getLng());
+        Log.wtf("MAPSLOG-MVA Dest", "DestLatLng: "+ destLngLat.getLat() + "\n" + destLngLat.getLng());
         map.addMarker(markStart);
         map.addMarker(markDest);
     }

@@ -6,7 +6,6 @@ public class LongLat implements Serializable {
     Double Lat;
     Double Lng;
 
-
     public LongLat(double Lng, double Lat){
         this.Lat = Lat;
         this.Lng = Lng;
