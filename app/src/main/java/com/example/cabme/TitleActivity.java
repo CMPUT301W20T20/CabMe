@@ -29,8 +29,6 @@ public class TitleActivity extends AppCompatActivity {
         riderButton = findViewById(R.id.rider);
         driverButton = findViewById(R.id.driver);
 
-
-
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
