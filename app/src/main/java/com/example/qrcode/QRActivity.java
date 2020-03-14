@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.cabme.R;
+
 public class QRActivity extends AppCompatActivity {
 
     ImageView imageView;

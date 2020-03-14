@@ -29,14 +29,14 @@ public class TitleActivity extends AppCompatActivity {
         riderButton = findViewById(R.id.rider);
         driverButton = findViewById(R.id.driver);
 
-        profileButton.setOnClickListener(new View.OnClickListener() {
+        riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
                 startActivity(intent);
-                Log.d("T", user.getLastName());
             }
         });
+
 
 
         profileButton.setOnClickListener(new View.OnClickListener() {

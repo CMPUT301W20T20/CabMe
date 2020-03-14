@@ -57,6 +57,12 @@
         <activity
             android:name=".MapViewActivity"
             android:label="Map View" />
+        <activity
+            android:name=".NewRideInfoActivity"
+            android:label="New Ride" />
+        <activity
+            android:name=".r_historylist_activity"
+            android:label="History View"/>
     </application>
 
 </manifest>
