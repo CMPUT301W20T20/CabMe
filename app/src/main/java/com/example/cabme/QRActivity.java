@@ -1,4 +1,4 @@
-package com.example.qrcode;
+package com.example.cabme;
 
 import androidx.appcompat.app.AppCompatActivity;
 
