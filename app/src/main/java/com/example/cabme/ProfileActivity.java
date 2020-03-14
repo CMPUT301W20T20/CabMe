@@ -138,5 +138,5 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         }
 
     }
-    
+
 }

@@ -31,14 +31,9 @@ public class TitleActivity extends AppCompatActivity {
 
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
                 startActivity(intent);
-<<<<<<< HEAD
-=======
-
-                Log.d("T", user.getLastName());
->>>>>>> 5e521fd15ea0d85c1e78cb81d8b4974e76e28991
             }
         });
 
@@ -48,8 +43,10 @@ public class TitleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, ProfileActivity.class);
-                //intent.putExtra("user", user);
+                intent.putExtra("user", user);
                 startActivity(intent);
+
+                Log.d("T", user.getLastName());
             }
         });
 
@@ -63,9 +60,9 @@ public class TitleActivity extends AppCompatActivity {
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(this, ListActivity.class);
-                //intent.putExtra("driver", new Driver(user.getUid()));
-                //startActivity(intent);
+                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
+                intent.putExtra("Driver-UID", uid);
+                startActivity(intent);
             }
         });
 

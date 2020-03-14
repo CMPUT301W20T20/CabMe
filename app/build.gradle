@@ -46,16 +46,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.android.support:multidex:1.0.3'
 
-<<<<<<< HEAD
-    //Recycler View
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-
-    //Firebase UI services
-    implementation 'com.firebaseui:firebase-ui-firestore:4.3.1'
-=======
     //noinspection GradleCompatible
     implementation 'com.android.support:cardview-v7:28.0.0'
->>>>>>> 5e521fd15ea0d85c1e78cb81d8b4974e76e28991
 
     // Firebase Services
     implementation 'com.google.firebase:firebase-analytics:17.2.3'
