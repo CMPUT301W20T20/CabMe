@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
 	<color name="colorPrimary">#008577</color>
 	<color name="colorPrimaryDark">#00574B</color>
 	<color name="colorAccent">#D81B60</color>
-	<color name="green">#1B601C</color>
-	<color name="red">#6A2223</color>
-	<color name="yellow">#f6d55c</color>
-	<color name="blue">#24567D</color>
-	<color name="background_grey">#303030</color>
-	<color name="middle_grey">#828282</color>
-	<color name="light_grey">#4D4D4D</color>
 	<color name="googleHintText">#b9b9b9</color>
 
 </resources>
