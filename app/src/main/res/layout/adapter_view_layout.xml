@@ -23,7 +23,7 @@
         <TextView
             android:id="@+id/toFrom"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="81dp"
             android:gravity="center" />
 
         <TextView
