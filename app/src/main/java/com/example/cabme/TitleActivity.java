@@ -51,7 +51,7 @@ public class TitleActivity extends AppCompatActivity {
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, NewRideInfoActivity.class);
+                Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
                 startActivity(intent);
             }
         });
