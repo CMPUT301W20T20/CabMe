@@ -23,6 +23,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.api.Distribution;
 import com.google.firebase.database.DataSnapshot;
@@ -95,19 +96,30 @@ public class DriverRequestListActivity extends AppCompatActivity{
 
                             Log.wtf("LOG-LATLNG",  startLoc.toString()+" "+destLoc.toString());
                         }
-
                     }
                 });
-                holder.riderName.setText(getSnapshots().getSnapshot(holder.getAdapterPosition()).getId());
+                String UID = getSnapshots().getSnapshot(holder.getAdapterPosition()).getId();
+                firebaseFirestore.collection("users")
+                        .document(UID)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                Log.d("LOG", "Data Retrieved");
+                                String fName = documentSnapshot.getString("first");
+                                String lName = documentSnapshot.getString("last");
+                                String fullName = fName + " " + lName;
+                                holder.riderName.setText(fullName);
+                            }
+                        });
+                // -> change this to distance from the user in the future!
                 holder.distanceAway.setText("Distance Away");
             }
-
         };
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(firestoreRecyclerAdapter);
     }
-
 
     private class RequestsViewHolder extends RecyclerView.ViewHolder{
         private TextView riderName;
