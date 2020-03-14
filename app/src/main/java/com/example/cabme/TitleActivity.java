@@ -34,6 +34,11 @@ public class TitleActivity extends AppCompatActivity {
             public void onClick(View view){
                 Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
                 startActivity(intent);
+<<<<<<< HEAD
+=======
+
+                Log.d("T", user.getLastName());
+>>>>>>> 5e521fd15ea0d85c1e78cb81d8b4974e76e28991
             }
         });
 
