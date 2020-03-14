@@ -1,4 +1,4 @@
-package com.example.qrcode;
+package com.example.cabme;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

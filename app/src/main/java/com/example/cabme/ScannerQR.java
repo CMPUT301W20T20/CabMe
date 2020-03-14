@@ -1,4 +1,4 @@
-package com.example.qrcode;
+package com.example.cabme;
 
 import android.Manifest;
 import android.os.Bundle;
