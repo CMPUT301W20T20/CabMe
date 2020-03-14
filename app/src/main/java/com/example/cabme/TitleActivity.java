@@ -18,11 +18,11 @@ public class TitleActivity extends AppCompatActivity {
     private String uid;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
-        uid = (String)getIntent().getStringExtra("user");
-        user = new User(uid);
+        //uid = (String)getIntent().getStringExtra("user");
+        //user = new User(uid);
 
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
@@ -31,11 +31,20 @@ public class TitleActivity extends AppCompatActivity {
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, ProfileActivity.class);
-                intent.putExtra("user", user);
+            public void onClick(View view){
+                Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
                 startActivity(intent);
                 Log.d("T", user.getLastName());
+            }
+        });
+
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TitleActivity.this, ProfileActivity.class);
+                //intent.putExtra("user", user);
+                startActivity(intent);
             }
         });
 
@@ -46,21 +55,14 @@ public class TitleActivity extends AppCompatActivity {
             }
         });
 
-        riderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
-                startActivity(intent);
-            }
-        });
-
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
-                intent.putExtra("Driver-UID", uid);
-                startActivity(intent);
+                //Intent intent = new Intent(this, ListActivity.class);
+                //intent.putExtra("driver", new Driver(user.getUid()));
+                //startActivity(intent);
             }
         });
+
     }
 }
