@@ -42,7 +42,6 @@ public class NewRideInfoActivity extends AppCompatActivity {
                 Intent intent = new Intent(NewRideInfoActivity.this, MapViewActivity.class);
                 intent.putExtra("destLongLat", destLngLat);
                 intent.putExtra("startLongLat", startLngLat);
-                intent.putExtra("isRider", true);
                 startActivity(intent);
             }
         });

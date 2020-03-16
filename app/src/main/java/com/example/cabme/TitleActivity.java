@@ -41,7 +41,6 @@ public class TitleActivity extends AppCompatActivity {
                 Intent intent = new Intent(TitleActivity.this, ProfileActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
-                Log.d("T", user.getLastName());
             }
         });
 

@@ -4,6 +4,7 @@ public class RiderRequestsModel {
 
     private String status;
     private com.google.firebase.firestore.GeoPoint startLocation;
+
     //private String startLocation;
     private com.google.firebase.firestore.GeoPoint endLocation;
     private String driverID;

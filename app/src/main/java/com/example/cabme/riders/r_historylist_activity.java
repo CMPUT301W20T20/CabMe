@@ -35,7 +35,7 @@ public class r_historylist_activity extends AppCompatActivity {
         super.onCreate(savedInstance);
         setContentView(R.layout.r_historylist_activity);
 
-        //this is where the youtube tutorial starts----------------------------------------
+
 
         //starting the database references
         mFirestore = FirebaseFirestore.getInstance();
@@ -70,7 +70,7 @@ public class r_historylist_activity extends AppCompatActivity {
 
                 holder.toFrom.setText("FROM: " + String.valueOf(model.getStartLocation()) + "| TO:" + String.valueOf(model.getEndLocation()));
 
-                holder.driverName.setText("Driver ID: " + model.getDriverID());
+                //holder.driverName.setText("Driver ID: " + model.getDriverID());
             }
 
         };
@@ -80,7 +80,7 @@ public class r_historylist_activity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         //View Holder
-        //this is where the youtube tutorial ends----------------------------------------
+
 
 
         //onclick listener for newRideButton to start r_newrideinfo_activity

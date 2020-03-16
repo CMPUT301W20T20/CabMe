@@ -12,6 +12,7 @@ import java.util.List;
 
 public class DataParser {
     public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
+
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
         JSONArray jRoutes;
         JSONArray jLegs;
