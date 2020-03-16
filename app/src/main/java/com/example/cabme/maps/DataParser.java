@@ -1,4 +1,4 @@
-package com.example.cabme;
+package com.example.cabme.maps;
 
 import com.google.android.gms.maps.model.LatLng;
 

@@ -1,4 +1,4 @@
-package com.example.cabme;
+package com.example.cabme.maps;
 
 /**
  * Created by Vishal on 10/20/2018.

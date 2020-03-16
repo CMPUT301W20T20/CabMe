@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_rider_home"
+    tools:context=".RiderHomeFragment"
+    android:background="@color/background_20_opacity_black"
+    android:elevation="2dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/hamburger_menu"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        app:cardElevation="50dp"
+        app:cardBackgroundColor="@color/quantum_white_100">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/button_close"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_close_black_24dp"
+                android:background="@drawable/button_shadow"
+/>
+            <TextView
+                android:id="@+id/full_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="30dp"
+                android:text="Firstname Lastname"
+                android:textSize="25dp" />
+
+            <Button
+                android:id="@+id/button_profile"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Profile"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:textAllCaps="false"
+                android:gravity="start"
+                style="@style/Widget.AppCompat.Button.Borderless" />
+
+            <Button
+                android:id="@+id/button_balance"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Balance"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:textAllCaps="false"
+                android:gravity="start"
+                style="@style/Widget.AppCompat.Button.Borderless" />
+
+            <Button
+                android:id="@+id/button_switch_user_type"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Switch User Type"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:textAllCaps="false"
+                android:gravity="start"
+                style="@style/Widget.AppCompat.Button.Borderless" />
+
+            <Button
+                android:id="@+id/button_logout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Logout"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:textAllCaps="false"
+                android:gravity="start"
+                style="@style/Widget.AppCompat.Button.Borderless" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

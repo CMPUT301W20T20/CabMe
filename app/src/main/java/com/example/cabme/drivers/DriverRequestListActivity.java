@@ -1,46 +1,32 @@
-package com.example.cabme;
+package com.example.cabme.drivers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cabme.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.api.Distribution;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.List;
+// In other folders
+import com.example.cabme.maps.LongLat;
+import com.example.cabme.maps.MapViewActivity;
+import com.example.cabme.maps.Request;
 
 public class DriverRequestListActivity extends AppCompatActivity{
     private OnItemClickListener listener;
@@ -108,8 +94,16 @@ public class DriverRequestListActivity extends AppCompatActivity{
                                 Log.d("LOG", "Data Retrieved");
                                 String fName = documentSnapshot.getString("first");
                                 String lName = documentSnapshot.getString("last");
-                                String fullName = fName + " " + lName;
-                                holder.riderName.setText(fullName);
+
+                                // Case for if the user deleted their profile.
+                                // - If the user deleted their profile UID no longer attached to a name.
+                                // - Instead show that they are deleted insead of null.
+                                if(fName != null || lName != null){
+                                    String fullName = fName + " " + lName;
+                                    holder.riderName.setText(fullName);
+                                } else {
+                                    holder.riderName.setText("* This user no longer exists");
+                                }
                             }
                         });
                 // -> change this to distance from the user in the future!

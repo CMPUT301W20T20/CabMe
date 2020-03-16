@@ -1,4 +1,4 @@
-package com.example.cabme;
+package com.example.cabme.riders;
 
 public class RiderRequestsModel {
 

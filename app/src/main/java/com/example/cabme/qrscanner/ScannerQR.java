@@ -1,4 +1,4 @@
-package com.example.cabme;
+package com.example.cabme.qrscanner;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cabme.R;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;

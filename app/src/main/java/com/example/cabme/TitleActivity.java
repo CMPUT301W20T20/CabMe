@@ -9,6 +9,12 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+ * Imported Classes
+ */
+import com.example.cabme.drivers.DriverRequestListActivity;
+import com.example.cabme.riders.r_historylist_activity;
+
 public class TitleActivity extends AppCompatActivity {
     private Button profileButton;
     private Button logoutButton;
@@ -49,7 +55,8 @@ public class TitleActivity extends AppCompatActivity {
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
+                Intent intent = new Intent(TitleActivity.this, HomeActivity.class);
+                intent.putExtra("RIDER", "RIDER");
                 startActivity(intent);
             }
         });

@@ -1,4 +1,4 @@
-package com.example.cabme;
+package com.example.cabme.maps;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
