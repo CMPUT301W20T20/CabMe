@@ -3,10 +3,8 @@ package com.example.cabme;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,7 @@ public class RiderHomeFragment extends Fragment {
     public TextView helloUser;
     public Button rideNewBtn;
     public Button rideHistoryBtn;
+    public User user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,15 +29,23 @@ public class RiderHomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_rider_home, container, false);
+        View view = inflater.inflate(R.layout.rider_home_fragment, container, false);
         rideHistoryBtn = view.findViewById(R.id.ride_history);
         rideNewBtn = view.findViewById(R.id.ride_new);
         helloUser = view.findViewById(R.id.hello_user);
 
+        user = (User) getArguments().getSerializable("user");
+
         rideNewButtonClick();
         rideHistoryButtonClick();
+        setWelcome();
 
         return view;
+    }
+
+    public void setWelcome(){
+        String welcomeText = "Hello " + user.getFirstName()+",";
+        helloUser.setText(welcomeText);
     }
 
     public void rideNewButtonClick(){

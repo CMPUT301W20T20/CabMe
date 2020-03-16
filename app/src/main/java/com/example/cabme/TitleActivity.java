@@ -23,10 +23,16 @@ public class TitleActivity extends AppCompatActivity {
     private User user;
     private String uid;
 
+    enum UserType {
+        RIDER,
+        DRIVER
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
+
         uid = (String)getIntent().getStringExtra("user");
         user = new User(uid);
 
@@ -55,7 +61,7 @@ public class TitleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, HomeActivity.class);
-                intent.putExtra("RIDER", "RIDER");
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });

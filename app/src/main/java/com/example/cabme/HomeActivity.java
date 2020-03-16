@@ -59,7 +59,11 @@ import static androidx.core.location.LocationManagerCompat.isLocationEnabled;
  *
  */
 public class HomeActivity extends FragmentActivity implements OnMapReadyCallback {
-    public UserType userType;
+    public TitleActivity.UserType userType;
+    private User user;
+    private String uid;
+    private Bundle bundle;
+
     private static final String TAG = "HomeActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -75,16 +79,11 @@ public class HomeActivity extends FragmentActivity implements OnMapReadyCallback
     private HamburgerFragment hamburgerFragment;
     private ImageButton hamburgerMenuBtn;
 
-    enum UserType {
-        RIDER,
-        DRIVER
-    }
-
     /**
      * Sets up what type of view a user will get.
      * @param uType
      */
-    void setUserType(UserType uType) {
+    void setUserType(TitleActivity.UserType uType) {
         userType = uType;
     }
 
@@ -99,9 +98,15 @@ public class HomeActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
         hamburgerMenuBtn = findViewById(R.id.hamburger);
-        userType = UserType.RIDER;
+        userType = TitleActivity.UserType.RIDER;
+
+        user = (User)getIntent().getSerializableExtra("user");
+
         setUserType(userType);
         getLocationPermission();
+
+        bundle = new Bundle();
+        bundle.putSerializable("user", user);
 
         hamburgerMenuButtonClick();
 
@@ -110,13 +115,14 @@ public class HomeActivity extends FragmentActivity implements OnMapReadyCallback
                 return;
             }
             // Open fragments for the different user types
-            if(userType == UserType.RIDER){
+            if(userType == TitleActivity.UserType.RIDER){
                 // fragment to be placed in activity layout
                 riderHomeFragment = new RiderHomeFragment();
+                riderHomeFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container, riderHomeFragment).commit();
             }
-            else if (userType == UserType.DRIVER){
+            else if (userType == TitleActivity.UserType.DRIVER){
             }
         }
     }
@@ -126,6 +132,7 @@ public class HomeActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 hamburgerFragment = new HamburgerFragment();
+                hamburgerFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container, hamburgerFragment).commit();
             }
