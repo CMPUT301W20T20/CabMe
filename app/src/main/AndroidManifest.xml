@@ -56,7 +56,7 @@
 
         <activity android:name=".maps.MapViewActivity" />
 
-        <activity android:name="drivers.DriverRequestListActivity" />
+        <activity android:name=".drivers.DriverRequestListActivity" />
 
         <activity android:name=".riders.RiderHistoryListActivity" />
         <activity android:name=".riders.NewRideInfoActivity" />
