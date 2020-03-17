@@ -17,7 +17,6 @@ import com.example.cabme.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -26,14 +25,12 @@ import com.google.firebase.firestore.Query;
 // In other folders
 import com.example.cabme.maps.LongLat;
 import com.example.cabme.maps.MapViewActivity;
-import com.example.cabme.maps.Request;
 
 public class DriverRequestListActivity extends AppCompatActivity{
     private OnItemClickListener listener;
     private RecyclerView recyclerView;
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
-    private CollectionReference collectionReference;
     Query query;
 
     @Override
@@ -47,12 +44,12 @@ public class DriverRequestListActivity extends AppCompatActivity{
         // Query
         query = firebaseFirestore.collection("requests");
 
-        // recycler options
-        FirestoreRecyclerOptions<Request> options = new FirestoreRecyclerOptions.Builder<Request>()
-                .setQuery(query, Request.class)
+        // Recycler options
+        FirestoreRecyclerOptions<DriverRequestListModel> options = new FirestoreRecyclerOptions.Builder<DriverRequestListModel>()
+                .setQuery(query, DriverRequestListModel.class)
                 .build();
 
-        firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<Request, RequestsViewHolder>(options) {
+        firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<DriverRequestListModel, RequestsViewHolder>(options) {
             @NonNull
             @Override
             public RequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,7 +58,7 @@ public class DriverRequestListActivity extends AppCompatActivity{
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull Request model) {
+            protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull DriverRequestListModel model) {
                 holder.itemView.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
