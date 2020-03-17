@@ -65,7 +65,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         CollectionReference collectionReference = db.collection("users");
         // user.setDocumentListener();
 
-
         saveButton = findViewById(R.id.saveprofile);
         backButton = findViewById(R.id.back);
         editButton = findViewById(R.id.editprofile);
