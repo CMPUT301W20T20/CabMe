@@ -138,6 +138,7 @@ public class User extends Observable implements Serializable {
         });
 
     }
+
 	public User() {
 		// Default constructor required for calls to DataSnapshot.getValue(User.class)
 	}
@@ -185,8 +186,6 @@ public class User extends Observable implements Serializable {
                     }
                 });
     }
-
-
 
     //public int getBalance() {
     //    return balance;

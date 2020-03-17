@@ -46,8 +46,8 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/pay"
+    <EditText
+        android:id="@+id/pay_edit_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
@@ -73,7 +73,7 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:text="Search"
-        android:layout_below="@id/pay"/>
+        android:layout_below="@id/pay_edit_text"/>
 
 
 

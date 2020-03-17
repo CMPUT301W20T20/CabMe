@@ -2,7 +2,6 @@ package com.example.cabme;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
  * Imported Classes
  */
 import com.example.cabme.drivers.DriverRequestListActivity;
-import com.example.cabme.riders.r_historylist_activity;
 
 public class TitleActivity extends AppCompatActivity {
     private Button profileButton;
@@ -60,7 +58,7 @@ public class TitleActivity extends AppCompatActivity {
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, HomeActivity.class);
+                Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
             }
