@@ -45,36 +45,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".TitleActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".ProfileActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".SignupActivity"
-            android:label="Sign Up" />
-        <activity
-            android:name="maps.MapViewActivity"
-            android:label="Map View" />
-        <activity
-            android:name="drivers.DriverRequestListActivity"
-            android:label="Driver Request List Activity"/>
-        <activity
-            android:name="riders.NewRideInfoActivity"
-            android:label="Ride Info" />
-        <activity
-            android:name="riders.r_historylist_activity"
-            android:label="History Activity" />
 
-        <activity android:name=".riders.NewRideInfoActivity" />
-        <activity android:name=".riders.r_historylist_activity" />
+        <activity android:name=".TitleActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".SignupActivity" />
+
+        <activity android:name=".HomeMapActivity" />
+        <activity android:name=".HomeMapHamburgerFragment"/>
+        <activity android:name=".HomeMapRiderFragment"/>
+
         <activity android:name=".maps.MapViewActivity" />
-        <activity android:name=".drivers.DriverRequestListActivity" />
 
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".HamburgerFragment"/>
-        <activity android:name=".RiderHomeFragment"/>
+        <activity android:name="drivers.DriverRequestListActivity" />
+
+        <activity android:name=".riders.RiderHistoryListActivity" />
+        <activity android:name=".riders.NewRideInfoActivity" />
+
 
     </application>
 
