@@ -13,6 +13,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ *
+ * Purposes:
+ * - Parses all the points for polylines int the directions API in driving mode
+ * - calls to draw poylines for the i-th row
+ *
+ * References & Sources:
+ * - https://github.com/divindvm/Android-DrawOnMap
+ * - https://github.com/Vysh01/android-maps-directions
+ *
+ */
 public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
     TaskLoadedCallback taskCallback;
     String directionMode;
