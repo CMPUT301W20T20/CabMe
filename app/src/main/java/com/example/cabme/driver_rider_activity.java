@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.cabme.riders.r_historylist_activity;
+import com.example.cabme.riders.RiderHistoryListActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class driver_rider_activity extends AppCompatActivity{
@@ -19,12 +19,12 @@ public class driver_rider_activity extends AppCompatActivity{
         //set view
         setContentView(R.layout.title_activity);
 
-        //onclick listener for iAmRiderButton for activity r_historylist_activity
+        //onclick listener for iAmRiderButton for activity RiderHistoryListActivity
         riderButton = findViewById(R.id.rider);
         riderButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(driver_rider_activity.this, r_historylist_activity.class);
+                Intent intent = new Intent(driver_rider_activity.this, RiderHistoryListActivity.class);
                 startActivity(intent);
             }
         });
