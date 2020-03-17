@@ -13,9 +13,20 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.cabme.riders.NewRideInfoActivity;
-import com.example.cabme.riders.r_historylist_activity;
+import com.example.cabme.riders.RiderHistoryListActivity;
 
-public class RiderHomeFragment extends Fragment {
+/**
+ *
+ * Purpose:
+ * - UI for rider choosing new ride and stuff
+ * - Idk man I think it's pretty looking its like Uber but bad :P
+ *
+ * TODO:
+ *  [ ] Update the intro with users first name to update on edit and back
+ *  [ ] Make it not show null :/
+ *
+ */
+public class HomeMapRiderFragment extends Fragment {
     public ImageButton hamburgerMenuBtn;
     public TextView helloUser;
     public Button rideNewBtn;
@@ -29,7 +40,8 @@ public class RiderHomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.rider_home_fragment, container, false);
+        View view = inflater.inflate(R.layout.home_map_rider_fragment, container, false);
+
         rideHistoryBtn = view.findViewById(R.id.ride_history);
         rideNewBtn = view.findViewById(R.id.ride_new);
         helloUser = view.findViewById(R.id.hello_user);
@@ -53,6 +65,7 @@ public class RiderHomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), NewRideInfoActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });
@@ -62,7 +75,8 @@ public class RiderHomeFragment extends Fragment {
         rideHistoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), r_historylist_activity.class);
+                Intent intent = new Intent(getContext(), RiderHistoryListActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });

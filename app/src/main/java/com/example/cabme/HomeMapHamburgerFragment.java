@@ -12,12 +12,21 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-/* TO DO
+/**
  *
- * [ ] Update the profile names on change of text from the ProfileActivity
+ * Purpose:
+ * - The weird psuedo nav-drawer I made because I was too dumb to learn how to make the real deal
+ * - Shows a menu of the persons name, details, balance, option to open look at details, switch
+ *   the user type and the log out button
+ * - Making the UI kinda cute :)
+ *
+ * TODO:
+ *  [ ] Update the profile names on change of text from the ProfileActivity
+ *  [ ] onChanged information
+ *  [?] Can make all button clicks a switch case - maybe that will be less eye jarring
  *
  */
-public class HamburgerFragment extends Fragment {
+public class HomeMapHamburgerFragment extends Fragment {
 
     public ImageButton closeImgBtn;
     public TextView fullnameTv;
@@ -37,7 +46,7 @@ public class HamburgerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.hamburger_fragment, container, false);
+        View view = inflater.inflate(R.layout.home_map_hamburger_fragment, container, false);
         closeImgBtn = view.findViewById(R.id.button_close);
         fullnameTv = view.findViewById(R.id.full_name);
         usernameTv = view.findViewById(R.id.user_name);
@@ -64,7 +73,7 @@ public class HamburgerFragment extends Fragment {
         closeImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().remove(HamburgerFragment.this).commit();
+                getFragmentManager().beginTransaction().remove(HomeMapHamburgerFragment.this).commit();
             }
         });
 

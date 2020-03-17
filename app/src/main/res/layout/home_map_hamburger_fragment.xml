@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_rider_home"
-    tools:context=".RiderHomeFragment"
+    tools:context=".HomeMapRiderFragment"
     android:background="@color/background_20_opacity_black"
     android:elevation="2dp"
     android:clickable="true"

@@ -1,7 +1,10 @@
 package com.example.cabme.riders;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,39 +17,65 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.R;
+import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class r_historylist_activity extends AppCompatActivity {
+import java.util.Observable;
+import java.util.Observer;
 
+/**
+ *
+ * TODO:
+ *  [X] Geocode long & Lat in to from -> TAKE FROM JsonParser
+ *
+ * NOTES: renamed file from r_riderhistory_activity (sorry it was making my eye twitch)
+ *
+ */
+public class RiderHistoryListActivity extends AppCompatActivity implements Observer {
+    // Log Tags
     private static final String TAG = "Firelog";
 
-    FirebaseFirestore mFirestore;
-
+    // Fire Store
+    private FirebaseFirestore mFirestore;
     private FirestoreRecyclerAdapter adapter;
     private RecyclerView recyclerView;
+    Query query;
+
+    // UI Stuff
     private Button newRideButton;
 
+    // key
+    private User user;
+    private Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.r_historylist_activity);
 
+        // get user intent
+        user = (User)getIntent().getSerializableExtra("user");
 
-
-        //starting the database references
+        // starting the database references
         mFirestore = FirebaseFirestore.getInstance();
 
-        //setting recycleview
+        // setting recycleview
         recyclerView = findViewById(R.id.recycleView);
 
-        //Query
-        Query query = mFirestore.collection("requests");
-        //Recycler Options
-        FirestoreRecyclerOptions<RiderRequestsModel> options = new FirestoreRecyclerOptions.Builder<RiderRequestsModel>().setQuery(query, RiderRequestsModel.class).build();
+        // Query
+        // getting the ridehistory collection in the user's document
+        query = mFirestore
+                .collection("users")
+                .document(user.getUid())
+                .collection("ridehistory");
+
+        // Recycler Options
+        FirestoreRecyclerOptions<RiderRequestsModel> options = new FirestoreRecyclerOptions.Builder<RiderRequestsModel>()
+                .setQuery(query, RiderRequestsModel.class)
+                .build();
 
         adapter = new FirestoreRecyclerAdapter<RiderRequestsModel, RiderRequestsViewHolder>(options) {
             @NonNull
@@ -56,6 +85,7 @@ public class r_historylist_activity extends AppCompatActivity {
                 return new RiderRequestsViewHolder(view);
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
             protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderRequestsModel model) {
                 holder.status.setText(model.getStatus());
@@ -68,47 +98,66 @@ public class r_historylist_activity extends AppCompatActivity {
                  }
                  **/
 
-                holder.toFrom.setText("FROM: " + String.valueOf(model.getStartLocation()) + "| TO:" + String.valueOf(model.getEndLocation()));
+                holder.status.setText(String.valueOf(model.getStatus()));
+                holder.from.setText(String.valueOf(model.getStartAddress()));
+                holder.to.setText(String.valueOf(model.getEndAddress()));
+                holder.cost.setText("$" + model.getRideCost());
 
-                //holder.driverName.setText("Driver ID: " + model.getDriverID());
+                User driver = new User(model.getUIDdriver());
+                driver.addObserver(RiderHistoryListActivity.this);
+
+                Log.wtf("DRIVERNM", ""+model.getUIDdriver());
+                Log.wtf("DRIVERNM", ""+driver.getFirstName());
+                Log.wtf("DRIVERNM", ""+driver.getPhone());
+
+
+                String driveFullName = driver.getFirstName() + " " + driver.getLastName();
+                holder.driverName.setText(driveFullName);
+                holder.driverUsername.setText("@"+driver.getUsername());
             }
-
         };
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
         //View Holder
 
-
-
-        //onclick listener for newRideButton to start r_newrideinfo_activity
+        //onclick listener for newRideButton to start NewRideInfoActivty
         newRideButton = findViewById(R.id.newRideButton);
 
         //Button click will start new activity
         newRideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(r_historylist_activity.this, NewRideInfoActivity.class);
+                Intent intent = new Intent(RiderHistoryListActivity.this, NewRideInfoActivity.class);
                 startActivity(intent);
             }
         });
 
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
     private class RiderRequestsViewHolder extends RecyclerView.ViewHolder{
         private TextView status;
-        private TextView toFrom;
+        private TextView to;
+        private TextView from;
         private TextView driverName;
+        private TextView cost;
+        private Button driverUsername;
 
         public RiderRequestsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             status = itemView.findViewById(R.id.status);
-            toFrom= itemView.findViewById(R.id.toFrom);
-            driverName = itemView.findViewById(R.id.driverName);
-
+            cost = itemView.findViewById(R.id.cost);
+            to = itemView.findViewById(R.id.to);
+            from = itemView.findViewById(R.id.from);
+            driverName = itemView.findViewById(R.id.driver_name);
+            driverUsername = itemView.findViewById(R.id.driver_username);
         }
     }
 
