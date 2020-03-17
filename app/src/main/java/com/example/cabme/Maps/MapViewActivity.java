@@ -17,6 +17,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+/**
+ *
+ * i already forgot about this classes purpose lol
+ *
+ */
 public class MapViewActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback{
     Button driverButton;
     Button backButton;
