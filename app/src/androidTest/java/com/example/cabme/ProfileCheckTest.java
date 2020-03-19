@@ -63,11 +63,26 @@ public class ProfileCheckTest {
     public void checkEdit() {
         solo.clickOnButton("Edit Profile");
         solo.clearEditText((EditText) solo.getView(R.id.lastname));
-        solo.enterText((EditText) solo.getView(R.id.lastname), "edit");
+        solo.enterText((EditText) solo.getView(R.id.lastname), "newlname");
         solo.clickOnButton("Save Changes");
         solo.clickOnButton("Return");
         solo.clickOnButton("View Profile");
-        assertTrue(solo.waitForText("edit", 1, 1000));
+        assertTrue(solo.waitForText("newlname", 1, 1000));
+    }
+
+    @Test
+    public void checkUsername() {
+        solo.clickOnButton("Edit Profile");
+        solo.clearEditText((EditText) solo.getView(R.id.username));
+        solo.enterText((EditText) solo.getView(R.id.username), "yoyo");
+        solo.clickOnButton("Save Changes");
+        assertTrue(solo.waitForText("Username is taken", 1, 1000));
+        solo.clearEditText((EditText) solo.getView(R.id.username));
+        solo.enterText((EditText) solo.getView(R.id.username), "newUname");
+        solo.clickOnButton("Save Changes");
+        solo.clickOnButton("Return");
+        solo.clickOnButton("View Profile");
+        assertTrue(solo.waitForText("newUname", 1, 1000));
     }
 
     @After
