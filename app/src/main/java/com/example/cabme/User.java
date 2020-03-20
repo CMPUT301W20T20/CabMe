@@ -30,6 +30,8 @@ public class User extends Observable implements Serializable {
     private String username;
     private String uid;
     private String phone;
+    private Rating rating;
+    private LongLat location;
     //private int balance;
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
@@ -57,6 +59,8 @@ public class User extends Observable implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
+                        location = (LongLat) documentSnapshot.get("location");
+                        rating = (Rating) documentSnapshot.get("rating");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -90,6 +94,8 @@ public class User extends Observable implements Serializable {
         userData.put("last", lastName);
         userData.put("username", username);
         userData.put("phone", phone);
+        userData.put("rating", rating);
+        userData.put("location", location);
 
         collectionReference
                 .document(uid)
@@ -165,6 +171,14 @@ public class User extends Observable implements Serializable {
 
     public String getUid() {
         return uid;
+    }
+
+    public LongLat getLocation() {
+        return location;
+    }
+
+    public Rating getRating() {
+        return rating;
     }
 
     public void updateData(Map<String, Object> data) {
