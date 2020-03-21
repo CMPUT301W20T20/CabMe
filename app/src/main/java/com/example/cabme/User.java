@@ -1,5 +1,6 @@
 package com.example.cabme;
 
+import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,7 @@ public class User extends Observable implements Serializable {
     private String uid;
     private String phone;
     private Rating rating;
-    private LongLat location;
+    private Location location;
     //private int balance;
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
@@ -59,7 +60,7 @@ public class User extends Observable implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
-                        location = (LongLat) documentSnapshot.get("location");
+                        location = (Location) documentSnapshot.get("location");
                         rating = (Rating) documentSnapshot.get("rating");
                     }
                 })
@@ -139,6 +140,8 @@ public class User extends Observable implements Serializable {
                 lastName = documentSnapshot.getString("last");
                 email = documentSnapshot.getString("email");
                 phone = documentSnapshot.getString("phone");
+                location = (Location) documentSnapshot.get("location");
+                rating = (Rating) documentSnapshot.get("rating");
                 Log.d("BIG", "UPDATE");
                 notifyObservers();
             }
@@ -173,7 +176,7 @@ public class User extends Observable implements Serializable {
         return uid;
     }
 
-    public LongLat getLocation() {
+    public Location getLocation() {
         return location;
     }
 
