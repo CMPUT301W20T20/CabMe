@@ -1,6 +1,5 @@
 package com.example.cabme;
 
-import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -31,7 +30,6 @@ public class User extends Observable implements Serializable {
     private String username;
     private String uid;
     private String phone;
-    //private int balance;
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
 
