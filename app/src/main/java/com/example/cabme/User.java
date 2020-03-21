@@ -31,8 +31,6 @@ public class User extends Observable implements Serializable {
     private String username;
     private String uid;
     private String phone;
-    private Rating rating;
-    private Location location;
     //private int balance;
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
@@ -47,30 +45,7 @@ public class User extends Observable implements Serializable {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-        collectionReference
-                .document(uid)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Log.d(TAG, "Data retrieval successful");
-
-                        email = documentSnapshot.getString("email");
-                        firstName = documentSnapshot.getString("first");
-                        lastName = documentSnapshot.getString("last");
-                        username = documentSnapshot.getString("username");
-                        phone = documentSnapshot.getString("phone");
-                        location = (Location) documentSnapshot.get("location");
-                        rating = (Rating) documentSnapshot.get("rating");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Data retrieval failed " + e.toString());
-                    }
-                });
-        setDocumentListener();
+        readData();
     }
 
     /**
@@ -95,8 +70,7 @@ public class User extends Observable implements Serializable {
         userData.put("last", lastName);
         userData.put("username", username);
         userData.put("phone", phone);
-        userData.put("rating", rating);
-        userData.put("location", location);
+        userData.put("rating", new Rating());
 
         collectionReference
                 .document(uid)
@@ -115,10 +89,31 @@ public class User extends Observable implements Serializable {
                     }
                 });
 
-        //setDocumentListener(uid);
-
     }
 
+    public void readData() {
+        collectionReference
+                .document(uid)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Log.d(TAG, "Data retrieval successful");
+
+                        email = documentSnapshot.getString("email");
+                        firstName = documentSnapshot.getString("first");
+                        lastName = documentSnapshot.getString("last");
+                        username = documentSnapshot.getString("username");
+                        phone = documentSnapshot.getString("phone");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Data retrieval failed " + e.toString());
+                    }
+                });
+    }
     /**
      * This method sets a listener to the user's document in the database to retrieve real-time
      * updates from the database
@@ -140,8 +135,6 @@ public class User extends Observable implements Serializable {
                 lastName = documentSnapshot.getString("last");
                 email = documentSnapshot.getString("email");
                 phone = documentSnapshot.getString("phone");
-                location = (Location) documentSnapshot.get("location");
-                rating = (Rating) documentSnapshot.get("rating");
                 Log.d("BIG", "UPDATE");
                 notifyObservers();
             }
@@ -176,13 +169,7 @@ public class User extends Observable implements Serializable {
         return uid;
     }
 
-    public Location getLocation() {
-        return location;
-    }
 
-    public Rating getRating() {
-        return rating;
-    }
 
     public void updateData(Map<String, Object> data) {
         db = FirebaseFirestore.getInstance();
