@@ -58,13 +58,12 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity);
         user = (User)getIntent().getSerializableExtra("user");
-        user.setDocumentListener();
         data = new HashMap<>();
         user.addObserver(this);
         mauth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("users");
-        user.setDocumentListener();
+
 
 
         saveButton = findViewById(R.id.saveprofile);

@@ -23,7 +23,8 @@ public class TitleActivity extends AppCompatActivity {
         setContentView(R.layout.title_activity);
         uid = getIntent().getStringExtra("user");
         user = new User(uid);
-
+        user.setDocumentListener();
+        
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
         riderButton = findViewById(R.id.rider);
