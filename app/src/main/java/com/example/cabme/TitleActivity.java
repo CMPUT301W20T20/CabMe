@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class TitleActivity extends AppCompatActivity {
     private Button profileButton;
     private Button logoutButton;
-    private Button riderButton;
-    private Button driverButton;
+    private ImageButton riderButton;
+    private ImageButton driverButton;
     private User user;
     private String uid;
 
@@ -29,8 +30,6 @@ public class TitleActivity extends AppCompatActivity {
         logoutButton = findViewById(R.id.logout);
         riderButton = findViewById(R.id.rider);
         driverButton = findViewById(R.id.driver);
-
-
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +50,7 @@ public class TitleActivity extends AppCompatActivity {
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, NewRideInfoActivity.class);
+                Intent intent = new Intent(TitleActivity.this, r_historylist_activity.class);
                 startActivity(intent);
             }
         });
@@ -59,11 +58,10 @@ public class TitleActivity extends AppCompatActivity {
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(this, ListActivity.class);
-                //intent.putExtra("driver", new Driver(user.getUid()));
-                //startActivity(intent);
+                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
+                intent.putExtra("Driver-UID", uid);
+                startActivity(intent);
             }
         });
-
     }
 }

@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     // https://emailregex.com/
-    private boolean valid(String email, String password) {
+    public boolean valid(String email, String password) {
         String emailRegex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)" +
                  "*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|" +
                 "\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]" +
@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private void startTitleActivity(String uid) {
+    public void startTitleActivity(String uid) {
         Intent intent = new Intent(this, TitleActivity.class);
         intent.putExtra("user", uid);
         startActivity(intent);

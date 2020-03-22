@@ -113,14 +113,14 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                         .setMessage("Are you sure you wish to delete your profile")
                         .setNegativeButton("Cancel", null)
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        mauth.getCurrentUser().delete();
-                                        collectionReference.document(user.getUid()).delete();
-                                        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                        startActivity(intent);
-                                    }
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mauth.getCurrentUser().delete();
+                                collectionReference.document(user.getUid()).delete();
+                                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
+                            }
                         })
                         .show();
 
