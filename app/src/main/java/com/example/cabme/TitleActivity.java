@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class TitleActivity extends AppCompatActivity {
     private Button profileButton;
     private Button logoutButton;
-    private Button riderButton;
-    private Button driverButton;
+    private ImageButton riderButton;
+    private ImageButton driverButton;
     private User user;
     private String uid;
 

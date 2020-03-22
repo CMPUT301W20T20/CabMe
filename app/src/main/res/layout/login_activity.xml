@@ -6,22 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/CabMeTitle"
-        android:layout_width="147dp"
-        android:layout_height="42dp"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
         android:layout_marginStart="130dp"
         android:layout_marginLeft="130dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="130dp"
         android:layout_marginRight="130dp"
-        android:background="#FFFFFF"
+        android:textColor="#F6D55C"
         android:text="@string/app_name"
-        android:textSize="25sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/password"
@@ -37,7 +39,9 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#F6D55C"
         app:layout_constraintTop_toBottomOf="@+id/email" />
+
 
     <EditText
         android:id="@+id/email"
@@ -47,12 +51,14 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="158dp"
         android:layout_marginEnd="40dp"
+        android:textColor="#F6D55C"
         android:layout_marginRight="40dp"
         android:ems="10"
         android:hint="@string/prompt_email"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:color="#F6D55C"
         app:layout_constraintTop_toBottomOf="@+id/CabMeTitle" />
 
     <Button
@@ -67,6 +73,8 @@
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#000000"
+        android:background="#F6D55C"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <Button
@@ -75,13 +83,37 @@
         android:layout_height="55dp"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="100dp"
         android:layout_marginRight="100dp"
         android:text="Sign Up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#FFFFFF"
+        android:background="#24567D"
+        app:layout_constraintTop_toBottomOf="@+id/mainPageText2" />
+
+    <TextView
+        android:id="@+id/mainPageText1"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:text="Don't have an account yet?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login" />
+
+    <TextView
+        android:id="@+id/mainPageText2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Join CabMe today!"
+        android:textColor="#F6D55C"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainPageText1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,37 +14,9 @@
         android:text="Logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#FFFFFF"
+        android:background="#24567D"
         app:layout_constraintTop_toBottomOf="@+id/profile" />
-
-    <Button
-        android:id="@+id/driver"
-        android:layout_width="200dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:text="I am Driver"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cabMeTitle2" />
-
-    <Button
-        android:id="@+id/rider"
-        android:layout_width="200dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:text="I am Rider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/driver" />
 
     <Button
         android:id="@+id/profile"
@@ -52,29 +24,57 @@
         android:layout_height="55dp"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="75dp"
         android:layout_marginEnd="100dp"
         android:layout_marginRight="100dp"
         android:text="View Profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rider" />
+        android:textColor="#000000"
+        android:background="#F6D55C"
+        app:layout_constraintTop_toBottomOf="@+id/driver" />
 
     <TextView
-        android:id="@+id/cabMeTitle2"
-        android:layout_width="147dp"
-        android:layout_height="42dp"
+        android:id="@+id/CabMeTitle"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
         android:layout_marginStart="130dp"
         android:layout_marginLeft="130dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="130dp"
         android:layout_marginRight="130dp"
-        android:background="#FFFFFF"
+        android:textColor="#F6D55C"
         android:text="@string/app_name"
-        android:textSize="25sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_horizontal" />
+
+    <ImageButton
+        android:id="@+id/driver"
+        android:layout_width="130dp"
+        android:layout_height="190dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/driver"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CabMeTitle"
+        app:srcCompat="@drawable/fields_border" />
+
+    <ImageButton
+        android:id="@+id/rider"
+        android:layout_width="130dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/rider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CabMeTitle"
+        app:srcCompat="@drawable/fields_border" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
