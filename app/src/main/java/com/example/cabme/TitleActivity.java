@@ -22,9 +22,10 @@ public class TitleActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
-        uid = (String)getIntent().getStringExtra("user");
+        uid = getIntent().getStringExtra("user");
         user = new User(uid);
-
+        user.setDocumentListener();
+        
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
         riderButton = findViewById(R.id.rider);
