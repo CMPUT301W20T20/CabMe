@@ -86,6 +86,11 @@ public class NewRideInfoActivity extends AppCompatActivity {
         setSearchRideButton();
     }
 
+    /**
+     * Purpose:
+     *
+     * has auto complete functionality and sets start location latitude and longitude
+     */
     public void startingLocationSearch(){
         final AutocompleteSupportFragment autocompleteSupportFragment =
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_from);
@@ -113,6 +118,11 @@ public class NewRideInfoActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Purpose:
+     *
+     * has autocomplete functionality and sets the destination latitude and longitude
+     */
     public void destinationLocationSearch(){
         final AutocompleteSupportFragment autocompleteSupportFragment =
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_to);
@@ -154,6 +164,11 @@ public class NewRideInfoActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Purpose:
+     *
+     * set startLocation, endLocation, cost in the database
+     */
     public  void addNewRideRequest(){
         GeoPoint destGeo = new GeoPoint(destLngLat.getLat(), destLngLat.getLng());
         GeoPoint startGeo = new GeoPoint(startLngLat.getLat(), startLngLat.getLng());

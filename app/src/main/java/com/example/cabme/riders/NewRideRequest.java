@@ -124,7 +124,11 @@ public class NewRideRequest {
 
     }
 
-
+    /**
+     * Purpose:
+     *
+     * sets the parsed geo points
+     */
     private void setParsedGeoPoints(){
         jsonParser = new JsonParser(startGeo, endGeo, API_KEY);
         this.distanceText = jsonParser.getDistanceText();
@@ -142,11 +146,21 @@ public class NewRideRequest {
         Log.wtf("newrr", "end: " + endAddress);
     }
 
+    /**
+     * Purpose:
+     *
+     * initialize the database
+     */
     private void initializeFireBase(){
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection(firebaseCollectionName);
     }
 
+    /**
+     * Purpose:
+     *
+     * put all the values into the database
+     */
     private void putInFirebaseCollection(){
         HashMap<String, Object> newRideRequest = new HashMap<>();
         newRideRequest.put("UIDdriver", UIDdriver);
