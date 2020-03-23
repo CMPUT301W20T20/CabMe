@@ -15,12 +15,14 @@
         android:layout_marginLeft="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
+        android:textColor="#F6D55C"
         android:background="@drawable/fields_border">
 
         <fragment
             android:id="@+id/autosearch_from"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="#F6D55C"
             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
 
     </LinearLayout>
@@ -36,12 +38,14 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/fields_border"
+        android:textColor="#F6D55C"
         android:layout_below="@+id/layout_from">
 
         <fragment
             android:id="@+id/autosearch_to"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="#F6D55C"
             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
 
     </LinearLayout>
@@ -50,18 +54,19 @@
         android:id="@+id/pay_edit_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/layout_to"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/fields_border"
-        android:hint="Payment"
-        android:textSize="20dp"
-        android:textAlignment = "center"
-        android:textColor="@color/googleHintText"
         android:gravity="center"
-        android:layout_below="@id/layout_to"/>
+        android:hint="Payment"
+        android:text="Pay with QR-Bucks"
+        android:textAlignment="center"
+        android:textColor="@color/googleHintText"
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/search_ride_button"
@@ -73,9 +78,8 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:text="Search"
-        android:layout_below="@id/pay_edit_text"/>
-
-
+        android:textColor="#FFFFFF"
+        android:background="#24567D"/>
 
 
 </RelativeLayout>
