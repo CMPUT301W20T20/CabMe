@@ -138,7 +138,6 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
 
     @Override
     public void update(Observable o, Object arg) {
-
     }
 
     private class RiderRequestsViewHolder extends RecyclerView.ViewHolder{
@@ -149,6 +148,10 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
         private TextView cost;
         private Button driverUsername;
 
+        /**
+         *
+         * @param itemView holds all the textviews
+         */
         public RiderRequestsViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -161,12 +164,18 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
         }
     }
 
+    /**
+     * so stop listener at end of activity
+     */
     @Override
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
     }
 
+    /**
+     * so set listener on start of activity
+     */
     @Override
     protected void onStart() {
         super.onStart();

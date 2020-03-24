@@ -29,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private Button signupButton;
     private Button loginButton;
-    private FirebaseFirestore db;
     private FirebaseAuth mauth;
 
     @Override
@@ -43,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.signup);
         loginButton = findViewById(R.id.login);
 
-        db = FirebaseFirestore.getInstance();
         mauth = FirebaseAuth.getInstance();
 
         loginButton.setOnClickListener(new View.OnClickListener() {

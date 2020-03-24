@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,8 +17,8 @@ import com.example.cabme.drivers.DriverRequestListActivity;
 public class TitleActivity extends AppCompatActivity {
     private Button profileButton;
     private Button logoutButton;
-    private Button riderButton;
-    private Button driverButton;
+    private ImageButton riderButton;
+    private ImageButton driverButton;
     private User user;
     private String uid;
 
@@ -31,9 +32,11 @@ public class TitleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
 
-        uid = (String)getIntent().getStringExtra("user");
-        user = new User(uid);
+        uid = getIntent().getStringExtra("user");
 
+        user = new User(uid);
+        user.setDocumentListener();
+        
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
         riderButton = findViewById(R.id.rider);

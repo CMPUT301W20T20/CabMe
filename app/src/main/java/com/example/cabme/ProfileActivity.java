@@ -63,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         mauth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("users");
-        // user.setDocumentListener();
+
 
         saveButton = findViewById(R.id.saveprofile);
         backButton = findViewById(R.id.back);

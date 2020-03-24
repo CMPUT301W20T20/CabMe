@@ -87,25 +87,28 @@ public class SignupActivity extends AppCompatActivity {
 									final String suname = userNameEditText.getText().toString().trim();
 									final String spass = passwordEditText.getText().toString();
 									final String srepass = repasswordEditText.getText().toString();
+									if (spass.equals(srepass)) {
+										mauth.createUserWithEmailAndPassword(semail, spass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+											@Override
+											public void onComplete(@NonNull Task<AuthResult> task) {
 
-									mauth.createUserWithEmailAndPassword(semail,spass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-										@Override
-										public void onComplete(@NonNull Task<AuthResult> task) {
-
-											if (task.isSuccessful()) {
-												Toast.makeText(SignupActivity.this, "Successfully Registered, Upload complete!", Toast.LENGTH_SHORT).show();
-												String uid = mauth.getCurrentUser().getUid();
-												new User(uid,semail, sfname, slname, suname, sphone);
-												finish();
-												//startActivity(new Intent(MainActivity.this, TitleActivity.class));
-											} else {
-												FirebaseAuthException e = (FirebaseAuthException) task.getException();
-												String s = "Sign up Failed" + task.getException();
-												Toast.makeText(SignupActivity.this, s, Toast.LENGTH_LONG).show();
-												return;
+												if (task.isSuccessful()) {
+													Toast.makeText(SignupActivity.this, "Successfully Registered, Upload complete!", Toast.LENGTH_SHORT).show();
+													String uid = mauth.getCurrentUser().getUid();
+													new User(uid, semail, sfname, slname, suname, sphone);
+													finish();
+													//startActivity(new Intent(MainActivity.this, TitleActivity.class));
+												} else {
+													FirebaseAuthException e = (FirebaseAuthException) task.getException();
+													String s = "Sign up Failed" + task.getException();
+													Toast.makeText(SignupActivity.this, s, Toast.LENGTH_LONG).show();
+													return;
+												}
 											}
-										}
-									});
+										});
+									} else {
+										Toast.makeText(SignupActivity.this, "Password and reentry of password do not match", Toast.LENGTH_SHORT).show();
+									}
 								}
 							}
 

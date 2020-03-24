@@ -4,6 +4,7 @@ import android.Manifest;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Vibrator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +23,7 @@ public class ScannerQR extends AppCompatActivity implements ZXingScannerView.Res
 
     private ZXingScannerView scannerView;
     private TextView txtResult;
+    Vibrator vibrate;
 
     // https://www.youtube.com/watch?v=MegowI4T_L8
 
@@ -40,7 +42,6 @@ public class ScannerQR extends AppCompatActivity implements ZXingScannerView.Res
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         scannerView.setResultHandler(ScannerQR.this);
-//                        scannerView.setFlash(true);
                         scannerView.startCamera();
                     }
 
@@ -59,11 +60,15 @@ public class ScannerQR extends AppCompatActivity implements ZXingScannerView.Res
 
     @Override
     public void handleResult(Result rawResult) {
-        //Here we can receive the raw results
+
         txtResult.setText(rawResult.getText());
         Toast.makeText(ScannerQR.this, "Payment Received", Toast.LENGTH_LONG).show();
+        vibrate = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        vibrate.vibrate(400);
+
 //        scannerView.setFlash(false);
-//        setContentView(R.layout.xxx); replace "xxx" with driver_rider activity xml;
+
+//        setContentView(R.layout.scanner);
 
 
     }
