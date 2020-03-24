@@ -1,5 +1,6 @@
-package com.example.cabme;
+package com.example.cabme.maps;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -11,11 +12,22 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ *
+ * Purposes:
+ * - Builds a url for routes
+ *
+ * References & Sources:
+ * - https://github.com/divindvm/Android-DrawOnMap
+ * - https://github.com/Vysh01/android-maps-directions
+ *
+ */
 public class FetchURL extends AsyncTask<String, Void, String> {
-    Context mContext;
-    String directionMode = "driving";
+    @SuppressLint("StaticFieldLeak") // Not in production don't even worry about it :)
+    private Context mContext;
+    private String directionMode = "driving";
 
-    public FetchURL(Context mContext) {
+    FetchURL(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -27,7 +39,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
         try {
             // Fetching the data from web service
             data = downloadUrl(strings[0]);
-            Log.d("MAPSLOG", "Background task data " + data.toString());
+            Log.d("MAPSLOG", "Background task data " + data);
         } catch (Exception e) {
             Log.d("MAPSLOG-BG Task", e.toString());
         }
@@ -55,7 +67,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
             // Reading data from url
             iStream = urlConnection.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             String line = "";
             while ((line = br.readLine()) != null) {
                 sb.append(line);
@@ -66,6 +78,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
             Log.d("MAPSLOG", "Exception downloading URL: " + e.toString());
         } finally {
+            assert iStream != null;
             iStream.close();
             urlConnection.disconnect();
         }

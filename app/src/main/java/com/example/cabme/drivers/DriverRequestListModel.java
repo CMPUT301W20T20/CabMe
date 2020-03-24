@@ -1,20 +1,25 @@
-package com.example.cabme;
+package com.example.cabme.drivers;
 
 import android.util.Log;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.GeoPoint;
 
-public class Request {
+/**
+ *
+ * request list model for driver side requests
+ *
+ */
+public class DriverRequestListModel {
     private GeoPoint startLoc;
     private GeoPoint destLoc;
     private String UID;
 
     private transient CollectionReference collectionReference;
 
-    public Request(){}
+    public DriverRequestListModel(){}
 
-    public Request(String UID, GeoPoint startLoc, GeoPoint destLoc){
+    public DriverRequestListModel(String UID, GeoPoint startLoc, GeoPoint destLoc){
         this.UID = UID;
         this.startLoc = startLoc;
         this.destLoc = destLoc;

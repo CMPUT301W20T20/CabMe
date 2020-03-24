@@ -65,7 +65,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         CollectionReference collectionReference = db.collection("users");
 
 
-
         saveButton = findViewById(R.id.saveprofile);
         backButton = findViewById(R.id.back);
         editButton = findViewById(R.id.editprofile);
@@ -188,13 +187,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                             }
                         }
                     });
-
-
-
-
                 }
-
-
             }
         });
 

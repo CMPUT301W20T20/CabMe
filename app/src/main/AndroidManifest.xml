@@ -8,9 +8,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+
     <uses-feature android:name="android.hardware.camera2"/>
     <uses-feature android:name="android.hardware.camera2.autofocus"/>
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -47,27 +47,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".TitleActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".ProfileActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".SignupActivity"
-            android:label="Sign Up" />
-        <activity
-            android:name=".MapViewActivity"
-            android:label="Map View" />
-        <activity
-            android:name=".DriverRequestListActivity"
-            android:label="Driver Request List Activity"/>
-        <activity
-            android:name=".NewRideInfoActivity"
-            android:label="New Ride" />
-        <activity
-            android:name=".r_historylist_activity"
-            android:label="History View"/>
+
+        <activity android:name=".TitleActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".SignupActivity" />
+
+        <activity android:name=".HomeMapActivity" />
+        <activity android:name=".HomeMapHamburgerFragment"/>
+        <activity android:name=".HomeMapRiderFragment"/>
+
+        <activity android:name=".maps.MapViewActivity" />
+
+        <activity android:name=".drivers.DriverRequestListActivity" />
+
+        <activity android:name=".riders.RiderHistoryListActivity" />
+        <activity android:name=".riders.NewRideInfoActivity" />
+
+
     </application>
 
 </manifest>
