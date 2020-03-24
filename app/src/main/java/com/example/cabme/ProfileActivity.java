@@ -64,8 +64,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("users");
 
-
-
         saveButton = findViewById(R.id.saveprofile);
         backButton = findViewById(R.id.back);
         editButton = findViewById(R.id.editprofile);
@@ -113,14 +111,14 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                         .setMessage("Are you sure you wish to delete your profile")
                         .setNegativeButton("Cancel", null)
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        mauth.getCurrentUser().delete();
-                                        collectionReference.document(user.getUid()).delete();
-                                        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                        startActivity(intent);
-                                    }
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mauth.getCurrentUser().delete();
+                                collectionReference.document(user.getUid()).delete();
+                                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
+                            }
                         })
                         .show();
 
@@ -188,13 +186,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                             }
                         }
                     });
-
-
-
-
                 }
-
-
             }
         });
 

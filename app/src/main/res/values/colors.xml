@@ -5,4 +5,14 @@
 	<color name="colorAccent">#D81B60</color>
 	<color name="googleHintText">#b9b9b9</color>
 
+
+	<color name="search_bg_grey">#EDEDED</color>
+	<color name="search_text_grey">#999999</color>
+
+	<color name="cabme_accent_yellow">#f6d55c</color>
+	<color name="cabme_accent_blue">#24567d</color>
+
+	<color name="background_20_opacity_black">#33000000</color>
+
+
 </resources>

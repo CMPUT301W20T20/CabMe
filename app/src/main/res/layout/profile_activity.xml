@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,21 +18,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/cabMeTitle4"
-        android:layout_width="147dp"
-        android:layout_height="42dp"
+        android:id="@+id/CabMeTitle"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
         android:layout_marginStart="130dp"
         android:layout_marginLeft="130dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="130dp"
         android:layout_marginRight="130dp"
-        android:background="#FFFFFF"
+        android:textColor="#F6D55C"
         android:text="@string/app_name"
-        android:textSize="25sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/email"
@@ -46,9 +48,9 @@
         android:hint="Email"
         android:enabled="false"
         android:inputType="textEmailAddress"
-        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#F6D55C"
         app:layout_constraintTop_toBottomOf="@+id/lastname" />
 
     <EditText
@@ -64,11 +66,9 @@
         android:hint="User Name"
         android:enabled="false"
         android:inputType="textPersonName"
-        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
-        android:maxLength="15"
-        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#F6D55C"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <EditText
@@ -84,10 +84,9 @@
         android:hint="Phone"
         android:enabled="false"
         android:inputType="phone"
-        android:maxLength="10"
-        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#F6D55C"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
 
@@ -120,6 +119,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#FFFFFF"
+        android:background="#24567D"
         app:layout_constraintTop_toBottomOf="@+id/phone" />
 
     <Button
@@ -152,11 +153,9 @@
         android:hint="Last Name"
         android:enabled="false"
         android:inputType="textPersonName"
-        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-"
-        android:maxLength="20"
-        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#F6D55C"
         app:layout_constraintTop_toBottomOf="@+id/firstname" />
 
     <EditText
@@ -172,10 +171,8 @@
         android:hint="First Name"
         android:enabled="false"
         android:inputType="textPersonName"
-        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-"
-        android:maxLength="20"
-        android:textColor="@color/edit_text_colours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cabMeTitle4" />
+        android:textColor="#F6D55C"
+        app:layout_constraintTop_toBottomOf="@+id/CabMeTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

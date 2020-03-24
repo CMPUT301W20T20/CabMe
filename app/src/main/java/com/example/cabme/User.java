@@ -23,7 +23,7 @@ import java.util.Observable;
  *  involved in the CabMe application
  */
 public class User extends Observable implements Serializable {
-    final private String TAG = "User";
+    final  private String TAG = "User";
     private String email;
     private String firstName;
     private String lastName;
@@ -40,6 +40,7 @@ public class User extends Observable implements Serializable {
      * @param uid
      */
     public User (String uid) {
+        //FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
@@ -119,8 +120,6 @@ public class User extends Observable implements Serializable {
      *
      */
     public void setDocumentListener() {
-        db = FirebaseFirestore.getInstance();
-        collectionReference = db.collection("users");
         collectionReference.document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
@@ -139,6 +138,7 @@ public class User extends Observable implements Serializable {
         });
 
     }
+
 	public User() {
 		// Default constructor required for calls to DataSnapshot.getValue(User.class)
 	}
@@ -189,6 +189,8 @@ public class User extends Observable implements Serializable {
                 });
     }
 
-
+    //public int getBalance() {
+    //    return balance;
+    //}
 
 }
