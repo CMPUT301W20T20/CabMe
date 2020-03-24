@@ -29,7 +29,7 @@ import com.example.cabme.maps.MapViewActivity;
 public class DriverRequestListActivity extends AppCompatActivity{
     private OnItemClickListener listener;
     private RecyclerView recyclerView;
-    private FirebaseFirestore firebaseFirestore;
+    private FirebaseFirestore db;
     private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
     Query query;
 
@@ -38,11 +38,11 @@ public class DriverRequestListActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_reqlist_activity);
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.request_list);
 
         // Query
-        query = firebaseFirestore.collection("requests");
+        query = db.collection("testrequests");
 
         // Recycler options
         FirestoreRecyclerOptions<DriverRequestListModel> options = new FirestoreRecyclerOptions.Builder<DriverRequestListModel>()
@@ -82,7 +82,7 @@ public class DriverRequestListActivity extends AppCompatActivity{
                     }
                 });
                 String UID = getSnapshots().getSnapshot(holder.getAdapterPosition()).getId();
-                firebaseFirestore.collection("users")
+                db.collection("users")
                         .document(UID)
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -118,8 +118,8 @@ public class DriverRequestListActivity extends AppCompatActivity{
 
         public RequestsViewHolder(@NonNull View itemView){
             super(itemView);
-            riderName = itemView.findViewById(R.id.rider_name);
-            distanceAway = itemView.findViewById(R.id.rider_distance_away);
+            riderName = itemView.findViewById(R.id.slocation);
+            distanceAway = itemView.findViewById(R.id.fare);
         }
     }
 

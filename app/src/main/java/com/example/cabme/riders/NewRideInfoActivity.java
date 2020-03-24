@@ -146,10 +146,10 @@ public class NewRideInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addNewRideRequest();
-//                Intent intent = new Intent(NewRideInfoActivity.this, MapViewActivity.class);
-//                intent.putExtra("destLongLat", destLngLat);
-//                intent.putExtra("startLongLat", startLngLat);
-//                startActivity(intent);
+                Intent intent = new Intent(NewRideInfoActivity.this, MapViewActivity.class);
+                intent.putExtra("destLongLat", destLngLat);
+                intent.putExtra("startLongLat", startLngLat);
+                startActivity(intent);
             }
         });
     }

@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/rider_name"
+            android:id="@+id/slocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
@@ -20,13 +20,13 @@
             android:padding="10dp"/>
 
         <TextView
-            android:id="@+id/rider_distance_away"
+            android:id="@+id/fare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Distance"
             android:textSize="15sp"
             android:padding="10dp"
-            android:layout_below="@+id/rider_name"/>
+            android:layout_below="@+id/slocation"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
