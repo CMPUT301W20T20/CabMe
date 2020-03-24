@@ -4,6 +4,10 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
+
+import com.example.cabme.HomeMapRiderActivity;
+import com.example.cabme.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -84,7 +88,7 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
                 lineOptions.color(Color.MAGENTA);
             } else {
                 lineOptions.width(10);
-                lineOptions.color(Color.BLUE);
+                lineOptions.color(Color.GRAY);
             }
             Log.d("MAPSLOG", "onPostExecute lineoptions decoded");
         }

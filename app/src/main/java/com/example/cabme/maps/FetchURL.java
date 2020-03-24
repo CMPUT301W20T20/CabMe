@@ -27,7 +27,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
     private Context mContext;
     private String directionMode = "driving";
 
-    FetchURL(Context mContext) {
+    public FetchURL(Context mContext) {
         this.mContext = mContext;
     }
 

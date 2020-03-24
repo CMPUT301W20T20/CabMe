@@ -3,6 +3,7 @@ package com.example.cabme.riders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +15,6 @@ import com.example.cabme.R;
 import com.example.cabme.User;
 import com.example.cabme.maps.CostAlgorithm;
 import com.example.cabme.maps.JsonParser;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -23,20 +23,8 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
-// Other classes
-import com.example.cabme.maps.LongLat;
-import com.example.cabme.maps.MapViewActivity;
 import com.google.firebase.firestore.GeoPoint;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Arrays;
 
 /**
@@ -61,8 +49,8 @@ public class NewRideInfoActivity extends AppCompatActivity {
     EditText rideCostEditText;
     PlacesClient placesClient;
     User user;
-    LongLat destLngLat;
-    LongLat startLngLat;
+    com.google.android.gms.maps.model.LatLng destLngLat;
+    LatLng startLngLat;
     Double rideCost;
 
     @Override
@@ -91,7 +79,6 @@ public class NewRideInfoActivity extends AppCompatActivity {
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_from);
 
         // Set Biased to Edmonton - Change to current location later on
-
         autocompleteSupportFragment.setHint("Starting Location");
 
         autocompleteSupportFragment.setPlaceFields(
@@ -103,8 +90,7 @@ public class NewRideInfoActivity extends AppCompatActivity {
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                final LatLng latLing = place.getLatLng();
-                startLngLat = new LongLat(latLing.longitude, latLing.latitude);
+                startLngLat = place.getLatLng();
             }
             @Override
             public void onError(@NonNull Status status) {
@@ -130,8 +116,7 @@ public class NewRideInfoActivity extends AppCompatActivity {
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                final LatLng latLing = place.getLatLng();
-                destLngLat = new LongLat(latLing.longitude, latLing.latitude);
+                destLngLat = place.getLatLng();
             }
 
             @Override
@@ -146,17 +131,25 @@ public class NewRideInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addNewRideRequest();
-//                Intent intent = new Intent(NewRideInfoActivity.this, MapViewActivity.class);
-//                intent.putExtra("destLongLat", destLngLat);
-//                intent.putExtra("startLongLat", startLngLat);
-//                startActivity(intent);
+                Log.wtf("ON BACK", "Successful back press");
+
+
+                Intent intent = new Intent();
+                intent.putExtra("startLatLng", startLngLat);
+                intent.putExtra("destLatLng", destLngLat);
+                intent.putExtra("activeRide", true);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }
 
-    public  void addNewRideRequest(){
-        GeoPoint destGeo = new GeoPoint(destLngLat.getLat(), destLngLat.getLng());
-        GeoPoint startGeo = new GeoPoint(startLngLat.getLat(), startLngLat.getLng());
+    public void addNewRideRequest(){
+        GeoPoint destGeo = new GeoPoint(destLngLat.latitude, destLngLat.longitude);
+        GeoPoint startGeo = new GeoPoint(startLngLat.latitude, startLngLat.longitude);
+
+        Log.wtf("ON BACK", destGeo + " " + startGeo);
+
         JsonParser jsonParser = new JsonParser(startGeo, destGeo, getString(R.string.google_maps_key));
         CostAlgorithm costAlgorithm = new CostAlgorithm(jsonParser.getDistanceValue(), jsonParser.getDurationValue());
         rideCost = costAlgorithm.RideCost();

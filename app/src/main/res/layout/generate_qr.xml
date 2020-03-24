@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/GenBarCode"
-        android:layout_marginTop="225dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         android:layout_centerHorizontal="true"
-        android:layout_width="300dp"
-        android:scaleType="centerInside"
-        android:layout_height="300dp"/>
+        android:layout_marginTop="225dp"
+        android:scaleType="centerInside" />
 
     <Button
         android:id="@+id/button"
@@ -21,6 +21,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="82dp"
+        android:textColor="#000000"
+        android:background="#F6D55C"
         android:text="Pay with QR-Bucks" />
 
 

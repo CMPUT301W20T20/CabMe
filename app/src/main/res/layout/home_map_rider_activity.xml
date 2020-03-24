@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragment_rider_home"
-    tools:context=".HomeMapRiderFragment">
+    android:background="@color/quantum_white_100"
+    android:clipToPadding="false"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:id="@+id/fragment_container">
 
-    <!-- TODO: Update blank fragment layout -->
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.mapwithmarker.MapsMarkerActivity"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="200dp" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_gravity="bottom"
         app:cardElevation="50dp"
-        app:cardBackgroundColor="@color/quantum_white_100">
+        app:cardBackgroundColor="@color/quantum_white_100"
+        android:layout_alignParentBottom="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,8 +78,16 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 style="?android:attr/borderlessButtonStyle"/>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/hamburger"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_menu_black_24dp"
+        android:background="@drawable/button_shadow"
+        android:layout_margin="13dp"
+        android:gravity="center"
+        android:elevation="50dp"/>
+</RelativeLayout>
