@@ -109,6 +109,13 @@ public class NewRideRequest {
         putInFirebaseCollection();
     }
 
+    /**
+     * Purpose: set the given variables, used in NewRideRequest
+     * @param startGeo
+     * @param endGeo
+     * @param UIDrider
+     * @param API_KEY
+     */
     public void setGiven(GeoPoint startGeo, GeoPoint endGeo,
                          String UIDrider, String API_KEY){
         this.API_KEY = API_KEY;
@@ -117,6 +124,11 @@ public class NewRideRequest {
         this.UIDrider = UIDrider;
     }
 
+    /**
+     * Purpose: set ride cost
+     *
+     * @param rideCost
+     */
     private void setRideCost(Double rideCost){
 //        CostAlgorithm costAlgorithm = new CostAlgorithm(distanceValue, durationValue);
 //        this.rideCost = costAlgorithm.RideCost();
@@ -125,9 +137,7 @@ public class NewRideRequest {
     }
 
     /**
-     * Purpose:
-     *
-     * sets the parsed geo points
+     * Purpose: sets the parsed geo points
      */
     private void setParsedGeoPoints(){
         jsonParser = new JsonParser(startGeo, endGeo, API_KEY);
@@ -147,9 +157,7 @@ public class NewRideRequest {
     }
 
     /**
-     * Purpose:
-     *
-     * initialize the database
+     * Purpose: initialize the database
      */
     private void initializeFireBase(){
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -157,9 +165,7 @@ public class NewRideRequest {
     }
 
     /**
-     * Purpose:
-     *
-     * put all the values into the database
+     * Purpose: put all the values into the database
      */
     private void putInFirebaseCollection(){
         HashMap<String, Object> newRideRequest = new HashMap<>();

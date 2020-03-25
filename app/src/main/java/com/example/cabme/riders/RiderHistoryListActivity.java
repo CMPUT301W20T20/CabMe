@@ -149,8 +149,8 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
         private Button driverUsername;
 
         /**
-         *
-         * @param itemView holds all the textviews
+         *Purpose: holds all the textviews
+         * @param itemView
          */
         public RiderRequestsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -165,7 +165,7 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
     }
 
     /**
-     * so stop listener at end of activity
+     * Purpose: stop listener at end of activity
      */
     @Override
     protected void onStop() {
@@ -174,7 +174,7 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
     }
 
     /**
-     * so set listener on start of activity
+     * purpose: set listener on start of activity
      */
     @Override
     protected void onStart() {
