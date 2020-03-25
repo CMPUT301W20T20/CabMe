@@ -38,10 +38,6 @@ import java.util.HashMap;
  * - when that ride is finished move the document to the rider's ride history
  *     - mark that ride as completed, cancelled, whatever is appropriate
  *
- * ** DRIVER **
- * - Driver views all the ride requests from every rider in the requests collection
- * - I dunno what happens after this i haven't thought about it yet
- *
  * TODO:
  *  [ ] Constructor for getting the file and editing it
  *  [ ] Constructor for moving the document to the users ride history
@@ -50,16 +46,18 @@ import java.util.HashMap;
 public class RideRequest {
 
     private String TAG = "LOG";
-    // Firebase things
+
+    /* FireBase things */
     private transient FirebaseFirestore firebaseFirestore;
     private transient CollectionReference collectionReference;
     private transient DocumentReference documentReference;
     private String firebaseCollectionName = "testrequests";
-    // KEYS
+
+    /* Keys */
     private String API_KEY;
     private String UIDrider;
 
-    // For document
+    /* Variables used in the ride request */
     private Integer distanceValue;
     private Integer durationValue;
 
@@ -80,21 +78,19 @@ public class RideRequest {
     private JsonParser jsonParser;
 
     /**
-     * Driver gets DOCID and changes the value of the doc when rider accepts offer
-     * @param reqUserID
+     * This contructs a ride request with specificed rider ID.
+     * @param reqUserID the user ID which is also the request ID of the ride request
      */
     public RideRequest(String reqUserID){
         UIDrider = reqUserID;
     }
 
     /**
-     *
-     * Putting the document in the requests
-     * @param startGeo
-     * @param endGeo
-     * @param UIDrider
-     * @param API_KEY
-     *
+     * This constructs a ride request with the specified start and end location and rider ID.
+     * @param startGeo start location of the ride request
+     * @param endGeo end location of the ride request
+     * @param UIDrider ID of the rider
+     * @param API_KEY the Google API key
      */
     public RideRequest(GeoPoint startGeo, GeoPoint endGeo,
                        String UIDrider, String API_KEY, Double rideCost){
@@ -105,6 +101,14 @@ public class RideRequest {
         putInFirebaseCollection();
     }
 
+    /**
+     * This method sets the given variables.
+     * This method is called in the RideRequest() method.
+     * @param startGeo start location of the ride request
+     * @param endGeo end location of the ride request
+     * @param UIDrider ID of the rider
+     * @param API_KEY Google API key
+     */
     public void setGiven(GeoPoint startGeo, GeoPoint endGeo,
                          String UIDrider, String API_KEY){
         this.API_KEY = API_KEY;
@@ -113,10 +117,19 @@ public class RideRequest {
         this.UIDrider = UIDrider;
     }
 
+    /**
+     * This method sets the cost of the ride request.
+     * This method is called in the RideRequest method.
+     * @param rideCost the cost of the ride
+     */
     private void setRideCost(Double rideCost){
         this.rideCost = rideCost;
     }
 
+    /**
+     * This method uses the JsonParser Class to parse the start and end location and sets the
+     * JSON parsed information of the ride request to its appropriate variable.
+     */
     private void setParsedGeoPoints(){
         jsonParser = new JsonParser(startGeo, endGeo, API_KEY);
         this.distanceText = jsonParser.getDistanceText();
@@ -134,12 +147,20 @@ public class RideRequest {
         Log.wtf("newrr", "end: " + endAddress);
     }
 
+    /**
+     * This method initializes the FireBase and and the collection and document reference.
+     * This method is called in the constructors.
+     */
     private void initializeFireBase(){
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection(firebaseCollectionName);
         documentReference = firebaseFirestore.collection(firebaseCollectionName).document(UIDrider);
     }
 
+    /**
+     * This method put the ride request information from the variables to a document in the Firebase
+     * collection where the drivers can view each riders' ride request.
+     */
     private void putInFirebaseCollection(){
         HashMap<String, Object> newRideRequest = new HashMap<>();
         newRideRequest.put("UIDdriver", UIDdriver);
@@ -162,6 +183,10 @@ public class RideRequest {
                 .addOnFailureListener(e -> Log.d(TAG, "Ride request unable to be added "+ e.toString()));
     }
 
+    /**
+     * This method removes a the ride request tied to a user's ID in the Firebase collection where
+     * the drivers can view each riders' ride request. .
+     */
     public void removeRequest(){
         initializeFireBase();
         documentReference
