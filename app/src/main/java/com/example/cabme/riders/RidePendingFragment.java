@@ -53,9 +53,7 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
                 ((RiderMapActivity)getActivity()).recreateActivity(2, 0, null);
                 break;
             case R.id.ride_offers:
-                intent = new Intent(getContext(), RiderHistoryListActivity.class);
-                intent.putExtra("user", user);
-                startActivity(intent);
+                // list of driver offers activity
                 break;
         }
     }
