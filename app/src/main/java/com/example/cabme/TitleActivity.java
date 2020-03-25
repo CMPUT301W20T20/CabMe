@@ -62,7 +62,7 @@ public class TitleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, RiderMapActivity.class);
-                intent.putExtra("user", user);
+                intent.putExtra("user", uid);
                 startActivity(intent);
             }
         });

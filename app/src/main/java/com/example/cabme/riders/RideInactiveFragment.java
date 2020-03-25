@@ -16,11 +16,15 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cabme.R;
 import com.example.cabme.User;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RideInactiveFragment extends Fragment implements View.OnClickListener {
     private TextView helloUser;
     public User user;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +48,11 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
     }
 
     private void setWelcome(){
-        String welcomeText = "Hello " + user.getFirstName()+",";
-        helloUser.setText(welcomeText);
+        user.readData(documentSnapshot -> {
+            String firstName = documentSnapshot.getString("first");
+            String welcomeText = "Hello " + firstName +",";
+            helloUser.setText(welcomeText);
+        });
     }
 
     @Override

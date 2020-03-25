@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cabme.Driver;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -49,7 +50,6 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
 
     // key
     private User user;
-    private Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstance){
@@ -103,17 +103,11 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
                 holder.to.setText(String.valueOf(model.getEndAddress()));
                 holder.cost.setText("$" + model.getRideCost());
 
-                User driver = new User(model.getUIDdriver());
-                driver.addObserver(RiderHistoryListActivity.this);
-
                 Log.wtf("DRIVERNM", ""+model.getUIDdriver());
-                Log.wtf("DRIVERNM", ""+driver.getFirstName());
-                Log.wtf("DRIVERNM", ""+driver.getPhone());
 
-
-                String driveFullName = driver.getFirstName() + " " + driver.getLastName();
+                String driveFullName = "driver name";
                 holder.driverName.setText(driveFullName);
-                holder.driverUsername.setText("@"+driver.getUsername());
+                holder.driverUsername.setText("@drivername");
             }
         };
         recyclerView.setHasFixedSize(true);
@@ -121,18 +115,6 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
         recyclerView.setAdapter(adapter);
 
         //View Holder
-
-        //onclick listener for newRideButton to start NewRideInfoActivty
-        newRideButton = findViewById(R.id.newRideButton);
-
-        //Button click will start new activity
-        newRideButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RiderHistoryListActivity.this, RideRequestSearchActivity.class);
-                startActivity(intent);
-            }
-        });
 
     }
 

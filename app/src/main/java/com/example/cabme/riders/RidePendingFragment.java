@@ -44,13 +44,14 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
         switch(v.getId()) {
             case R.id.ride_cancel:
                 RideRequest rideRequest = new RideRequest(user.getUid());
+                rideRequest.updateRideStatus("Cancelled");
                 rideRequest.removeRequest();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 FragmentTransaction trans = manager.beginTransaction();
                 trans.remove(RidePendingFragment.this);
                 trans.commit();
                 manager.popBackStack();
-                ((RiderMapActivity)getActivity()).recreateActivity(2, 0, null);
+                ((RiderMapActivity)getActivity()).recreateActivity(RecreateType.REQUEST_CANCELLED, 0, null);
                 break;
             case R.id.ride_offers:
                 // list of driver offers activity

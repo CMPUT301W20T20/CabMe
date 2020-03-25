@@ -232,4 +232,11 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         return valid;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.wtf("PROFILE", "Successful Backpress");
+        setResult(RESULT_FIRST_USER);
+        finish();
+    }
 }

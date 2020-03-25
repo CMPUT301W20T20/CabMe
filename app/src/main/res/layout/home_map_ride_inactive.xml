@@ -27,8 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="20sp"
                 android:textSize="15sp"
-                android:textColor="@color/quantum_grey900"
-                android:text="Hello user," />
+                android:textColor="@color/quantum_grey900" />
 
             <TextView
                 android:id="@+id/going_where"
@@ -38,7 +37,6 @@
                 android:text="Where are you going?"
                 android:textColor="@color/quantum_black_100"
                 android:textSize="24sp" />
-
 
             <Button
                 android:id="@+id/ride_new"
