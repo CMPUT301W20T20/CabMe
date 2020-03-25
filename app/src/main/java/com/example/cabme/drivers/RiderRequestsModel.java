@@ -10,16 +10,16 @@ import com.google.firebase.firestore.GeoPoint;
  * request list model for driver side requests
  *
  */
-public class DriverRequestListModel {
+public class RiderRequestsModel {
     private GeoPoint startLoc;
     private GeoPoint destLoc;
     private String UID;
 
     private transient CollectionReference collectionReference;
 
-    public DriverRequestListModel(){}
+    public RiderRequestsModel(){}
 
-    public DriverRequestListModel(String UID, GeoPoint startLoc, GeoPoint destLoc){
+    public RiderRequestsModel(String UID, GeoPoint startLoc, GeoPoint destLoc){
         this.UID = UID;
         this.startLoc = startLoc;
         this.destLoc = destLoc;

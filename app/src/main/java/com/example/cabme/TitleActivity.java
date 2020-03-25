@@ -32,8 +32,8 @@ public class TitleActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
+        uid = getIntent().getStringExtra("user");
 
-        uid = (String)getIntent().getStringExtra("user");
         user = new User(uid);
         user.setDocumentListener();
 
@@ -71,7 +71,7 @@ public class TitleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
-                intent.putExtra("Driver-UID", uid);
+                intent.putExtra("user", uid);
                 startActivity(intent);
             }
         });

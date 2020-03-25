@@ -59,11 +59,9 @@ public class User extends Observable implements Serializable {
      * @param phone
      */
     public User (String uid, String email, String firstName, String lastName, String username, String phone) {
-
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-
         HashMap<String, Object> userData = new HashMap<>();
         userData.put("email", email);
         userData.put("first", firstName);
@@ -88,7 +86,6 @@ public class User extends Observable implements Serializable {
                         Log.d(TAG, "Data addition failed "+ e.toString());
                     }
                 });
-
     }
 
     public void readData(userCallback userCallback) {
@@ -105,7 +102,6 @@ public class User extends Observable implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
-
                         userCallback.onCallback(documentSnapshot);
                     }
                 })
