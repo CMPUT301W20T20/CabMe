@@ -43,9 +43,9 @@ import java.util.Arrays;
  * - String:: API key ==> *NEEDED* to access information from request. SEE URL
  *
  */
-public class NewRideInfoActivity extends AppCompatActivity {
+public class RideRequestSearchActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button SearchRideButton;
+    Button searchRideButton;
     EditText rideCostEditText;
     PlacesClient placesClient;
     User user;
@@ -57,28 +57,32 @@ public class NewRideInfoActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.r_newrideinfo_activity);
-        SearchRideButton = (Button)findViewById(R.id.search_ride_button);
-        rideCostEditText = (EditText) findViewById(R.id.pay_edit_text);
 
-        // get user intent
         user = (User)getIntent().getSerializableExtra("user");
 
-        // Initialize places client
+        initializePlacesClient();
+        findViewsSetListeners();
+        startingLocationSearch();
+        destinationLocationSearch();
+    }
+
+    private void initializePlacesClient(){
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
         }
         placesClient = Places.createClient(this);
+    }
 
-        startingLocationSearch();
-        destinationLocationSearch();
-        setSearchRideButton();
+    private void findViewsSetListeners(){
+        searchRideButton = (Button)findViewById(R.id.search_ride_button);
+        rideCostEditText = (EditText) findViewById(R.id.pay_edit_text);
+        searchRideButton.setOnClickListener(this);
     }
 
     public void startingLocationSearch(){
         final AutocompleteSupportFragment autocompleteSupportFragment =
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_from);
 
-        // Set Biased to Edmonton - Change to current location later on
         autocompleteSupportFragment.setHint("Starting Location");
 
         autocompleteSupportFragment.setPlaceFields(
@@ -103,8 +107,6 @@ public class NewRideInfoActivity extends AppCompatActivity {
         final AutocompleteSupportFragment autocompleteSupportFragment =
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_to);
 
-        // Set Biased to Edmonton - Change to current location later on
-
         autocompleteSupportFragment.setHint("Destination Location");
 
         autocompleteSupportFragment.setPlaceFields(
@@ -126,33 +128,29 @@ public class NewRideInfoActivity extends AppCompatActivity {
         });
     }
 
-    public void setSearchRideButton(){
-        SearchRideButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewRideRequest();
-                Log.wtf("ON BACK", "Successful back press");
-
-
-                Intent intent = new Intent();
-                intent.putExtra("startLatLng", startLngLat);
-                intent.putExtra("destLatLng", destLngLat);
-                intent.putExtra("activeRide", true);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-    }
-
     public void addNewRideRequest(){
         GeoPoint destGeo = new GeoPoint(destLngLat.latitude, destLngLat.longitude);
         GeoPoint startGeo = new GeoPoint(startLngLat.latitude, startLngLat.longitude);
 
-        Log.wtf("ON BACK", destGeo + " " + startGeo);
-
         JsonParser jsonParser = new JsonParser(startGeo, destGeo, getString(R.string.google_maps_key));
         CostAlgorithm costAlgorithm = new CostAlgorithm(jsonParser.getDistanceValue(), jsonParser.getDurationValue());
         rideCost = costAlgorithm.RideCost();
-        new NewRideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), rideCost);
+
+        new RideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), rideCost);
+    }
+
+    @Override
+    public void onClick(View v) {
+        addNewRideRequest();
+        Intent intent = new Intent();
+        intent.putExtra("startLatLng", startLngLat);
+        intent.putExtra("destLatLng", destLngLat);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

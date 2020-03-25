@@ -73,11 +73,11 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
                 .collection("ridehistory");
 
         // Recycler Options
-        FirestoreRecyclerOptions<RiderRequestsModel> options = new FirestoreRecyclerOptions.Builder<RiderRequestsModel>()
-                .setQuery(query, RiderRequestsModel.class)
+        FirestoreRecyclerOptions<RiderHistoryListModel> options = new FirestoreRecyclerOptions.Builder<RiderHistoryListModel>()
+                .setQuery(query, RiderHistoryListModel.class)
                 .build();
 
-        adapter = new FirestoreRecyclerAdapter<RiderRequestsModel, RiderRequestsViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<RiderHistoryListModel, RiderRequestsViewHolder>(options) {
             @NonNull
             @Override
             public RiderRequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -87,7 +87,7 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
 
             @SuppressLint("SetTextI18n")
             @Override
-            protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderRequestsModel model) {
+            protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderHistoryListModel model) {
                 holder.status.setText(model.getStatus());
 
                 /**
@@ -129,7 +129,7 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
         newRideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RiderHistoryListActivity.this, NewRideInfoActivity.class);
+                Intent intent = new Intent(RiderHistoryListActivity.this, RideRequestSearchActivity.class);
                 startActivity(intent);
             }
         });

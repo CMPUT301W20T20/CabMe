@@ -165,10 +165,9 @@ public class User extends Observable implements Serializable {
     }
 
     public String getUid() {
+        Log.wtf("LOG", uid+"");
         return uid;
     }
-
-
 
     public void updateData(Map<String, Object> data) {
         db = FirebaseFirestore.getInstance();

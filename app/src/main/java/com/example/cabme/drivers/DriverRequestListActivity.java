@@ -42,7 +42,7 @@ public class DriverRequestListActivity extends AppCompatActivity{
         recyclerView = findViewById(R.id.request_list);
 
         // Query
-        query = firebaseFirestore.collection("requests");
+        query = firebaseFirestore.collection("testrequests");
 
         // Recycler options
         FirestoreRecyclerOptions<DriverRequestListModel> options = new FirestoreRecyclerOptions.Builder<DriverRequestListModel>()

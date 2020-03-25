@@ -4,10 +4,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import androidx.core.content.ContextCompat;
-
-import com.example.cabme.HomeMapRiderActivity;
-import com.example.cabme.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 

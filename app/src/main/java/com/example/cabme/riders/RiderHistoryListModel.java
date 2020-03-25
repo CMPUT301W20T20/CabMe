@@ -7,7 +7,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.Observable;
 
-public class RiderRequestsModel extends Observable {
+public class RiderHistoryListModel extends Observable {
 
     private String rideStatus;
     private Double rideCost;
@@ -27,9 +27,9 @@ public class RiderRequestsModel extends Observable {
     private String durationText;
     private Integer durationValue;
 
-    private RiderRequestsModel(){}
+    private RiderHistoryListModel(){}
 
-    private RiderRequestsModel(
+    private RiderHistoryListModel(
             String status,
             GeoPoint startLocation, GeoPoint endLocation,
             String UIDdriver, String UIDrider,

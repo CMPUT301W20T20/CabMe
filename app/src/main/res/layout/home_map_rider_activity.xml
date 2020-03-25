@@ -1,93 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/quantum_white_100"
-    android:clipToPadding="false"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:id="@+id/fragment_container">
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.example.mapwithmarker.MapsMarkerActivity"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="200dp" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="bottom"
-        app:cardElevation="50dp"
-        app:cardBackgroundColor="@color/quantum_white_100"
-        android:layout_alignParentBottom="true">
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/quantum_white_100">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:padding="13dp">
+            android:layout_height="match_parent"
+            android:elevation="10dp">
 
-            <TextView
-                android:id="@+id/hello_user"
-                android:layout_width="match_parent"
-                android:layout_height="20sp"
-                android:textSize="15sp"
-                android:textColor="@color/quantum_grey900"
-                android:text="Hello user," />
+            <ImageButton
+                android:id="@+id/hamburger"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_menu_black_24dp"
+                android:background="@drawable/button_shadow"
+                android:elevation="50dp"
+                android:layout_margin="13dp"
+                android:gravity="center" />
 
-            <TextView
-                android:id="@+id/going_where"
-                android:layout_width="match_parent"
-                android:textStyle="bold"
-                android:layout_height="40sp"
-                android:text="Where are you going?"
-                android:textColor="@color/quantum_black_100"
-                android:textSize="24sp" />
-
-
-            <Button
-                android:id="@+id/ride_new"
-                android:text="Request a new ride"
-                android:textColor="@color/quantum_black_100"
-                android:textAllCaps="false"
-                android:background="@drawable/bg_search"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                style="?android:attr/borderlessButtonStyle">
-
-            </Button>
-
-            <Button
-                android:id="@+id/ride_history"
-                android:text="Ride History"
-                android:textAllCaps="false"
-                android:textColor="@color/quantum_white_100"
-                android:shadowColor="@color/fui_transparent"
-                android:background="@drawable/cabme_button_blue"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                style="?android:attr/borderlessButtonStyle"/>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
-    <ImageButton
-        android:id="@+id/hamburger"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@drawable/ic_menu_black_24dp"
-        android:background="@drawable/button_shadow"
-        android:layout_margin="13dp"
-        android:gravity="center"
-        android:elevation="50dp"/>
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map_linear_layout"
+            android:layout_marginBottom="200dp">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                tools:context="com.example.mapwithmarker.MapsMarkerActivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+</FrameLayout>
