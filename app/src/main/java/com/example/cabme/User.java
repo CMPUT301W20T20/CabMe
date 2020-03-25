@@ -63,7 +63,6 @@ public class User extends Observable implements Serializable {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-
         HashMap<String, Object> userData = new HashMap<>();
         userData.put("email", email);
         userData.put("first", firstName);

@@ -70,7 +70,7 @@ public class TitleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
-                intent.putExtra("Driver-UID", uid);
+                intent.putExtra("user", uid);
                 startActivity(intent);
             }
         });
