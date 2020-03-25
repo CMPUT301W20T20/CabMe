@@ -16,8 +16,6 @@ import com.example.cabme.R;
 import com.example.cabme.User;
 
 public class RidePendingFragment extends Fragment implements View.OnClickListener {
-    private Button rideCancelBtn;
-    private Button rideOffersBtn;
     public User user;
 
     @Override
@@ -34,8 +32,8 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
     }
 
     private void findViewsSetListeners(View view){
-        rideOffersBtn = view.findViewById(R.id.ride_offers);
-        rideCancelBtn = view.findViewById(R.id.ride_cancel);
+        Button rideOffersBtn = view.findViewById(R.id.ride_offers);
+        Button rideCancelBtn = view.findViewById(R.id.ride_cancel);
         rideOffersBtn.setOnClickListener(this);
         rideCancelBtn.setOnClickListener(this);
     }

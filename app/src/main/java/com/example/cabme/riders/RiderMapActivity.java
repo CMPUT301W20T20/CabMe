@@ -55,7 +55,7 @@ import com.google.android.gms.tasks.Task;
  *  [ ] should I even do a driver side
  *
  */
-public class RiderMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
+public class RiderMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {
     public TitleActivity.UserType userType; // can change this
     private User user;
     private Bundle bundle;
@@ -72,10 +72,6 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
     Polyline currPolyline;
     MarkerOptions markStart;
     MarkerOptions markDest;
-
-    private HamburgerFragment hamburgerFragment;
-    private ImageButton hamburgerMenuBtn;
-    private SupportMapFragment mapFragment;
 
     // on activity result this would change if there is an active ride
     private Boolean activeRide;
@@ -101,11 +97,9 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
         SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
         activeRide = sharedPreferences.getBoolean("activeRide", false);
 
-        findViews();
+        findViewsSetListeners();
         getMapType(sharedPreferences);
         getFragmentType();
-
-        buttonClicks();
     }
 
     /*----------------------------- SUP. ON CREATE ------------------------------------------------*/
@@ -145,24 +139,10 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
         }
     }
 
-    public void findViews(){
-        findViewById(R.id.fragment_container);
-        hamburgerMenuBtn = findViewById(R.id.hamburger);
+    public void findViewsSetListeners(){
+        ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
         userType = TitleActivity.UserType.RIDER;
-    }
-
-    public void buttonClicks(){
-        hamburgerMenuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hamburgerFragment = new HamburgerFragment();
-                hamburgerFragment.setArguments(bundle);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.fragment_container, hamburgerFragment)
-                        .commit();
-            }
-        });
+        hamburgerMenuBtn.setOnClickListener(this);
     }
 
     public void recreateActivity(int resultType, int resultCode, Intent data){
@@ -206,6 +186,16 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         recreateActivity(1, resultCode, data);
+    }
+
+    @Override
+    public void onClick(View v) {
+        HamburgerFragment hamburgerFragment = new HamburgerFragment();
+        hamburgerFragment.setArguments(bundle);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, hamburgerFragment)
+                .commit();
     }
 
     /*----------------------------- MAPS/LOCATION/PERMISSION SETUP---------------------------------*/
@@ -284,7 +274,7 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
 
     private void initMap(){
         Log.d(TAG, "initMap: initializing map");
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(RiderMapActivity.this);
     }
 

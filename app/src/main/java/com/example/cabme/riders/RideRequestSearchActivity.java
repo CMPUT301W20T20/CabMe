@@ -45,13 +45,10 @@ import java.util.Arrays;
  */
 public class RideRequestSearchActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button searchRideButton;
-    EditText rideCostEditText;
-    PlacesClient placesClient;
-    User user;
-    com.google.android.gms.maps.model.LatLng destLngLat;
-    LatLng startLngLat;
-    Double rideCost;
+    public PlacesClient placesClient;
+    public User user;
+    private LatLng destLngLat;
+    private LatLng startLngLat;
 
     @Override
     public void onCreate(Bundle savedInstance){
@@ -74,8 +71,8 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
     }
 
     private void findViewsSetListeners(){
-        searchRideButton = (Button)findViewById(R.id.search_ride_button);
-        rideCostEditText = (EditText) findViewById(R.id.pay_edit_text);
+        Button searchRideButton = (Button) findViewById(R.id.search_ride_button);
+        EditText rideCostEditText = (EditText) findViewById(R.id.pay_edit_text);
         searchRideButton.setOnClickListener(this);
     }
 
@@ -134,7 +131,7 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
 
         JsonParser jsonParser = new JsonParser(startGeo, destGeo, getString(R.string.google_maps_key));
         CostAlgorithm costAlgorithm = new CostAlgorithm(jsonParser.getDistanceValue(), jsonParser.getDurationValue());
-        rideCost = costAlgorithm.RideCost();
+        Double rideCost = costAlgorithm.RideCost();
 
         new RideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), rideCost);
     }
