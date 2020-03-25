@@ -45,11 +45,11 @@ public class DriverRequestListActivity extends AppCompatActivity{
         query = db.collection("testrequests");
 
         // Recycler options
-        FirestoreRecyclerOptions<DriverRequestListModel> options = new FirestoreRecyclerOptions.Builder<DriverRequestListModel>()
-                .setQuery(query, DriverRequestListModel.class)
+        FirestoreRecyclerOptions<RiderRequestsModel> options = new FirestoreRecyclerOptions.Builder<RiderRequestsModel>()
+                .setQuery(query, RiderRequestsModel.class)
                 .build();
 
-        firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<DriverRequestListModel, RequestsViewHolder>(options) {
+        firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<RiderRequestsModel, RequestsViewHolder>(options) {
             @NonNull
             @Override
             public RequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -58,7 +58,7 @@ public class DriverRequestListActivity extends AppCompatActivity{
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull DriverRequestListModel model) {
+            protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull RiderRequestsModel model) {
                 holder.itemView.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
@@ -81,7 +81,9 @@ public class DriverRequestListActivity extends AppCompatActivity{
                         }
                     }
                 });
-                String UID = getSnapshots().getSnapshot(holder.getAdapterPosition()).getId();
+                String UID = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("UIDrider");
+                String address = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("startAddress");
+                Double cost = (Double) getSnapshots().getSnapshot(holder.getAdapterPosition()).get("rideCost");
                 db.collection("users")
                         .document(UID)
                         .get()
@@ -97,14 +99,15 @@ public class DriverRequestListActivity extends AppCompatActivity{
                                 // - Instead show that they are deleted insead of null.
                                 if(fName != null || lName != null){
                                     String fullName = fName + " " + lName;
-                                    holder.riderName.setText(fullName);
+                                    holder.name.setText(fullName);
                                 } else {
-                                    holder.riderName.setText("* This user no longer exists");
+                                    holder.name.setText("* This user no longer exists");
                                 }
                             }
                         });
                 // -> change this to distance from the user in the future!
-                holder.distanceAway.setText("Distance Away");
+                holder.fare.setText(cost.toString());
+                holder.sLocation.setText(address);
             }
         };
         recyclerView.setHasFixedSize(true);
@@ -113,13 +116,15 @@ public class DriverRequestListActivity extends AppCompatActivity{
     }
 
     private class RequestsViewHolder extends RecyclerView.ViewHolder{
-        private TextView riderName;
-        private TextView distanceAway;
+        private TextView name;
+        private TextView fare;
+        private TextView sLocation;
 
         public RequestsViewHolder(@NonNull View itemView){
             super(itemView);
-            riderName = itemView.findViewById(R.id.slocation);
-            distanceAway = itemView.findViewById(R.id.fare);
+            name = itemView.findViewById(R.id.name);
+            fare = itemView.findViewById(R.id.fare);
+            sLocation = itemView.findViewById(R.id.slocation);
         }
     }
 

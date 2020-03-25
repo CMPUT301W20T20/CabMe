@@ -162,13 +162,9 @@ public class NewRideRequest {
         newRideRequest.put("rideCost", rideCost);
         newRideRequest.put("rideStatus", rideStatus);
 
-        DOCID = FirebaseDatabase.getInstance().getReference(firebaseCollectionName).push().getKey();
 
         collectionReference
-                // makes the document ID the riders' ID
-                //.document(UIDrider)
-                // Uses random hash key
-                .document(DOCID)
+                .document(UIDrider)
                 .set(newRideRequest)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
