@@ -1,7 +1,6 @@
 package com.example.cabme.riders;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +35,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.gson.Gson;
 
 /**
  *
@@ -52,7 +53,7 @@ import com.google.android.gms.tasks.Task;
  *
  * TODO:
  *  [ ] finish rider side basic no bug checks
- *  [ ] should I even do a driver side
+ *  [no] should I even do a driver side
  *
  */
 public class RiderMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {
@@ -69,11 +70,10 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
 
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
-    Polyline currPolyline;
-    MarkerOptions markStart;
-    MarkerOptions markDest;
+    private Polyline currPolyline;
+    private MarkerOptions markStart;
+    private MarkerOptions markDest;
 
-    // on activity result this would change if there is an active ride
     private Boolean activeRide;
     private LatLng startLatLng;
     private LatLng destLatLng;
@@ -92,10 +92,21 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_map_rider_activity);
 
-        user = (User)getIntent().getSerializableExtra("user");
-
         SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
         activeRide = sharedPreferences.getBoolean("activeRide", false);
+
+        String uid = getIntent().getStringExtra("user");
+        user = new User(uid);
+
+        user.readData(new User.userCallback() {
+            @Override
+            public void onCallback(DocumentSnapshot documentSnapshot) {
+                // why are these null!!
+                Log.wtf("LOG", documentSnapshot.getString("email"));
+                Log.wtf("LOG", documentSnapshot.getString("first"));
+                Log.wtf("LOG", documentSnapshot.getString("last"));
+            }
+        });
 
         findViewsSetListeners();
         getMapType(sharedPreferences);
@@ -113,7 +124,6 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
             activeRideMapSetUp();
         }
         else{
-            Log.wtf("ACTIVE RIDE", "is false");
             getLocationPermission();
         }
     }
@@ -145,11 +155,11 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
         hamburgerMenuBtn.setOnClickListener(this);
     }
 
-    public void recreateActivity(int resultType, int resultCode, Intent data){
+    public void recreateActivity(RecreateType recreateType, int resultCode, Intent data){
         SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        switch(resultType){
-            case 1: // recreate on request sent
+        switch(recreateType){
+            case REQUEST_SENT: // recreate on request sent
                 if(resultCode==RESULT_OK){
                     startLatLng = data.getParcelableExtra("startLatLng");
                     destLatLng = data.getParcelableExtra("destLatLng");
@@ -163,8 +173,8 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
                     recreate();
                 }
                 else { recreate(); }
-                return;
-            case 2: // recreate on request cancelled
+                break;
+            case REQUEST_CANCELLED: // recreate on request cancelled
                 activeRide = false;
                 editor.remove("startLat");
                 editor.remove("startLng");
@@ -173,9 +183,13 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
                 editor.putBoolean("activeRide", activeRide);
                 editor.apply();
                 recreate();
-                return;
-            case 3:
-                return;
+                break;
+            case PROFILE_UPDATE: // recreate on profile change
+                Log.wtf("RIDER MAP", "Successful ON HERE");
+                editor.putBoolean("activeRide", activeRide);
+                editor.apply();
+                recreate();
+                break;
 
         }
     }
@@ -185,7 +199,7 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        recreateActivity(1, resultCode, data);
+        recreateActivity(RecreateType.REQUEST_SENT, resultCode, data);
     }
 
     @Override
@@ -366,6 +380,3 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
         currPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 }
-
-
-
