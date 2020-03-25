@@ -165,6 +165,7 @@ public class User extends Observable implements Serializable {
     }
 
     public String getUid() {
+        Log.wtf("LOG", uid+"");
         return uid;
     }
 

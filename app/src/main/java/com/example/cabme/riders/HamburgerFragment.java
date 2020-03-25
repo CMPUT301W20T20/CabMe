@@ -1,4 +1,4 @@
-package com.example.cabme;
+package com.example.cabme.riders;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.cabme.ProfileActivity;
+import com.example.cabme.R;
+import com.example.cabme.User;
 
 /**
  *
@@ -26,7 +30,7 @@ import androidx.fragment.app.Fragment;
  *  [?] Can make all button clicks a switch case - maybe that will be less eye jarring
  *
  */
-public class HomeMapHamburgerFragment extends Fragment {
+public class HamburgerFragment extends Fragment {
 
     public ImageButton closeImgBtn;
     public TextView fullnameTv;
@@ -73,7 +77,7 @@ public class HomeMapHamburgerFragment extends Fragment {
         closeImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().remove(HomeMapHamburgerFragment.this).commit();
+                getFragmentManager().beginTransaction().remove(HamburgerFragment.this).commit();
             }
         });
 

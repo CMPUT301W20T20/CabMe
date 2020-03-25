@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
@@ -46,18 +47,14 @@ import java.util.HashMap;
  *  [ ] Constructor for moving the document to the users ride history
  *
  */
-public class NewRideRequest {
+public class RideRequest {
 
-    // Log tag
-    private final String TAG = "NRR - requests";
-    private final String TAG2 = "NRR - rideactive ";
-
+    private String TAG = "LOG";
     // Firebase things
     private transient FirebaseFirestore firebaseFirestore;
     private transient CollectionReference collectionReference;
+    private transient DocumentReference documentReference;
     private String firebaseCollectionName = "testrequests";
-    private String firebaseCollectionName2 = "rideactive";
-
     // KEYS
     private String API_KEY;
     private String UIDrider;
@@ -81,14 +78,13 @@ public class NewRideRequest {
     private String UIDdriver = "";
 
     private JsonParser jsonParser;
-    private String DOCID;
 
     /**
      * Driver gets DOCID and changes the value of the doc when rider accepts offer
-     * @param DOCID
+     * @param reqUserID
      */
-    public NewRideRequest(String DOCID){
-
+    public RideRequest(String reqUserID){
+        UIDrider = reqUserID;
     }
 
     /**
@@ -100,8 +96,8 @@ public class NewRideRequest {
      * @param API_KEY
      *
      */
-    public NewRideRequest(GeoPoint startGeo, GeoPoint endGeo,
-                          String UIDrider, String API_KEY, Double rideCost){
+    public RideRequest(GeoPoint startGeo, GeoPoint endGeo,
+                       String UIDrider, String API_KEY, Double rideCost){
         setGiven(startGeo, endGeo, UIDrider, API_KEY);
         setParsedGeoPoints();
         setRideCost(rideCost);
@@ -130,11 +126,9 @@ public class NewRideRequest {
      * @param rideCost
      */
     private void setRideCost(Double rideCost){
-//        CostAlgorithm costAlgorithm = new CostAlgorithm(distanceValue, durationValue);
-//        this.rideCost = costAlgorithm.RideCost();
         this.rideCost = rideCost;
-
     }
+
 
     /**
      * Purpose: sets the parsed geo points
@@ -162,6 +156,7 @@ public class NewRideRequest {
     private void initializeFireBase(){
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection(firebaseCollectionName);
+        documentReference = firebaseFirestore.collection(firebaseCollectionName).document(UIDrider);
     }
 
     /**
@@ -182,28 +177,18 @@ public class NewRideRequest {
         newRideRequest.put("rideCost", rideCost);
         newRideRequest.put("rideStatus", rideStatus);
 
-        DOCID = FirebaseDatabase.getInstance().getReference(firebaseCollectionName).push().getKey();
-
         collectionReference
-                // makes the document ID the riders' ID
-                //.document(UIDrider)
-                // Uses random hash key
-                .document(DOCID)
+                .document(UIDrider)
                 .set(newRideRequest)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Ride request added ");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Ride request unable to be added "+ e.toString());
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Ride request added "))
+                .addOnFailureListener(e -> Log.d(TAG, "Ride request unable to be added "+ e.toString()));
     }
 
-    public String getDOCID(){ return this.DOCID; }
-
+    public void removeRequest(){
+        initializeFireBase();
+        documentReference
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Ride request deleted "))
+                .addOnFailureListener(e -> Log.d(TAG, "Ride request unable to be deleted "+ e.toString()));
+    }
 }
