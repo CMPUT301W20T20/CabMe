@@ -14,10 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cabme.Driver;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,12 +27,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- *
  * TODO:
  *  [X] Geocode long & Lat in to from -> TAKE FROM JsonParser
- *
- * NOTES: renamed file from r_riderhistory_activity (sorry it was making my eye twitch)
- *
+ *  [ ] Status color changes
  */
 public class RiderHistoryListActivity extends AppCompatActivity implements Observer {
     // Log Tags
@@ -102,17 +101,26 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
 
                 Log.wtf("DRIVERNM", ""+model.getUIDdriver());
 
-                String driveFullName = "driver name";
-                holder.driverName.setText(driveFullName);
-                holder.driverUsername.setText("@drivername");
+                if(model.getUIDdriver() != "")
+                {
+                    Driver driver = new Driver(model.getUIDdriver());
+                    driver.readData(documentSnapshot -> {
+                        String driverFirstName = documentSnapshot.getString("first");
+                        String driverLastName = documentSnapshot.getString("last");
+                        String driverUserName = documentSnapshot.getString("first");
+                        String driverFullName = driverFirstName + " " + driverLastName;
+                        holder.driverName.setText(driverFullName);
+                        holder.driverUsername.setText("@" + driverUserName);
+                    });
+                } else {
+                    holder.driverName.setVisibility(View.GONE);
+                    holder.driverUsername.setVisibility(View.GONE);
+                }
             }
         };
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
-        //View Holder
-
     }
 
     @Override

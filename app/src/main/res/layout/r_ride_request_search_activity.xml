@@ -8,18 +8,48 @@
     android:background="@color/quantum_white_100">
 
     <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:background="@color/cabme_accent_grey">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:text="Ride Search"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginBottom="15dp"
+            android:textColor="@color/quantum_white_100"/>
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/layout_from"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginTop="60dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:textColor="#F6D55C">
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:gravity="center"
+        android:background="@color/search_bg_grey"
+        android:layout_below="@+id/title">
 
-        <fragment
+<!--        <ImageView-->
+<!--            android:layout_width="19dp"-->
+<!--            android:layout_height="19dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:background="@drawable/map_pin_start_25"/>-->
+
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/autosearch_from"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -33,50 +63,96 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
         android:textColor="#F6D55C"
-        android:layout_below="@+id/layout_from">
+        android:layout_below="@+id/layout_from"
+        android:gravity="center"
+        android:background="@color/search_bg_grey">
 
-        <fragment
+<!--        <ImageView-->
+<!--            android:layout_width="25dp"-->
+<!--            android:layout_height="25dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:background="@drawable/map_pin_dest_25" />-->
+
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/autosearch_to"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="#F6D55C"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:background="@color/search_bg_grey"/>
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/pay_edit_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:orientation="horizontal"
+        android:id="@+id/pay_ll"
         android:layout_below="@id/layout_to"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:gravity="center"
-        android:hint="Payment"
-        android:text="Pay with QR-Bucks"
-        android:textAlignment="center"
-        android:textColor="@color/googleHintText"
-        android:textSize="20dp" />
+        android:gravity="start"
+        android:background="@color/search_bg_grey">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:text="$"
+            android:gravity="bottom"
+            android:layout_gravity="center"
+            android:textColor="@color/search_icon_grey"
+            android:textSize="22sp"
+            android:inputType="none"
+            android:background="@null" />
+
+        <EditText
+            android:id="@+id/pay_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:gravity="bottom"
+            android:layout_gravity="center"
+            android:hint="@string/fare_estimate"
+            android:textColorHint="@color/search_hint_grey"
+            android:textColor="@color/quantum_black_100"
+            android:textSize="25sp"
+            android:inputType="numberDecimal"
+            android:maxLength="10"
+            android:background="@null"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/search_ride_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:text="Search"
-        android:layout_below="@id/pay_edit_text"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:text="@string/request_ride"
+        android:textAllCaps="false"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_below="@id/pay_ll"
+        android:background="@color/cabme_accent_blue"
+        android:textColor="@color/quantum_white_100"/>
 
 </RelativeLayout>
