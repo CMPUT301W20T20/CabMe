@@ -9,6 +9,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -26,15 +28,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
 import com.example.cabme.R;
-import com.example.cabme.riders.RiderRequestsModel;
+
+import com.example.cabme.maps.JsonParser;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
@@ -42,6 +45,9 @@ import com.google.firebase.firestore.Query;
 // In other folders
 import com.example.cabme.maps.LongLat;
 import com.example.cabme.maps.MapViewActivity;
+import com.example.cabme.riders.RiderRequestsModel;
+
+import java.util.Comparator;
 
 public class DriverRequestListActivity extends AppCompatActivity implements LocationListener {
     private RecyclerView recyclerView;
@@ -54,6 +60,7 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
     Query query;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,10 +96,22 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
         // Query
         query = db.collection("testrequests");
 
+
         // Recycler options
         FirestoreRecyclerOptions<RiderRequestsModel> options = new FirestoreRecyclerOptions.Builder<RiderRequestsModel>()
-                .setQuery(query, RiderRequestsModel.class)
+                .setQuery(query.orderBy("rideCost"), RiderRequestsModel.class)
                 .build();
+
+        options.getSnapshots().sort(new Comparator<RiderRequestsModel>() {
+            @Override
+            public int compare(RiderRequestsModel o1, RiderRequestsModel o2) {
+                Location dLoc = driver.getLocation();
+                GeoPoint dGeo = new GeoPoint(dLoc.getLatitude(), dLoc.getLongitude());
+                JsonParser jp1 = new JsonParser(dGeo, o1.getStartLocation(), getString(R.string.google_maps_key));
+                JsonParser jp2 = new JsonParser(dGeo, o2.getStartLocation(), getString(R.string.google_maps_key));
+                return jp1.getDistanceValue().compareTo(jp2.getDistanceValue());
+            }
+        });
 
         firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<RiderRequestsModel, RequestsViewHolder>(options) {
             @NonNull

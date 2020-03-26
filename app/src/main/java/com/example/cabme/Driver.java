@@ -34,6 +34,7 @@ public class Driver extends User implements Serializable {
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
 
+
     public Driver(String uid, Location loc) {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
