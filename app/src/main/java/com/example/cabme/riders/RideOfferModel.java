@@ -5,14 +5,13 @@ import java.util.Observable;
 public class RideOfferModel extends Observable {
 
     private String driverID;
-
     private String username;
-    private String email;
 
     private String first;
     private String last;
 
     private String phone;
+    private String email;
     private Integer rating;
 
     private RideOfferModel(){}

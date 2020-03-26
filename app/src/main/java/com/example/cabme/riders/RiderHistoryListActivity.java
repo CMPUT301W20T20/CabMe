@@ -140,6 +140,9 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
     public void update(Observable o, Object arg) {
     }
 
+    /**
+     * Purpose: is a "container" that holds all the information we need to display to the rider
+     */
     private class RiderRequestsViewHolder extends RecyclerView.ViewHolder{
         private TextView status;
         private TextView to;
