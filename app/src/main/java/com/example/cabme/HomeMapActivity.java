@@ -1,4 +1,4 @@
-package com.example.cabme.riders;
+package com.example.cabme;
 
 import android.Manifest;
 import android.content.Context;
@@ -17,11 +17,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.cabme.R;
-import com.example.cabme.TitleActivity;
-import com.example.cabme.User;
+import com.example.cabme.drivers.DriveInactiveFragment;
 import com.example.cabme.maps.FetchURL;
 import com.example.cabme.maps.TaskLoadedCallback;
+import com.example.cabme.riders.RecreateType;
+import com.example.cabme.riders.RideInactiveFragment;
+import com.example.cabme.riders.RidePendingFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,12 +55,11 @@ import com.google.android.gms.tasks.Task;
  *  [no] should I even do a driver side
  *
  */
-public class RiderMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {
-    public TitleActivity.UserType userType; // can change this
+public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {
     private User user;
     private Bundle bundle;
 
-    private static final String TAG = "RiderMapActivity";
+    private static final String TAG = "HomeMapActivity";
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -76,8 +76,10 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
     private LatLng startLatLng;
     private LatLng destLatLng;
 
-    RideInactiveFragment homeMapRideInactiveFragment;
-    RidePendingFragment homeMapRideSearchingFragment;
+    /* fragments */
+    RideInactiveFragment riderInactiveFragment;
+    RidePendingFragment riderPendingFragment;
+    DriveInactiveFragment driverInactiveFragment;
 
     /**
      * Checks for the bundle.
@@ -88,7 +90,7 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.r_rider_map_activity);
+        setContentView(R.layout.home_map_activity);
 
         SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
         activeRide = sharedPreferences.getBoolean("activeRide", false);
@@ -96,50 +98,75 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
         String uid = getIntent().getStringExtra("user");
         user = new User(uid);
 
+        UserType userType = (UserType) getIntent().getSerializableExtra("userType");
+        Log.wtf("USERTYPE", userType + "");
+
         findViewsSetListeners();
-        getMapType(sharedPreferences);
-        getFragmentType();
+        getMapType(sharedPreferences, userType);
+        getFragmentType(userType);
+
+
     }
 
     /*----------------------------- SUP. ON CREATE ------------------------------------------------*/
 
-    public void getMapType(SharedPreferences sharedPreferences){
-        if(activeRide){
-            startLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("startLat", "")),
-                    Double.parseDouble(sharedPreferences.getString("startLng", "")));
-            destLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("destLat", "")),
-                    Double.parseDouble(sharedPreferences.getString("destLng", "")));
-            activeRideMapSetUp();
-        }
-        else{
-            getLocationPermission();
+    public void getMapType(SharedPreferences sharedPreferences, UserType userType){
+        switch (userType){
+            case RIDER:
+                if(activeRide){
+                    startLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("startLat", "")),
+                            Double.parseDouble(sharedPreferences.getString("startLng", "")));
+                    destLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("destLat", "")),
+                            Double.parseDouble(sharedPreferences.getString("destLng", "")));
+                    activeRideMapSetUp();
+                }
+                else{
+                    getLocationPermission();
+                }
+                break;
+            case DRIVER:
+                getLocationPermission();
+                break;
         }
     }
 
-    public void getFragmentType(){
+    public void getFragmentType(UserType userType){
         bundle = new Bundle();
         bundle.putSerializable("user", user);
-        if(activeRide){
-            homeMapRideSearchingFragment = new RidePendingFragment();
-            homeMapRideSearchingFragment.setArguments(bundle);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, homeMapRideSearchingFragment)
-                    .commit();
-        }
-        else {
-            homeMapRideInactiveFragment = new RideInactiveFragment();
-            homeMapRideInactiveFragment.setArguments(bundle);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, homeMapRideInactiveFragment)
-                    .commit();
+        switch (userType){
+            case RIDER:
+                Log.wtf("USERTYPE", "rider goes here");
+                if(activeRide){
+                    riderPendingFragment = new RidePendingFragment();
+                    riderPendingFragment.setArguments(bundle);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.fragment_container, riderPendingFragment)
+                            .commit();
+                }
+                else {
+                    riderInactiveFragment = new RideInactiveFragment();
+                    riderInactiveFragment.setArguments(bundle);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.fragment_container, riderInactiveFragment)
+                            .commit();
+                }
+                break;
+            case DRIVER:
+                Log.wtf("USERTYPE", "driver goes here");
+                driverInactiveFragment = new DriveInactiveFragment();
+                driverInactiveFragment.setArguments(bundle);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container, driverInactiveFragment)
+                        .commit();
+                break;
         }
     }
 
     public void findViewsSetListeners(){
         ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
-        userType = TitleActivity.UserType.RIDER;
         hamburgerMenuBtn.setOnClickListener(this);
     }
 
@@ -249,7 +276,7 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
 
                     }else{
                         Log.d(TAG, "onComplete: current location is null");
-                        Toast.makeText(RiderMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -274,7 +301,7 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
     private void initMap(){
         Log.d(TAG, "initMap: initializing map");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(RiderMapActivity.this);
+        mapFragment.getMapAsync(HomeMapActivity.this);
     }
 
     private void getLocationPermission(){
@@ -330,7 +357,7 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
         markDest = new MarkerOptions().position(destLatLng).title("Destination Location");
         markStart.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_start_30));
         markDest.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_dest_30));
-        new FetchURL(RiderMapActivity.this)
+        new FetchURL(HomeMapActivity.this)
                 .execute(getUrl(markStart.getPosition(), markDest.getPosition(), "driving"), "driving");
     }
 

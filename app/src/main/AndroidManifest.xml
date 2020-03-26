@@ -56,8 +56,8 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignupActivity" />
 
-        <activity android:name=".riders.RiderMapActivity" />
-        <activity android:name=".riders.HamburgerFragment"/>
+        <activity android:name=".HomeMapActivity" />
+        <activity android:name=".HamburgerFragment"/>
         <activity android:name=".riders.RideInactiveFragment"/>
 
         <activity android:name=".maps.MapViewActivity" />

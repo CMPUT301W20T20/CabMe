@@ -17,6 +17,7 @@
     <color name="cabme_accent_blue">#24567d</color>
     <color name="cabme_accent_grey">#303030</color>
     <color name="cabme_cancel_red">#ff6666</color>
+    <color name="cabme_complete_green">#69CE66</color>
     <color name="cabme_bg_dark_grey">#282828</color>
 
     <color name="background_20_opacity_black">#33000000</color>

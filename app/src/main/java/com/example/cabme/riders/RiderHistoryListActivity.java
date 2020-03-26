@@ -2,7 +2,6 @@ package com.example.cabme.riders;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.example.cabme.R;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -86,21 +84,10 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
             protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderHistoryListModel model) {
                 holder.status.setText(model.getStatus());
 
-                /**
-                 * implement later
-                 if(holder.status.getText() == "Cancelled" ){
-                 holder.status.setText(model.getStatus());
-                 holder.status.setTextColor(getResources().getColor(R.color.red));
-                 }
-                 **/
-
                 holder.status.setText(String.valueOf(model.getStatus()));
                 holder.from.setText(String.valueOf(model.getStartAddress()));
                 holder.to.setText(String.valueOf(model.getEndAddress()));
                 holder.cost.setText("$" + model.getRideCost());
-
-                Log.wtf("DRIVERNM", ""+model.getUIDdriver());
-
                 if(model.getUIDdriver() != "")
                 {
                     Driver driver = new Driver(model.getUIDdriver());
@@ -116,6 +103,12 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
                     holder.driverName.setVisibility(View.GONE);
                     holder.driverUsername.setVisibility(View.GONE);
                 }
+
+//                if(model.getStatus().equals("Cancelled")){
+//                    holder.status.setTextColor(getResources().getColor(R.color.cabme_cancel_red));
+//                } else if (model.getStatus().equals("Completed")){
+//                    holder.status.setTextColor(getResources().getColor(R.color.cabme_complete_green));
+//                }
             }
         };
         recyclerView.setHasFixedSize(true);

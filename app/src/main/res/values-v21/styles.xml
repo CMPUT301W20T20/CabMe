@@ -7,6 +7,7 @@
     <item name="android:ambientShadowAlpha">0.5</item>
     <item name="android:spotShadowAlpha">0.5</item>
 
+    <item name="android:textColor">@color/quantum_black_100</item>
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>

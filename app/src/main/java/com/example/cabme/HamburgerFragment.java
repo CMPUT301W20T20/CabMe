@@ -1,4 +1,4 @@
-package com.example.cabme.riders;
+package com.example.cabme;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,9 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.cabme.ProfileActivity;
-import com.example.cabme.R;
-import com.example.cabme.User;
+import com.example.cabme.riders.RecreateType;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 /**
@@ -54,7 +52,7 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.r_hamburger_fragment, container, false);
+        View view = inflater.inflate(R.layout.home_map_hamburger_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
         findViewsSetListeners(view);
         setNames();
@@ -125,6 +123,6 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
         trans.remove(HamburgerFragment.this);
         trans.commit();
         manager.popBackStack();
-        ((RiderMapActivity)getActivity()).recreateActivity(RecreateType.PROFILE_UPDATE, 0, null);
+        ((HomeMapActivity)getActivity()).recreateActivity(RecreateType.PROFILE_UPDATE, 0, null);
     }
 }
