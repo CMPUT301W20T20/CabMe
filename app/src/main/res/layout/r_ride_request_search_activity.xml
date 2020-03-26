@@ -12,13 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:textColor="#F6D55C"
-        android:background="@drawable/fields_border">
+        android:textColor="#F6D55C">
 
         <fragment
             android:id="@+id/autosearch_from"
@@ -39,7 +38,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/fields_border"
         android:textColor="#F6D55C"
         android:layout_below="@+id/layout_from">
 
@@ -62,7 +60,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/fields_border"
         android:gravity="center"
         android:hint="Payment"
         android:text="Pay with QR-Bucks"

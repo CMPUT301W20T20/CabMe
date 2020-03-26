@@ -54,7 +54,7 @@
                 android:layout_height="60dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginStart="25dp"
-                android:text="Account Details"
+                android:text="Edit Account"
                 android:textColor="@color/quantum_black_100"
                 android:textAlignment="viewStart"
                 android:textSize="20sp"
