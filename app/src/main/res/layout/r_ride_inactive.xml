@@ -40,7 +40,7 @@
 
             <Button
                 android:id="@+id/ride_new"
-                android:text="Request a new ride"
+                android:text="Request a Ride"
                 android:textColor="@color/quantum_black_100"
                 android:textAllCaps="false"
                 android:background="@drawable/bg_search"
