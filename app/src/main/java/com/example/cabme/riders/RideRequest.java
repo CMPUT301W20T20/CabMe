@@ -20,8 +20,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Purpose:
@@ -224,14 +226,27 @@ public class RideRequest {
                 });
     }
 
+    /**
+     * This method update the rideStatus field of the ride request
+     * @param status the status of the current ride (cancelled, completed)
+     */
     public void updateRideStatus(String status){
-        // GETS PERMISSION ERROR
-        databaseReference
-                .child(firebaseCollectionName)
-                .child(UIDrider)
-                .child("rideStatus")
-                .setValue(status)
-                .addOnSuccessListener(aVoid -> Log.v("Document Update", "Sucessfully updated Document"))
-                .addOnFailureListener(e -> Log.v("Document Update", "Something went wrong updating " + e.toString()));
+        Map<String, Object> data = new HashMap<>();
+        data.put("rideStatus", status);
+        collectionReference
+                .document(UIDrider)
+                .set(data, SetOptions.merge());
+    }
+
+    /**
+     * This method update the UIDdriver field of the ride request
+     * @param UIDdriver the id of the driver
+     */
+    public void updateDriver(String UIDdriver){
+        Map<String, Object> data = new HashMap<>();
+        data.put("rideStatus", UIDdriver);
+        collectionReference
+                .document(UIDrider)
+                .set(data, SetOptions.merge());
     }
 }
