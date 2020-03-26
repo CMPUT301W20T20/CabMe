@@ -28,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -263,7 +264,7 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
             builder.include(startLatLng);
             builder.include(destLatLng);
             mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng , DEFAULT_ZOOM) );
-            mMap.setOnMapLoadedCallback(() -> mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 50)));
+            mMap.setOnMapLoadedCallback(() -> mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 80)));
         }else{
             Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
@@ -327,6 +328,8 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
         initMap();
         markStart = new MarkerOptions().position(startLatLng).title("Start Location");
         markDest = new MarkerOptions().position(destLatLng).title("Destination Location");
+        markStart.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_start_30));
+        markDest.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_dest_30));
         new FetchURL(RiderMapActivity.this)
                 .execute(getUrl(markStart.getPosition(), markDest.getPosition(), "driving"), "driving");
     }
