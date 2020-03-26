@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -55,7 +54,7 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_map_hamburger_fragment, container, false);
+        View view = inflater.inflate(R.layout.r_hamburger_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
         findViewsSetListeners(view);
         setNames();

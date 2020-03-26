@@ -1,8 +1,6 @@
 package com.example.cabme.riders;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cabme.Driver;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -54,7 +51,7 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        setContentView(R.layout.r_historylist_activity);
+        setContentView(R.layout.r_rider_historylist_activity);
 
         // get user intent
         user = (User)getIntent().getSerializableExtra("user");
@@ -81,7 +78,7 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
             @NonNull
             @Override
             public RiderRequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_view_layout, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.r_rider_historylist_content, parent, false);
                 return new RiderRequestsViewHolder(view);
             }
 

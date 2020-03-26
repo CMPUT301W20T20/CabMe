@@ -2,7 +2,6 @@ package com.example.cabme.riders;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cabme.R;
 import com.example.cabme.User;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RideInactiveFragment extends Fragment implements View.OnClickListener {
     private TextView helloUser;
@@ -32,7 +26,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_map_ride_inactive, container, false);
+        View view = inflater.inflate(R.layout.r_ride_inactive, container, false);
         user = (User) getArguments().getSerializable("user");
         findViewsSetListeners(view);
         setWelcome();

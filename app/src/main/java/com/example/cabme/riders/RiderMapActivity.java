@@ -33,10 +33,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.gson.Gson;
 
 /**
  *
@@ -90,23 +87,13 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_map_rider_activity);
+        setContentView(R.layout.r_rider_map_activity);
 
         SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
         activeRide = sharedPreferences.getBoolean("activeRide", false);
 
         String uid = getIntent().getStringExtra("user");
         user = new User(uid);
-
-        user.readData(new User.userCallback() {
-            @Override
-            public void onCallback(DocumentSnapshot documentSnapshot) {
-                // why are these null!!
-                Log.wtf("LOG", documentSnapshot.getString("email"));
-                Log.wtf("LOG", documentSnapshot.getString("first"));
-                Log.wtf("LOG", documentSnapshot.getString("last"));
-            }
-        });
 
         findViewsSetListeners();
         getMapType(sharedPreferences);
@@ -251,20 +238,17 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
             if(mLocationPermissionsGranted){
 
                 final Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful()){
-                            Log.d(TAG, "onComplete: found location!");
-                            Location currentLocation = (Location) task.getResult();
+                location.addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "onComplete: found location!");
+                        Location currentLocation = (Location) task.getResult();
 
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
-                                    DEFAULT_ZOOM);
+                        moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
+                                DEFAULT_ZOOM);
 
-                        }else{
-                            Log.d(TAG, "onComplete: current location is null");
-                            Toast.makeText(RiderMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
-                        }
+                    }else{
+                        Log.d(TAG, "onComplete: current location is null");
+                        Toast.makeText(RiderMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

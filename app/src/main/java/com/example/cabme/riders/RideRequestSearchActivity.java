@@ -47,13 +47,18 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
 
     public PlacesClient placesClient;
     public User user;
+    private EditText rideCostEditText;
+    private Button searchRideButton;
     private LatLng destLngLat;
     private LatLng startLngLat;
+    private GeoPoint startGeo;
+    private GeoPoint destGeo;
+    private Double rideCost;
 
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        setContentView(R.layout.r_newrideinfo_activity);
+        setContentView(R.layout.r_ride_request_search_activity);
 
         user = (User)getIntent().getSerializableExtra("user");
 
@@ -71,8 +76,8 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
     }
 
     private void findViewsSetListeners(){
-        Button searchRideButton = (Button) findViewById(R.id.search_ride_button);
-        EditText rideCostEditText = (EditText) findViewById(R.id.pay_edit_text);
+        searchRideButton = (Button) findViewById(R.id.search_ride_button);
+        rideCostEditText = (EditText) findViewById(R.id.pay_edit_text);
         searchRideButton.setOnClickListener(this);
     }
 
@@ -81,21 +86,22 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_from);
 
         autocompleteSupportFragment.setHint("Starting Location");
-
         autocompleteSupportFragment.setPlaceFields(
                 Arrays.asList(
                         Place.Field.ID,
                         Place.Field.LAT_LNG,
                         Place.Field.NAME));
-
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 startLngLat = place.getLatLng();
+                if(destLngLat!= null){
+                    costEstimator();
+                }
             }
             @Override
             public void onError(@NonNull Status status) {
-                Log.d("Error", "Error");
+                Log.d("onPlaceSelected", "Error onPlaceSelected start location");
             }
         });
     }
@@ -105,34 +111,40 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_to);
 
         autocompleteSupportFragment.setHint("Destination Location");
-
         autocompleteSupportFragment.setPlaceFields(
                 Arrays.asList(
                         Place.Field.ID,
                         Place.Field.LAT_LNG,
                         Place.Field.NAME));
-
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 destLngLat = place.getLatLng();
+                if(startLngLat != null){
+                    costEstimator();
+                }
             }
 
             @Override
             public void onError(@NonNull Status status) {
-                Log.d("MAPSLOG", "Error onPlaceSelected");
+                Log.d("onPlaceSelected", "Error onPlaceSelected destination location");
             }
         });
     }
 
-    public void addNewRideRequest(){
-        GeoPoint destGeo = new GeoPoint(destLngLat.latitude, destLngLat.longitude);
-        GeoPoint startGeo = new GeoPoint(startLngLat.latitude, startLngLat.longitude);
+    public void costEstimator(){
+        destGeo = new GeoPoint(destLngLat.latitude, destLngLat.longitude);
+        startGeo = new GeoPoint(startLngLat.latitude, startLngLat.longitude);
 
         JsonParser jsonParser = new JsonParser(startGeo, destGeo, getString(R.string.google_maps_key));
         CostAlgorithm costAlgorithm = new CostAlgorithm(jsonParser.getDistanceValue(), jsonParser.getDurationValue());
-        Double rideCost = costAlgorithm.RideCost();
+        rideCost = costAlgorithm.RideCost();
 
+        String rideCostPreview = "$"+ rideCost;
+        rideCostEditText.setText(rideCostPreview);
+    }
+
+    public void addNewRideRequest(){
         new RideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), rideCost);
     }
 

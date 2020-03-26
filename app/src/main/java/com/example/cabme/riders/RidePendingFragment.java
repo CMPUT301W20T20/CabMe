@@ -2,7 +2,6 @@ package com.example.cabme.riders;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_map_ride_searching, container, false);
+        View view = inflater.inflate(R.layout.r_ride_searching, container, false);
         user = (User) getArguments().getSerializable("user");
         findViewsSetListeners(view);
         return view;
