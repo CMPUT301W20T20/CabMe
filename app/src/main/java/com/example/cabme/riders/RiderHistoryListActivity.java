@@ -1,8 +1,6 @@
 package com.example.cabme.riders;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,12 +47,11 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
 
     // key
     private User user;
-    private Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        setContentView(R.layout.r_historylist_activity);
+        setContentView(R.layout.r_rider_historylist_activity);
 
         // get user intent
         user = (User)getIntent().getSerializableExtra("user");
@@ -73,21 +70,21 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
                 .collection("ridehistory");
 
         // Recycler Options
-        FirestoreRecyclerOptions<RiderRequestsModel> options = new FirestoreRecyclerOptions.Builder<RiderRequestsModel>()
-                .setQuery(query, RiderRequestsModel.class)
+        FirestoreRecyclerOptions<RiderHistoryListModel> options = new FirestoreRecyclerOptions.Builder<RiderHistoryListModel>()
+                .setQuery(query, RiderHistoryListModel.class)
                 .build();
 
-        adapter = new FirestoreRecyclerAdapter<RiderRequestsModel, RiderRequestsViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<RiderHistoryListModel, RiderRequestsViewHolder>(options) {
             @NonNull
             @Override
             public RiderRequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_view_layout, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.r_rider_historylist_content, parent, false);
                 return new RiderRequestsViewHolder(view);
             }
 
             @SuppressLint("SetTextI18n")
             @Override
-            protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderRequestsModel model) {
+            protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderHistoryListModel model) {
                 holder.status.setText(model.getStatus());
 
                 /**
@@ -103,17 +100,11 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
                 holder.to.setText(String.valueOf(model.getEndAddress()));
                 holder.cost.setText("$" + model.getRideCost());
 
-                User driver = new User(model.getUIDdriver());
-                driver.addObserver(RiderHistoryListActivity.this);
-
                 Log.wtf("DRIVERNM", ""+model.getUIDdriver());
-                Log.wtf("DRIVERNM", ""+driver.getFirstName());
-                Log.wtf("DRIVERNM", ""+driver.getPhone());
 
-
-                String driveFullName = driver.getFirstName() + " " + driver.getLastName();
+                String driveFullName = "driver name";
                 holder.driverName.setText(driveFullName);
-                holder.driverUsername.setText("@"+driver.getUsername());
+                holder.driverUsername.setText("@drivername");
             }
         };
         recyclerView.setHasFixedSize(true);
@@ -121,18 +112,6 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
         recyclerView.setAdapter(adapter);
 
         //View Holder
-
-        //onclick listener for newRideButton to start NewRideInfoActivty
-        newRideButton = findViewById(R.id.newRideButton);
-
-        //Button click will start new activity
-        newRideButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RiderHistoryListActivity.this, NewRideInfoActivity.class);
-                startActivity(intent);
-            }
-        });
 
     }
 

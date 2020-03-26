@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="Name"
-            android:textColor="#F6D55C"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="#F6D55C"/>
 
         <TextView
             android:id="@+id/slocation"
@@ -57,4 +57,3 @@
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
-

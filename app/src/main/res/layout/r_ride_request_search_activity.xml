@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="riders.NewRideInfoActivity">
+    tools:context=".riders.RideRequestSearchActivity"
+    android:background="@color/quantum_white_100">
 
     <LinearLayout
         android:id="@+id/layout_from"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:textColor="#F6D55C"
-        android:background="@drawable/fields_border">
+        android:textColor="#F6D55C">
 
         <fragment
             android:id="@+id/autosearch_from"
@@ -37,7 +38,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/fields_border"
         android:textColor="#F6D55C"
         android:layout_below="@+id/layout_from">
 
@@ -60,7 +60,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/fields_border"
         android:gravity="center"
         android:hint="Payment"
         android:text="Pay with QR-Bucks"
@@ -78,9 +77,6 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:text="Search"
-
         android:layout_below="@id/pay_edit_text"/>
 
-
 </RelativeLayout>
-

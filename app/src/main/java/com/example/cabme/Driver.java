@@ -45,11 +45,18 @@ public class Driver extends User implements Serializable {
         collectionReference
                 .document(uid)
                 .set(data, SetOptions.merge());
-        readData();
+        // readData();
+    }
+
+    public Driver(String uid){
+        db = FirebaseFirestore.getInstance();
+        collectionReference = db.collection("users");
+        this.uid = uid;
+//        readData();
     }
 
     @Override
-    public void readData() {
+    public void readData(userCallback userCallback) {
         collectionReference
                 .document(uid)
                 .get()
@@ -64,6 +71,7 @@ public class Driver extends User implements Serializable {
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
                         rating = documentSnapshot.get("rating", Rating.class);
+                        userCallback.onCallback(documentSnapshot);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -84,7 +92,6 @@ public class Driver extends User implements Serializable {
                 if (documentSnapshot == null) {
                     return;
                 }
-
                 username = documentSnapshot.getString("username");
                 firstName = documentSnapshot.getString("first");
                 lastName = documentSnapshot.getString("last");
@@ -96,7 +103,6 @@ public class Driver extends User implements Serializable {
                 notifyObservers();
             }
         });
-
     }
 
 

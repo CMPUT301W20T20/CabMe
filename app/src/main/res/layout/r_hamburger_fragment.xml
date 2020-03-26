@@ -6,9 +6,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_rider_home"
-    tools:context=".HomeMapRiderFragment"
     android:background="@color/background_20_opacity_black"
-    android:elevation="2dp"
+    android:elevation="60dp"
     android:clickable="true"
     android:focusable="true">
 
@@ -37,7 +36,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="60dp"
                 android:layout_marginLeft="25dp"
-                android:text="Firstname Lastname"
+                android:textColor="@color/quantum_black_100"
                 android:textSize="25dp" />
 
             <TextView
@@ -46,7 +45,7 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginBottom="30dp"
-                android:text="username"
+                android:textColor="@color/quantum_black_100"
                 android:textSize="15dp" />
 
             <Button
@@ -55,7 +54,8 @@
                 android:layout_height="60dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginStart="25dp"
-                android:text="Account Details"
+                android:text="Edit Account"
+                android:textColor="@color/quantum_black_100"
                 android:textAlignment="viewStart"
                 android:textSize="20sp"
                 android:textStyle="normal"
@@ -69,7 +69,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="25dp"
-                android:layout_marginStart="25dp"                android:text="Balance"
+                android:layout_marginStart="25dp"
+                android:text="Balance"
+                android:textColor="@color/quantum_black_100"
                 android:textAlignment="viewStart"
                 android:textSize="20sp"
                 android:textStyle="normal"
@@ -83,7 +85,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="25dp"
-                android:layout_marginStart="25dp"                android:text="Switch User Type"
+                android:layout_marginStart="25dp"
+                android:text="Switch User Type"
+                android:textColor="@color/quantum_black_100"
                 android:textAlignment="viewStart"
                 android:textSize="20sp"
                 android:textStyle="normal"
@@ -99,6 +103,7 @@
                 android:layout_marginLeft="25dp"
                 android:layout_marginStart="25dp"
                 android:text="Logout"
+                android:textColor="@color/quantum_black_100"
                 android:textAlignment="viewStart"
                 android:textSize="20sp"
                 android:textStyle="normal"
