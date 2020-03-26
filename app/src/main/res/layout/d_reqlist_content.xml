@@ -17,8 +17,7 @@
             android:padding="10dp"
             android:text="Name"
             android:textSize="20sp"
-            android:textColor="#F6D55C"
-            android:padding="10dp"/>
+            android:textColor="#F6D55C"/>
 
         <TextView
             android:id="@+id/slocation"

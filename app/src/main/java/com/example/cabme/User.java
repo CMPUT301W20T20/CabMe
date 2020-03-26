@@ -130,7 +130,6 @@ public class User extends Observable implements Serializable {
                 if (documentSnapshot == null) {
                     return;
                 }
-
                 username = documentSnapshot.getString("username");
                 firstName = documentSnapshot.getString("first");
                 lastName = documentSnapshot.getString("last");
