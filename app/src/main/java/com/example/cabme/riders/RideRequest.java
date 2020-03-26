@@ -45,8 +45,8 @@ import java.util.Map;
  *     - mark that ride as completed, cancelled, whatever is appropriate
  *
  * TODO:
- *  [ ] Constructor for getting the file and editing it
- *  [ ] Constructor for moving the document to the users ride history
+ *  [X] Constructor for getting the file and editing it
+ *  [X] Constructor for moving the document to the users ride history
  *
  */
 public class RideRequest {
