@@ -57,7 +57,6 @@ public class RideRequest {
     private transient FirebaseFirestore firebaseFirestore;
     private transient CollectionReference collectionReference;
     private transient DocumentReference documentReference;
-    private transient DatabaseReference databaseReference;
     private String firebaseCollectionName = "testrequests";
 
     /* Keys */
@@ -160,8 +159,6 @@ public class RideRequest {
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection(firebaseCollectionName);
         documentReference = firebaseFirestore.collection(firebaseCollectionName).document(UIDrider);
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
     }
 
     /**
@@ -244,7 +241,7 @@ public class RideRequest {
      */
     public void updateDriver(String UIDdriver){
         Map<String, Object> data = new HashMap<>();
-        data.put("rideStatus", UIDdriver);
+        data.put("UIDdriver", UIDdriver);
         collectionReference
                 .document(UIDrider)
                 .set(data, SetOptions.merge());
