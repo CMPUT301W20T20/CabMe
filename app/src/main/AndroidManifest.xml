@@ -21,12 +21,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-<<<<<<< HEAD
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-=======
+
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:hardwareAccelerated="true">
->>>>>>> origin/zapansa6
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -67,6 +65,7 @@
 
         <activity android:name=".riders.RiderHistoryListActivity" />
         <activity android:name=".riders.RideRequestSearchActivity" />
+        <activity android:name=".riders.RideOffer" />
 
 
     </application>

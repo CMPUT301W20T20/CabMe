@@ -54,6 +54,9 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.ride_offers:
                 // list of driver offers activity
+                getActivity().getFragmentManager().popBackStack(); /*not sure if we need to close this or not, i dont think so....*/
+                intent = new Intent(getActivity(), RideOffer.class);
+                this.startActivity(intent);
                 break;
         }
     }

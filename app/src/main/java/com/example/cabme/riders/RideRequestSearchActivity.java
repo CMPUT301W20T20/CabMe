@@ -76,11 +76,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         searchRideButton.setOnClickListener(this);
     }
 
-    /**
-     * Purpose:
-     *
-     * has auto complete functionality and sets start location latitude and longitude
-     */
     public void startingLocationSearch(){
         final AutocompleteSupportFragment autocompleteSupportFragment =
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_from);
@@ -105,11 +100,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         });
     }
 
-    /**
-     * Purpose:
-     *
-     * has autocomplete functionality and sets the destination latitude and longitude
-     */
     public void destinationLocationSearch(){
         final AutocompleteSupportFragment autocompleteSupportFragment =
                 (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_to);
@@ -139,14 +129,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         GeoPoint destGeo = new GeoPoint(destLngLat.latitude, destLngLat.longitude);
         GeoPoint startGeo = new GeoPoint(startLngLat.latitude, startLngLat.longitude);
 
-    /**
-     * Purpose:
-     *
-     * set startLocation, endLocation, cost in the database
-     */
-    public void addNewRideRequest(){
-        GeoPoint destGeo = new GeoPoint(destLngLat.getLat(), destLngLat.getLng());
-        GeoPoint startGeo = new GeoPoint(startLngLat.getLat(), startLngLat.getLng());
         JsonParser jsonParser = new JsonParser(startGeo, destGeo, getString(R.string.google_maps_key));
         CostAlgorithm costAlgorithm = new CostAlgorithm(jsonParser.getDistanceValue(), jsonParser.getDurationValue());
         Double rideCost = costAlgorithm.RideCost();
