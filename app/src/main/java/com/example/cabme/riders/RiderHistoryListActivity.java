@@ -2,7 +2,6 @@ package com.example.cabme.riders;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cabme.Driver;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -25,12 +25,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- *
  * TODO:
  *  [X] Geocode long & Lat in to from -> TAKE FROM JsonParser
- *
- * NOTES: renamed file from r_riderhistory_activity (sorry it was making my eye twitch)
- *
+ *  [ ] Status color changes
  */
 public class RiderHistoryListActivity extends AppCompatActivity implements Observer {
     // Log Tags
@@ -87,32 +84,36 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
             protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderHistoryListModel model) {
                 holder.status.setText(model.getStatus());
 
-                /**
-                 * implement later
-                 if(holder.status.getText() == "Cancelled" ){
-                 holder.status.setText(model.getStatus());
-                 holder.status.setTextColor(getResources().getColor(R.color.red));
-                 }
-                 **/
-
                 holder.status.setText(String.valueOf(model.getStatus()));
                 holder.from.setText(String.valueOf(model.getStartAddress()));
                 holder.to.setText(String.valueOf(model.getEndAddress()));
                 holder.cost.setText("$" + model.getRideCost());
+                if(model.getUIDdriver() != "")
+                {
+                    Driver driver = new Driver(model.getUIDdriver());
+                    driver.readData(documentSnapshot -> {
+                        String driverFirstName = documentSnapshot.getString("first");
+                        String driverLastName = documentSnapshot.getString("last");
+                        String driverUserName = documentSnapshot.getString("first");
+                        String driverFullName = driverFirstName + " " + driverLastName;
+                        holder.driverName.setText(driverFullName);
+                        holder.driverUsername.setText("@" + driverUserName);
+                    });
+                } else {
+                    holder.driverName.setVisibility(View.GONE);
+                    holder.driverUsername.setVisibility(View.GONE);
+                }
 
-                Log.wtf("DRIVERNM", ""+model.getUIDdriver());
-
-                String driveFullName = "driver name";
-                holder.driverName.setText(driveFullName);
-                holder.driverUsername.setText("@drivername");
+//                if(model.getStatus().equals("Cancelled")){
+//                    holder.status.setTextColor(getResources().getColor(R.color.cabme_cancel_red));
+//                } else if (model.getStatus().equals("Completed")){
+//                    holder.status.setTextColor(getResources().getColor(R.color.cabme_complete_green));
+//                }
             }
         };
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
-        //View Holder
-
     }
 
     @Override

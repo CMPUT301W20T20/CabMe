@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragment_rider_home">
+    android:id="@+id/fragment_driver_home">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.cardview.widget.CardView
@@ -34,13 +34,13 @@
                 android:layout_width="match_parent"
                 android:textStyle="bold"
                 android:layout_height="40sp"
-                android:text="Where are you going?"
+                android:text="Where are you driving?"
                 android:textColor="@color/quantum_black_100"
                 android:textSize="24sp" />
 
             <Button
                 android:id="@+id/ride_new"
-                android:text="Request a Ride"
+                android:text="View Offers"
                 android:textColor="@color/quantum_black_100"
                 android:textAllCaps="false"
                 android:background="@drawable/bg_search"
@@ -53,7 +53,7 @@
 
             <Button
                 android:id="@+id/ride_history"
-                android:text="Ride History"
+                android:text="/ you can remove /"
                 android:textAllCaps="false"
                 android:textColor="@color/quantum_white_100"
                 android:shadowColor="@color/fui_transparent"

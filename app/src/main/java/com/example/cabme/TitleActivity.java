@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
  * Imported Classes
  */
 import com.example.cabme.drivers.DriverRequestListActivity;
-import com.example.cabme.riders.RiderMapActivity;
 
 public class TitleActivity extends AppCompatActivity {
     private Button profileButton;
@@ -22,11 +21,6 @@ public class TitleActivity extends AppCompatActivity {
     private ImageButton driverButton;
     private User user;
     private String uid;
-
-    public enum UserType {
-        RIDER,
-        DRIVER
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,8 +55,9 @@ public class TitleActivity extends AppCompatActivity {
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, RiderMapActivity.class);
+                Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
                 intent.putExtra("user", uid);
+                intent.putExtra("userType", UserType.RIDER);
                 startActivity(intent);
             }
         });
@@ -70,8 +65,9 @@ public class TitleActivity extends AppCompatActivity {
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
+                Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
                 intent.putExtra("user", uid);
+                intent.putExtra("userType", UserType.DRIVER);
                 startActivity(intent);
             }
         });

@@ -1,14 +1,20 @@
 package com.example.cabme.riders;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cabme.R;
@@ -42,6 +48,11 @@ import java.util.Arrays;
  * - Geopoint:: end location
  * - String:: API key ==> *NEEDED* to access information from request. SEE URL
  *
+ * TODO
+ *  [ ] Text Watcher - err.ch. valid input
+ *  [ ] OnClick - else
+ *  [ ] Handle case where there is NO DRIVABLE ROUTE between locations coz app goes nuts and crashes
+ *
  */
 public class RideRequestSearchActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -54,6 +65,12 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
     private GeoPoint startGeo;
     private GeoPoint destGeo;
     private Double rideCost;
+    private Double customCost;
+
+    private  AutocompleteSupportFragment asfStart;
+    private AutocompleteSupportFragment asfDest;
+
+    String rideCostPreview;
 
     @Override
     public void onCreate(Bundle savedInstance){
@@ -79,19 +96,18 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         searchRideButton = (Button) findViewById(R.id.search_ride_button);
         rideCostEditText = (EditText) findViewById(R.id.pay_edit_text);
         searchRideButton.setOnClickListener(this);
+        rideCostEditText.addTextChangedListener(costWatcher);
     }
 
     public void startingLocationSearch(){
-        final AutocompleteSupportFragment autocompleteSupportFragment =
-                (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_from);
-
-        autocompleteSupportFragment.setHint("Starting Location");
-        autocompleteSupportFragment.setPlaceFields(
+        asfStart = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_from);
+        asfStart.setHint("Starting Location");
+        asfStart.setPlaceFields(
                 Arrays.asList(
                         Place.Field.ID,
                         Place.Field.LAT_LNG,
                         Place.Field.NAME));
-        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        asfStart.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 startLngLat = place.getLatLng();
@@ -107,16 +123,14 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
     }
 
     public void destinationLocationSearch(){
-        final AutocompleteSupportFragment autocompleteSupportFragment =
-                (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_to);
-
-        autocompleteSupportFragment.setHint("Destination Location");
-        autocompleteSupportFragment.setPlaceFields(
+        asfDest = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_to);
+        asfDest.setHint("Destination Location");
+        asfDest.setPlaceFields(
                 Arrays.asList(
                         Place.Field.ID,
                         Place.Field.LAT_LNG,
                         Place.Field.NAME));
-        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        asfDest.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 destLngLat = place.getLatLng();
@@ -124,7 +138,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
                     costEstimator();
                 }
             }
-
             @Override
             public void onError(@NonNull Status status) {
                 Log.d("onPlaceSelected", "Error onPlaceSelected destination location");
@@ -140,7 +153,7 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         CostAlgorithm costAlgorithm = new CostAlgorithm(jsonParser.getDistanceValue(), jsonParser.getDurationValue());
         rideCost = costAlgorithm.RideCost();
 
-        String rideCostPreview = "$"+ rideCost;
+        rideCostPreview = ""+ rideCost;
         rideCostEditText.setText(rideCostPreview);
     }
 
@@ -148,14 +161,33 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         new RideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), rideCost);
     }
 
+    /* Correct input in the cost field - do this later */
+    private TextWatcher costWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            customCost = Double.parseDouble(rideCostEditText.getText().toString());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
+
     @Override
     public void onClick(View v) {
-        addNewRideRequest();
-        Intent intent = new Intent();
-        intent.putExtra("startLatLng", startLngLat);
-        intent.putExtra("destLatLng", destLngLat);
-        setResult(RESULT_OK, intent);
-        finish();
+        if(v.getId() == R.id.search_ride_button){
+            if(destLngLat != null && startLngLat != null)
+            {
+                addNewRideRequest();
+                Intent intent = new Intent();
+                intent.putExtra("startLatLng", startLngLat);
+                intent.putExtra("destLatLng", destLngLat);
+                setResult(RESULT_OK, intent);
+                finish();
+            } else { /* fix later */ }
+        }
     }
 
     @Override

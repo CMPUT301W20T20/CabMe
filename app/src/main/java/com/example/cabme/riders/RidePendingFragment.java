@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 
@@ -50,7 +51,7 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
                 trans.remove(RidePendingFragment.this);
                 trans.commit();
                 manager.popBackStack();
-                ((RiderMapActivity)getActivity()).recreateActivity(RecreateType.REQUEST_CANCELLED, 0, null);
+                ((HomeMapActivity)getActivity()).recreateActivity(RecreateType.REQUEST_CANCELLED, 0, null);
                 break;
             case R.id.ride_offers:
                 // list of driver offers activity

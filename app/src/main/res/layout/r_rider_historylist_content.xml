@@ -1,111 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp">
+    android:layout_margin="0dp"
+    app:cardCornerRadius="0dp"
+    android:elevation="0dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:orientation="vertical"
-        android:weightSum="100">
+        android:paddingBottom="15dp">
 
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/search_bg_grey" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:paddingTop="15dp"
+            android:paddingLeft="25dp"
+            android:paddingStart="25dp"
+            android:paddingRight="25dp"
+            android:paddingEnd="25dp"
+            android:orientation="vertical"
+            android:weightSum="100"
+            android:background="@color/quantum_white_100"
+            android:layout_below="@+id/separator">
 
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="start"
-                android:text="status"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/cost"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginRight="25dp"
-                android:gravity="end"
-                android:text="$0.00"
-                android:textSize="20dp" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="start"
+                    android:text="status"
+                    android:textSize="20dp"
+                    android:textColor="@color/quantum_black_100"/>
+
+                <TextView
+                    android:id="@+id/cost"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="end"
+                    android:text="$0.00"
+                    android:textSize="20dp"
+                    android:textColor="@color/quantum_black_100"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="start"
+                android:text="end address"
+                android:textSize="14dp"
+                android:textColor="@color/quantum_black_100"/>
+
+            <TextView
+                android:id="@+id/to"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="start"
+                android:text="start address"
+                android:textSize="14dp"
+                android:textColor="@color/quantum_black_100"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/driver_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="6dp"
+                    android:gravity="start"
+                    android:text="Driver"
+                    android:textSize="15dp"
+                    android:textColor="@color/quantum_black_100"/>
+
+                <Button
+                    android:id="@+id/driver_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="start"
+                    android:text="\@driverusername"
+                    android:textAllCaps="false"
+                    android:textSize="15dp"
+                    android:textColor="@color/cabme_accent_yellow"
+                    android:background="@color/fui_transparent"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+            </LinearLayout>
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/to_name"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginLeft="25dp"
-            android:gravity="start"
-            android:text="TO"
-            android:textStyle="bold"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/to"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-
-            android:gravity="start"
-            android:text="start address"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/from_name"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:gravity="start"
-            android:text="FROM"
-            android:textStyle="bold"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/from"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:gravity="start"
-            android:text="end address"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/driver_name"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
-            android:gravity="start"
-            android:text="Driver Name"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/driver_username"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:gravity="start"
-            android:text="\@driverusername"
-            android:textAllCaps="false"
-            android:textSize="15dp"
-            android:background="@color/fui_transparent"
-            style="@style/Widget.AppCompat.Button.Borderless"/>
-
-
-    </LinearLayout>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>
