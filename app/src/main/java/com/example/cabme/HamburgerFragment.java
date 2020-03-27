@@ -96,7 +96,7 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
         Intent intent;
         switch(v.getId()){
             case R.id.button_close:
-                getFragmentManager().beginTransaction().remove(HamburgerFragment.this).commit();
+                getParentFragmentManager().beginTransaction().remove(HamburgerFragment.this).commit();
                 break;
             case R.id.button_profile:
                 intent = new Intent(getContext(), ProfileActivity.class);
