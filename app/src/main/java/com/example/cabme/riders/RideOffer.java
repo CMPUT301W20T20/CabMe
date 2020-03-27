@@ -7,6 +7,7 @@ import android.os.PersistableBundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,7 @@ public class RideOffer extends AppCompatActivity {
 
     // Fire Store
     private FirebaseFirestore mFirestore;
-    private FirestoreRecyclerAdapter adapter;
+    private FirestoreRecyclerAdapter<RideOfferModel, RideOfferHolder> adapter;
     private RecyclerView recyclerView;
     Query query;
 
@@ -39,8 +40,8 @@ public class RideOffer extends AppCompatActivity {
     private User user;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState); /*if there are errors, use the simple onCreate method that takes only 1 parameter*/
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.r_offerlist_activity);
 
 
@@ -60,11 +61,11 @@ public class RideOffer extends AppCompatActivity {
 
 
         // Recycler Options
-        FirestoreRecyclerOptions<RiderHistoryListModel> options = new FirestoreRecyclerOptions.Builder<RiderHistoryListModel>()
-                .setQuery(query, RiderHistoryListModel.class)
+        FirestoreRecyclerOptions<RideOfferModel> options = new FirestoreRecyclerOptions.Builder<RideOfferModel>()
+                .setQuery(query, RideOfferModel.class)
                 .build();
 
-        adapter = new FirestoreRecyclerAdapter<RiderHistoryListModel, RideOfferHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<RideOfferModel, RideOfferHolder>(options) {
             @NonNull
             @Override
             public RideOfferHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -74,8 +75,12 @@ public class RideOffer extends AppCompatActivity {
 
             @SuppressLint("SetTextI18n")
             @Override
-            protected void onBindViewHolder(@NonNull RideOfferHolder holder, int position, @NonNull RiderHistoryListModel model) {
-                holder.status.setText(model.getStatus());
+            protected void onBindViewHolder(@NonNull RideOfferHolder holder, int position, @NonNull RideOfferModel model) {
+                holder.name.setText(model.getFirst() + " " + model.getLast());
+                holder.rating.setText(String.valueOf(model.getRating()));
+                holder.phone.setText(model.getPhone());
+                holder.email.setText(model.getEmail());
+
 
             }
         };
@@ -85,18 +90,15 @@ public class RideOffer extends AppCompatActivity {
 
 
     }
-    @Override
-    public void update(Observable o, Object arg) {
-    }
+
     /**
      * Purpose: is a "container" that holds all the information we need to display to the rider
      */
     private class RideOfferHolder extends RecyclerView.ViewHolder{
-        private TextView first;
-        private TextView last;
-        private TextView phone;
-        private TextView email;
+        private TextView name;
         private TextView rating;
+        private Button phone;
+        private Button email;
 
         /**
          * Purpose
@@ -104,9 +106,29 @@ public class RideOffer extends AppCompatActivity {
         public RideOfferHolder (@NonNull View itemView){
             super(itemView);
 
+            name = itemView.findViewById(R.id.fullname);
+            rating = itemView.findViewById(R.id.rating);
+            phone = itemView.findViewById(R.id.phone);
+            email = itemView.findViewById(R.id.email);
 
         }
     }
+    /**
+     * Purpose: stop listener at end of activity
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
 
+    /**
+     * purpose: set listener on start of activity
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
 
 }
