@@ -136,7 +136,7 @@ public class RiderHistoryListActivity extends AppCompatActivity implements Obser
             cost = itemView.findViewById(R.id.cost);
             to = itemView.findViewById(R.id.to);
             from = itemView.findViewById(R.id.from);
-            driverName = itemView.findViewById(R.id.driver_name);
+            driverName = itemView.findViewById(R.id.AcceptRide);
             driverUsername = itemView.findViewById(R.id.driver_username);
         }
     }
