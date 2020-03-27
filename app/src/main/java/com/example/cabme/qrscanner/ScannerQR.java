@@ -65,11 +65,5 @@ public class ScannerQR extends AppCompatActivity implements ZXingScannerView.Res
         Toast.makeText(ScannerQR.this, "Payment Received", Toast.LENGTH_LONG).show();
         vibrate = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         vibrate.vibrate(400);
-
-//        scannerView.setFlash(false);
-
-//        setContentView(R.layout.scanner);
-
-
     }
 }

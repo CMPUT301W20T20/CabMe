@@ -62,6 +62,10 @@
 
         <activity android:name=".maps.MapViewActivity" />
 
+        <activity android:name=".qrscanner.ScannerQR"/>
+        <activity android:name=".qrscanner.QRActivity"/>
+
+
         <activity android:name=".drivers.DriverRequestListActivity" />
 
         <activity android:name=".riders.RiderHistoryListActivity" />

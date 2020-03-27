@@ -10,7 +10,6 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.cabme.R;
-import com.example.cabme.qrscanner.QRActivity;
 import com.example.cabme.qrscanner.ScannerQR;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -82,12 +81,19 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
 
         });
 
-        AcceptPayment.setOnClickListener(v -> {
-            Toast.makeText(MapViewActivity.this, "Opening Scanner...", Toast.LENGTH_SHORT).show();
-//            Scanner needs to open here
+//        AcceptPayment.setOnClickListener(v -> {
+//            Toast.makeText(MapViewActivity.this, "Opening Scanner...", Toast.LENGTH_SHORT).show();
+////            Scanner needs to open here
+//
+////            Intent intent = new Intent(MapViewActivity.this, ScannerQR.class);
+////            startActivity(intent);
+//        });
 
-//            Intent intent = new Intent(MapViewActivity.this, ScannerQR.class);
-//            startActivity(intent);
+        AcceptPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapViewActivity.this, ScannerQR.class));
+            }
         });
 
     }
