@@ -34,7 +34,7 @@ import com.example.cabme.User;
 import com.example.cabme.maps.JsonParser;
 
 
-import com.example.cabme.riders.HamburgerFragment;
+import com.example.cabme.HamburgerFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;

@@ -65,7 +65,7 @@ public class TitleActivity extends AppCompatActivity {
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
+                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
                 intent.putExtra("user", uid);
                 intent.putExtra("userType", UserType.DRIVER);
                 startActivity(intent);
