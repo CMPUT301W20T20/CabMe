@@ -1,6 +1,8 @@
 package com.example.cabme;
 
-public class Rating {
+import java.io.Serializable;
+
+public class Rating implements Serializable {
     private int pos_rev;
     private int neg_rev;
 

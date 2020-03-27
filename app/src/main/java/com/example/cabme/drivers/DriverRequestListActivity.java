@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,21 +24,23 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
 import com.example.cabme.R;
+import com.example.cabme.User;
 import com.example.cabme.maps.JsonParser;
 
+
+import com.example.cabme.riders.HamburgerFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
@@ -45,11 +48,10 @@ import com.google.firebase.firestore.Query;
 // In other folders
 import com.example.cabme.maps.LongLat;
 import com.example.cabme.maps.MapViewActivity;
-import com.example.cabme.riders.RiderRequestsModel;
-
+import com.example.cabme.riders.RiderHistoryListModel;
 import java.util.Comparator;
 
-public class DriverRequestListActivity extends AppCompatActivity implements LocationListener {
+public class DriverRequestListActivity extends FragmentActivity implements LocationListener, View.OnClickListener {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
@@ -57,6 +59,7 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
     private String provider;
     private Driver driver;
     private FusedLocationProviderClient mFusedLocationClient;
+    private Bundle bundle;
     Query query;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
@@ -71,7 +74,6 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
         provider = locationManager.getBestProvider(new Criteria(), false);
         if (checkLocationPermission()) {
             Log.d("D", "Permissions passed");
-            Log.d("D", provider);
         }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -81,9 +83,12 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            Log.d("D", location.getProvider());
-                            Log.d("D", Double.toString(location.getLatitude()));
                             driver = new Driver(uid, location);
+                            driver.setDocumentListener();
+                            bundle = new Bundle();
+                            bundle.putSerializable("user", driver);
+                            ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
+                            hamburgerMenuBtn.setOnClickListener(DriverRequestListActivity.this);
                         }
                     }
                 });
@@ -93,18 +98,21 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
         db = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.request_list);
 
+
+
         // Query
         query = db.collection("testrequests");
 
 
         // Recycler options
-        FirestoreRecyclerOptions<RiderRequestsModel> options = new FirestoreRecyclerOptions.Builder<RiderRequestsModel>()
-                .setQuery(query.orderBy("rideCost"), RiderRequestsModel.class)
+        FirestoreRecyclerOptions<RiderHistoryListModel> options = new FirestoreRecyclerOptions.Builder<RiderHistoryListModel>()
+                .setQuery(query.orderBy("rideCost"), RiderHistoryListModel.class)
                 .build();
 
-        options.getSnapshots().sort(new Comparator<RiderRequestsModel>() {
+        // Sample Sort
+        options.getSnapshots().sort(new Comparator<RiderHistoryListModel>() {
             @Override
-            public int compare(RiderRequestsModel o1, RiderRequestsModel o2) {
+            public int compare(RiderHistoryListModel o1, RiderHistoryListModel o2) {
                 Location dLoc = driver.getLocation();
                 GeoPoint dGeo = new GeoPoint(dLoc.getLatitude(), dLoc.getLongitude());
                 JsonParser jp1 = new JsonParser(dGeo, o1.getStartLocation(), getString(R.string.google_maps_key));
@@ -113,7 +121,7 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
             }
         });
 
-        firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<RiderRequestsModel, RequestsViewHolder>(options) {
+        firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<RiderHistoryListModel, RequestsViewHolder>(options) {
             @NonNull
             @Override
             public RequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -122,7 +130,7 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull RiderRequestsModel model) {
+            protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull RiderHistoryListModel model) {
                 holder.itemView.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
@@ -191,6 +199,17 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
             sLocation = itemView.findViewById(R.id.slocation);
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        HamburgerFragment hamburgerFragment = new HamburgerFragment();
+        hamburgerFragment.setArguments(bundle);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, hamburgerFragment)
+                .commit();
+    }
+
 
 
     @Override

@@ -30,12 +30,13 @@ public class Driver extends User implements Serializable {
     private String uid;
     private String phone;
     private Rating rating;
-    private Location location;
+    private transient Location location;
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
 
 
     public Driver(String uid, Location loc) {
+        super(uid);
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
@@ -98,7 +99,6 @@ public class Driver extends User implements Serializable {
                 email = documentSnapshot.getString("email");
                 phone = documentSnapshot.getString("phone");
                 rating = documentSnapshot.get("rating", Rating.class);
-                location = documentSnapshot.get("location", Location.class);
                 Log.d("BIG", "UPDATE");
                 notifyObservers();
             }
@@ -112,5 +112,29 @@ public class Driver extends User implements Serializable {
 
     public Rating getRating() {
         return rating;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getUid() {
+        return uid;
     }
 }
