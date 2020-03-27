@@ -47,6 +47,7 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
     private Button logoutBtn;
 
     public User user;
+    private String TAG;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.r_hamburger_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
+        TAG = getTag();
+        Log.d(TAG, TAG);
         findViewsSetListeners(view);
         setNames();
         return view;
@@ -126,6 +129,9 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
         trans.remove(HamburgerFragment.this);
         trans.commit();
         manager.popBackStack();
-        ((RiderMapActivity)getActivity()).recreateActivity(RecreateType.PROFILE_UPDATE, 0, null);
+        if (TAG.equals("rider")) {
+            ((RiderMapActivity)getActivity()).recreateActivity(RecreateType.PROFILE_UPDATE, 0, null);
+        }
+
     }
 }

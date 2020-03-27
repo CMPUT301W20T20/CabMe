@@ -206,7 +206,7 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         hamburgerFragment.setArguments(bundle);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, hamburgerFragment)
+                .add(R.id.fragment_container, hamburgerFragment, "driver")
                 .commit();
     }
 

@@ -195,7 +195,7 @@ public class RiderMapActivity extends FragmentActivity implements OnMapReadyCall
         hamburgerFragment.setArguments(bundle);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, hamburgerFragment)
+                .add(R.id.fragment_container, hamburgerFragment, "rider")
                 .commit();
     }
 
