@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
+import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -113,9 +114,11 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
                             LongLat startLongLat = new LongLat(startLoc.getLongitude(), startLoc.getLatitude());
                             LongLat destLongLat = new LongLat(destLoc.getLongitude(), destLoc.getLatitude());
 
+
                             intent.putExtra("startLongLat", startLongLat);
                             intent.putExtra("destLongLat", destLongLat);
                             intent.putExtra("isRider", false);
+
 
                             startActivity(intent);
 

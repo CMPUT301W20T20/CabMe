@@ -78,21 +78,15 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
             Toast.makeText(MapViewActivity.this, "Offer is Accepted", Toast.LENGTH_LONG).show();
             AcceptPayment.setVisibility(View.VISIBLE);
             AcceptOffer.setVisibility(View.GONE);
-
+            //Delete the request from the Data base
         });
 
-//        AcceptPayment.setOnClickListener(v -> {
-//            Toast.makeText(MapViewActivity.this, "Opening Scanner...", Toast.LENGTH_SHORT).show();
-////            Scanner needs to open here
-//
-////            Intent intent = new Intent(MapViewActivity.this, ScannerQR.class);
-////            startActivity(intent);
-//        });
 
         AcceptPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MapViewActivity.this, ScannerQR.class));
+                Toast.makeText(MapViewActivity.this, "Opening Scanner...", Toast.LENGTH_SHORT).show();
             }
         });
 
