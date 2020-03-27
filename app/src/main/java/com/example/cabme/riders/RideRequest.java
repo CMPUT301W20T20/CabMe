@@ -17,11 +17,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 
+import java.sql.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -169,6 +172,7 @@ public class RideRequest {
         HashMap<String, Object> newRideRequest = new HashMap<>();
         newRideRequest.put("UIDdriver", UIDdriver);
         newRideRequest.put("UIDrider", UIDrider);
+        newRideRequest.put("offers", Arrays.asList(""));
         newRideRequest.put("distanceText", distanceText);
         newRideRequest.put("distanceValue", distanceValue);
         newRideRequest.put("durationText", durationText);
@@ -245,5 +249,17 @@ public class RideRequest {
         collectionReference
                 .document(UIDrider)
                 .set(data, SetOptions.merge());
+    }
+
+    public void addOffer(String UIDdriver){
+        collectionReference
+                .document(UIDrider)
+                .update("offers", FieldValue.arrayUnion(UIDdriver));
+    }
+
+    public void removeOffer(String UIDdriver){
+        collectionReference
+                .document(UIDrider)
+                .update("offers", FieldValue.arrayRemove(UIDdriver));
     }
 }

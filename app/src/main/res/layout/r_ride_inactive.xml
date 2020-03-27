@@ -30,7 +30,7 @@
                 android:textColor="@color/quantum_grey900" />
 
             <TextView
-                android:id="@+id/going_where"
+                android:id="@+id/question"
                 android:layout_width="match_parent"
                 android:textStyle="bold"
                 android:layout_height="40sp"
@@ -39,7 +39,7 @@
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/ride_new"
+                android:id="@+id/new_offer"
                 android:text="Request a Ride"
                 android:textColor="@color/quantum_black_100"
                 android:textAllCaps="false"

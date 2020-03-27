@@ -1,7 +1,9 @@
 package com.example.cabme;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,6 +25,7 @@ import com.example.cabme.maps.TaskLoadedCallback;
 import com.example.cabme.riders.RecreateType;
 import com.example.cabme.riders.RideInactiveFragment;
 import com.example.cabme.riders.RidePendingFragment;
+import com.example.cabme.riders.RideRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -58,6 +61,10 @@ import com.google.android.gms.tasks.Task;
 public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {
     private User user;
     private Bundle bundle;
+    private UserType userType;
+    private String rid;
+    private String uid;
+    private RideRequest request;
 
     private static final String TAG = "HomeMapActivity";
 
@@ -76,6 +83,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     private LatLng startLatLng;
     private LatLng destLatLng;
 
+    private boolean offered;
     /* fragments */
     RideInactiveFragment riderInactiveFragment;
     RidePendingFragment riderPendingFragment;
@@ -91,14 +99,15 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_map_activity);
+        offered = false;
 
         SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
         activeRide = sharedPreferences.getBoolean("activeRide", false);
 
-        String uid = getIntent().getStringExtra("user");
+        uid = getIntent().getStringExtra("user");
         user = new User(uid);
 
-        UserType userType = (UserType) getIntent().getSerializableExtra("userType");
+        userType = (UserType) getIntent().getSerializableExtra("userType");
         Log.wtf("USERTYPE", userType + "");
 
         findViewsSetListeners();
@@ -125,7 +134,18 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 }
                 break;
             case DRIVER:
-                getLocationPermission();
+                rid = getIntent().getStringExtra("request");
+                request = new RideRequest(rid);
+                if(activeRide){
+                    startLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("startLat", "")),
+                            Double.parseDouble(sharedPreferences.getString("startLng", "")));
+                    destLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("destLat", "")),
+                            Double.parseDouble(sharedPreferences.getString("destLng", "")));
+                    activeRideMapSetUp();
+                }
+                else{
+                    recreateActivity(RecreateType.REQUEST_SENT, RESULT_OK, this.getIntent());
+                }
                 break;
         }
     }
@@ -223,11 +243,43 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         hamburgerFragment.setArguments(bundle);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, hamburgerFragment, "rider")
+                .add(R.id.fragment_container, hamburgerFragment, userType.toString())
                 .commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (offered) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(HomeMapActivity.this);
+            builder
+                    .setTitle("Offer standing")
+                    .setMessage("To leave return, you must resend your offer. Do you wish to remove your offer?")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            manageOffer();
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+        else {
+            finish();
+        }
+    }
+
     /*----------------------------- MAPS/LOCATION/PERMISSION SETUP---------------------------------*/
+
+    public void manageOffer() {
+        if (offered) {
+            request.removeOffer(uid);
+        }
+        else {
+            request.addOffer(uid);
+        }
+        offered = !offered;
+    }
 
     /**
      * This is a callback function. It is called when the map is ready.

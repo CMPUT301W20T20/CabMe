@@ -35,7 +35,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
 
     private void findViewsSetListeners(View view){
         Button rideHistoryBtn = view.findViewById(R.id.ride_history);
-        Button rideNewBtn = view.findViewById(R.id.ride_new);
+        Button rideNewBtn = view.findViewById(R.id.new_offer);
         helloUser = view.findViewById(R.id.hello_user);
         rideHistoryBtn.setOnClickListener(this);
         rideNewBtn.setOnClickListener(this);
@@ -58,7 +58,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
                 intent.putExtra("user", user);
                 startActivity(intent);
                 break;
-            case R.id.ride_new:
+            case R.id.new_offer:
                 intent = new Intent(getContext(), RideRequestSearchActivity.class);
                 intent.putExtra("user", user);
                 startActivityForResult(intent, 1);

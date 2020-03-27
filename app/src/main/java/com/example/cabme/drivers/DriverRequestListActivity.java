@@ -21,7 +21,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -29,8 +28,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
+import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
-import com.example.cabme.User;
+import com.example.cabme.UserType;
 import com.example.cabme.maps.JsonParser;
 
 
@@ -39,6 +39,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,6 +50,7 @@ import com.google.firebase.firestore.Query;
 import com.example.cabme.maps.LongLat;
 import com.example.cabme.maps.MapViewActivity;
 import com.example.cabme.riders.RiderHistoryListModel;
+
 import java.util.Comparator;
 
 public class DriverRequestListActivity extends FragmentActivity implements LocationListener, View.OnClickListener {
@@ -60,6 +62,7 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
     private Driver driver;
     private FusedLocationProviderClient mFusedLocationClient;
     private Bundle bundle;
+    private UserType userType;
     Query query;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
@@ -69,7 +72,9 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_reqlist_activity);
 
+        userType = (UserType) getIntent().getSerializableExtra("userType");
         String uid = getIntent().getStringExtra("user");
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
         if (checkLocationPermission()) {
@@ -103,13 +108,12 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         // Query
         query = db.collection("testrequests");
 
-
         // Recycler options
         FirestoreRecyclerOptions<RiderHistoryListModel> options = new FirestoreRecyclerOptions.Builder<RiderHistoryListModel>()
                 .setQuery(query.orderBy("rideCost"), RiderHistoryListModel.class)
                 .build();
 
-        // Sample Sort
+        // Sample Sort --- REMOVE
         options.getSnapshots().sort(new Comparator<RiderHistoryListModel>() {
             @Override
             public int compare(RiderHistoryListModel o1, RiderHistoryListModel o2) {
@@ -138,14 +142,16 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                         GeoPoint startLoc = snapshot.getGeoPoint("startLocation");
                         GeoPoint destLoc = snapshot.getGeoPoint("endLocation");
                         if(destLoc != null && startLoc != null){
-                            Intent intent = new Intent(DriverRequestListActivity.this, MapViewActivity.class);
+                            Intent intent = new Intent(DriverRequestListActivity.this, HomeMapActivity.class);
 
-                            LongLat startLongLat = new LongLat(startLoc.getLongitude(), startLoc.getLatitude());
-                            LongLat destLongLat = new LongLat(destLoc.getLongitude(), destLoc.getLatitude());
+                            LatLng startLongLat = new LatLng(startLoc.getLatitude(), startLoc.getLongitude());
+                            LatLng destLongLat = new LatLng(destLoc.getLatitude(), destLoc.getLongitude());
 
-                            intent.putExtra("startLongLat", startLongLat);
-                            intent.putExtra("destLongLat", destLongLat);
-                            intent.putExtra("isRider", false);
+                            intent.putExtra("startLatLng", startLongLat);
+                            intent.putExtra("destLatLng", destLongLat);
+                            intent.putExtra("userType", userType);
+                            intent.putExtra("user", uid);
+                            intent.putExtra("request", snapshot.getId());
 
                             startActivity(intent);
 
