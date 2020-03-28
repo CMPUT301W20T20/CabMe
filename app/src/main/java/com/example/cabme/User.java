@@ -170,8 +170,6 @@ public class User extends Observable implements Serializable {
         return uid;
     }
 
-
-
     public void updateData(Map<String, Object> data) {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");

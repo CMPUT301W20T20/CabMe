@@ -32,8 +32,8 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
     }
 
     private void findViewsSetListeners(View view){
-        Button rideOffersBtn = view.findViewById(R.id.AcceptOffer);
-        Button rideCancelBtn = view.findViewById(R.id.AcceptPayment);
+        Button rideOffersBtn = view.findViewById(R.id.ViewOffers);
+        Button rideCancelBtn = view.findViewById(R.id.Cancel);
         rideOffersBtn.setOnClickListener(this);
         rideCancelBtn.setOnClickListener(this);
     }
@@ -42,7 +42,7 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         Intent intent;
         switch(v.getId()) {
-            case R.id.AcceptPayment:
+            case R.id.Cancel:
                 RideRequest rideRequest = new RideRequest(user.getUid());
                 rideRequest.updateRideStatus("Cancelled");
                 rideRequest.removeRequest();
@@ -53,10 +53,11 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
                 manager.popBackStack();
                 ((HomeMapActivity)getActivity()).recreateActivity(RecreateType.REQUEST_CANCELLED, 0, null);
                 break;
-            case R.id.AcceptOffer:
+            case R.id.ViewOffers:
                 // list of driver offers activity
                 getActivity().getFragmentManager().popBackStack(); /*not sure if we need to close this or not, i dont think so....*/
-                intent = new Intent(getActivity(), RideOffer.class);
+                intent = new Intent(getActivity(), RideOfferActivity.class);
+                intent.putExtra("user", user);
                 this.startActivity(intent);
                 break;
         }

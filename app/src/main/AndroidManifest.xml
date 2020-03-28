@@ -77,7 +77,7 @@
         <activity android:name=".riders.RiderHistoryListActivity" />
         <activity android:name=".riders.RideRequestSearchActivity" />
 
-        <activity android:name=".riders.RideOffer"
+        <activity android:name=".riders.RideOfferActivity"
                   android:exported="true"/>
 
 

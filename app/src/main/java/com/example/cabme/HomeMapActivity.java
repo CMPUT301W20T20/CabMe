@@ -52,7 +52,8 @@ import com.google.android.gms.tasks.Task;
  *
  * TODO:
  *  [ ] finish rider side basic no bug checks
- *  [no] should I even do a driver side
+ *  [ ] LOAD FROM FIRE BASE when you log in check if you have any requests in fireBase - Online
+ *  [x] opens from shared preference for backup
  *
  */
 public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {

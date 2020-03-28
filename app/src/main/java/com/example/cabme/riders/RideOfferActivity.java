@@ -1,4 +1,8 @@
 package com.example.cabme.riders;
+/**
+ * the onClick for email is from https://www.youtube.com/watch?v=nj-STGrL7Zc
+ * the onClick for calling is from https://www.youtube.com/watch?v=DiIXhdseGgY
+ */
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,22 +15,17 @@ import com.example.cabme.ProfileViewActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
-/**
- * TODO:
- *  [X] Geocode long & Lat in to from -> TAKE FROM JsonParser
- *  [ ] Status color changes
- */
-public class RiderHistoryListActivity extends AppCompatActivity{
+public class RideOfferActivity extends AppCompatActivity {
 
     /* Log Tags */
     private static final String TAG = "Firelog";
 
     /* Fire Store */
     private FirebaseFirestore mFirestore;
-    private RiderHistoryListAdapter adapter;
+    private RideOfferAdapter adapter;
     private RecyclerView recyclerView;
     private Query query;
     private Bundle bundle;
@@ -35,10 +34,10 @@ public class RiderHistoryListActivity extends AppCompatActivity{
     private User user;
 
     @Override
-    protected void onCreate(Bundle savedInstance){
-        super.onCreate(savedInstance);
-        setContentView(R.layout.r_rider_historylist_activity);
-        user = (User)getIntent().getSerializableExtra("user"); // get intent
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.r_offerlist_activity);
+        user = (User) getIntent().getSerializableExtra("user"); // get intent
         mFirestore = FirebaseFirestore.getInstance(); // starting the database references
         setUpRecyclerView();
     }
@@ -47,20 +46,23 @@ public class RiderHistoryListActivity extends AppCompatActivity{
      * Sets up the recycler view, its options etc
      */
     private void setUpRecyclerView(){
-        query = mFirestore //getting the ridehistory collection in the user's document
-                .collection("users")
+        /* getting the offers subcollection in testrequests */
+        query = mFirestore
+                .collection("testrequests")
                 .document(user.getUid())
-                .collection("ridehistory");
+                .collection("offers");
+
+        Log.wtf("Check", "" + user.getUid());
 
         /* set options */
-        FirestoreRecyclerOptions<RiderHistoryListModel> options = new FirestoreRecyclerOptions.Builder<RiderHistoryListModel>()
-                .setQuery(query, RiderHistoryListModel.class)
+        FirestoreRecyclerOptions<RideOfferModel> options = new FirestoreRecyclerOptions.Builder<RideOfferModel>()
+                .setQuery(query, RideOfferModel.class)
                 .build();
 
         /* set the adapter */
-        adapter = new RiderHistoryListAdapter(options);
+        adapter = new RideOfferAdapter(options);
 
-        /* set up recycler view */
+        /*recycleview settings*/
         recyclerView = findViewById(R.id.recycleView); // setting recycleview
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -68,7 +70,7 @@ public class RiderHistoryListActivity extends AppCompatActivity{
 
         /* on click listen for thr adapter opens profile fragment */
         adapter.setOnItemClickListener((documentSnapshot, position) -> {
-            String driverID = documentSnapshot.getString("UIDdriver");
+            String driverID = documentSnapshot.getString("UID");
             bundle = new Bundle();
             bundle.putSerializable("uid", driverID);
             Log.wtf("UID", driverID+"");
@@ -76,13 +78,13 @@ public class RiderHistoryListActivity extends AppCompatActivity{
             profileViewActivity.setArguments(bundle);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.r_historylist_activity, profileViewActivity)
+                    .add(R.id.r_offerlist_activity, profileViewActivity)
                     .commit();
         });
     }
 
     /**
-     * Stop listener at end of activity
+     * Purpose: set listener on start of activity
      */
     @Override
     protected void onStart() {
@@ -91,7 +93,7 @@ public class RiderHistoryListActivity extends AppCompatActivity{
     }
 
     /**
-     * Set listener on start of activity
+     * Purpose: stop listener at end of activity
      */
     @Override
     protected void onStop() {

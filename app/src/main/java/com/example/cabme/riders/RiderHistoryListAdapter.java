@@ -1,10 +1,8 @@
 package com.example.cabme.riders;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +14,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-public class RiderRequestsListAdapter extends FirestoreRecyclerAdapter<RiderHistoryListModel, RiderRequestsListAdapter.RiderRequestsViewHolder> {
+public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHistoryListModel, RiderHistoryListAdapter.RiderRequestsViewHolder> {
     private String driverUID;
     private OnItemClickListener listener;
 
-    public RiderRequestsListAdapter(@NonNull FirestoreRecyclerOptions<RiderHistoryListModel> options) {
+    public RiderHistoryListAdapter(@NonNull FirestoreRecyclerOptions<RiderHistoryListModel> options) {
         super(options);
     }
 
@@ -39,9 +37,8 @@ public class RiderRequestsListAdapter extends FirestoreRecyclerAdapter<RiderHist
             driver.readData((email, firstname, lastname, username, phone, rating) -> {
 //                String driverFullName = "Your ride with " + firstname + " " + lastname"
                 String driverFullName = "Your ride with";
-                String ATusername = "@" + username;
                 holder.driverName.setText(driverFullName);
-                holder.driverUsername.setText(ATusername);
+                holder.driverUsername.setText(String.format("@%s", username));
             });
         } else {
             holder.driverName.setVisibility(View.GONE);
@@ -72,13 +69,10 @@ public class RiderRequestsListAdapter extends FirestoreRecyclerAdapter<RiderHist
             from = itemView.findViewById(R.id.from);
             driverName = itemView.findViewById(R.id.driver_name);
             driverUsername = itemView.findViewById(R.id.driver_username);
-            driverUsername.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null){
-                        int position = getAdapterPosition();
-                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
-                    }
+            driverUsername.setOnClickListener(v -> {
+                if(listener != null){
+                    int position = getAdapterPosition();
+                    listener.onItemClick(getSnapshots().getSnapshot(position), position);
                 }
             });
         }
