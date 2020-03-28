@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cabme.drivers.DriveInactiveFragment;
 import com.example.cabme.maps.FetchURL;
@@ -54,6 +56,8 @@ import com.google.android.gms.tasks.Task;
  *  [ ] finish rider side basic no bug checks
  *  [ ] LOAD FROM FIRE BASE when you log in check if you have any requests in fireBase - Online
  *  [x] opens from shared preference for backup
+ *  [ ] COMMENTS :/
+ *  [x] fix fragments stacking
  *
  */
 public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {
@@ -85,7 +89,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     /**
      * Checks for the bundle.
      *
-     * @param savedInstanceState
+     * @param savedInstanceState savedInstanceState
      *
      */
     @Override
@@ -93,12 +97,15 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_map_activity);
 
+        /* check if there is an active ride saved in SharedPrefs */
         SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
+        /* set active ride to true if there is, otherwise false */
         activeRide = sharedPreferences.getBoolean("activeRide", false);
 
+        /* get the intent passed */
         String uid = getIntent().getStringExtra("user");
         user = new User(uid);
-
+        /* get the type of user */
         UserType userType = (UserType) getIntent().getSerializableExtra("userType");
         Log.wtf("USERTYPE", userType + "");
 
@@ -111,6 +118,11 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     /*----------------------------- SUP. ON CREATE ------------------------------------------------*/
 
+    /**
+     * sets the gets the map type depending on what kind of user a person is (rider, driver)
+     * @param sharedPreferences the information containing if there was an active ride saved
+     * @param userType the typer of user a user is (rider, driver)
+     */
     public void getMapType(SharedPreferences sharedPreferences, UserType userType){
         switch (userType){
             case RIDER:
@@ -131,13 +143,20 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * Shows the fragment types shown to either type of user
+     * @param userType the type of user a person using the app is
+     */
     public void getFragmentType(UserType userType){
         bundle = new Bundle();
         bundle.putSerializable("user", user);
         switch (userType){
+            /* cases for is the user is a rider */
             case RIDER:
                 Log.wtf("USERTYPE", "rider goes here");
+                /* if there is already an active ride and they are a rider */
                 if(activeRide){
+                    /* show the ride pending offers fragment on screen */
                     riderPendingFragment = new RidePendingFragment();
                     riderPendingFragment.setArguments(bundle);
                     getSupportFragmentManager()
@@ -145,7 +164,9 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                             .add(R.id.fragment_container, riderPendingFragment)
                             .commit();
                 }
+                /* there is no active ride */
                 else {
+                    /* show the inactive fragment where the user can view history and request a ride */
                     riderInactiveFragment = new RideInactiveFragment();
                     riderInactiveFragment.setArguments(bundle);
                     getSupportFragmentManager()
@@ -154,6 +175,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                             .commit();
                 }
                 break;
+            /* cases for is the user is a driver */
             case DRIVER:
                 Log.wtf("USERTYPE", "driver goes here");
                 driverInactiveFragment = new DriveInactiveFragment();
@@ -166,16 +188,26 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * I mean, it finds the views and sets the listeners
+     */
     public void findViewsSetListeners(){
         ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
         hamburgerMenuBtn.setOnClickListener(this);
     }
 
+    /**
+     * handles each time the activity is recreated
+     * @param recreateType the type of recreation; what is recreated
+     * @param resultCode the result code from onActivityResult
+     * @param data the intent
+     */
     public void recreateActivity(RecreateType recreateType, int resultCode, Intent data){
         SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         switch(recreateType){
-            case REQUEST_SENT: // recreate on request sent
+            /* recreate on request sent */
+            case REQUEST_SENT:
                 if(resultCode==RESULT_OK){
                     startLatLng = data.getParcelableExtra("startLatLng");
                     destLatLng = data.getParcelableExtra("destLatLng");
@@ -190,20 +222,24 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 }
                 else { recreate(); }
                 break;
+            /* recreate when cancelled */
             case REQUEST_CANCELLED: // recreate on request cancelled
                 activeRide = false;
+                /* remove the lication values */
                 editor.remove("startLat");
                 editor.remove("startLng");
                 editor.remove("destLat");
                 editor.remove("destLng");
+                /* communicate that the active ride is false */
                 editor.putBoolean("activeRide", activeRide);
                 editor.apply();
+                /* recreate the activity */
                 recreate();
                 break;
-            case PROFILE_UPDATE: // recreate on profile change
+            /* when the profile is updated recreate to show the changes*/
+            case PROFILE_UPDATE:
                 Log.wtf("RIDER MAP", "Successful ON HERE");
-                editor.putBoolean("activeRide", activeRide);
-                editor.apply();
+                getSupportFragmentManager().beginTransaction().remove(riderInactiveFragment).commit();
                 recreate();
                 break;
 
@@ -212,12 +248,22 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     /*----------------------------- OVERRIDES -----------------------------------------------------*/
 
+    /**
+     * When an activity is started for a result
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         recreateActivity(RecreateType.REQUEST_SENT, resultCode, data);
     }
 
+    /**
+     * Handle the clicking in the acitvity
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         HamburgerFragment hamburgerFragment = new HamburgerFragment();
@@ -246,6 +292,10 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * Method to set up the map when there is no current active rides
+     * @param mMap the google map to set up
+     */
     private  void inactiveMapRideOnReady(GoogleMap mMap){
         if (mLocationPermissionsGranted) {
             getDeviceLocation();
@@ -260,18 +310,22 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * Gets the user's device location and checks for permissions
+     */
     private void getDeviceLocation(){
         FusedLocationProviderClient mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         try{
             if(mLocationPermissionsGranted){
-
+                /* get the last location of device */
                 final Task location = mFusedLocationProviderClient.getLastLocation();
+                /* listen to if there is a location found */
                 location.addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         Log.d(TAG, "onComplete: found location!");
                         Location currentLocation = (Location) task.getResult();
-
+                        /* this method will move the view on the map  to you current location*/
                         moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                 DEFAULT_ZOOM);
 
@@ -286,25 +340,42 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * Moves the camera of the maps view
+     * @param latLng the longitude and latitude to start the view of the camera
+     * @param zoom the zoom amount, how zoomed in the view will be
+     */
     private void moveCamera(LatLng latLng, float zoom){
+        /* if there is an active ride */
         if(activeRide){
+            /* show the camera with two location points */
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             builder.include(startLatLng);
             builder.include(destLatLng);
             mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng , DEFAULT_ZOOM) );
             mMap.setOnMapLoadedCallback(() -> mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 80)));
         }else{
+            /* otherwise, just set at the current location */
             Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         }
     }
 
+    /**
+     * Initialize the map fragment
+     */
     private void initMap(){
         Log.d(TAG, "initMap: initializing map");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(HomeMapActivity.this);
     }
 
+    /**
+     * Method to get the phone permissions of the user
+     * - This is optional.
+     * - If they deny long,late will be 0, 0
+     * - If they accept it will show their current location
+     */
     private void getLocationPermission(){
         Log.d(TAG, "getLocationPermission: getting location permissions");
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
@@ -352,27 +423,40 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * The map set up for if there is an active ride up for the user either in the database or from
+     * the shared preferences
+     */
     public void activeRideMapSetUp(){
         initMap();
+        /* sets the locations on the map */
         markStart = new MarkerOptions().position(startLatLng).title("Start Location");
         markDest = new MarkerOptions().position(destLatLng).title("Destination Location");
         markStart.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_start_30));
         markDest.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_dest_30));
+        /* fetches the url */
         new FetchURL(HomeMapActivity.this)
                 .execute(getUrl(markStart.getPosition(), markDest.getPosition(), "driving"), "driving");
     }
 
+    /**
+     * Just a method to set up the map
+     */
     public void activeRideMapOnReady(){
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         moveCamera(startLatLng, DEFAULT_ZOOM);
         addMarkers();
     }
 
+    /**
+     * Adds the markers on the map
+     */
     public void addMarkers(){
         mMap.addMarker(markStart);
         mMap.addMarker(markDest);
     }
 
+    /* gets the url of the google maps directions info */
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
@@ -388,6 +472,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         return url;
     }
 
+    /* when done with the map set up, draw the polylines between locations */
     @Override
     public void onTaskDone(Object... values) {
         if (currPolyline != null)

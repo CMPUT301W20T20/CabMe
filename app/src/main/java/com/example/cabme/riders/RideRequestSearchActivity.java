@@ -50,6 +50,7 @@ import java.util.Arrays;
  *  [ ] Text Watcher - err.ch. valid input
  *  [ ] OnClick - else
  *  [ ] Handle case where there is NO DRIVABLE ROUTE between locations coz app goes nuts and crashes
+ *  [ ] comments
  *
  */
 public class RideRequestSearchActivity extends AppCompatActivity implements View.OnClickListener {

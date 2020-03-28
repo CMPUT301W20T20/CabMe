@@ -33,6 +33,7 @@ public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHisto
         holder.cost.setText(dollarSign);
         if(!driverUID.equals(""))
         {
+            /* set all the data in the holders from driver */
             Driver driver = new Driver(driverUID);
             driver.readData((email, firstname, lastname, username, phone, rating) -> {
 //                String driverFullName = "Your ride with " + firstname + " " + lastname"
@@ -41,6 +42,7 @@ public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHisto
                 holder.driverUsername.setText(String.format("@%s", username));
             });
         } else {
+            /* if there is no driver just set the views to gone */
             holder.driverName.setVisibility(View.GONE);
             holder.driverUsername.setVisibility(View.GONE);
         }
@@ -53,6 +55,9 @@ public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHisto
         return new RiderRequestsViewHolder(view);
     }
 
+    /**
+     * Holds all the textviews
+     */
     class RiderRequestsViewHolder extends RecyclerView.ViewHolder{
         private TextView status;
         private TextView to;
@@ -61,6 +66,7 @@ public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHisto
         private TextView cost;
         private TextView driverUsername;
 
+        /* find the right view and assign */
         public RiderRequestsViewHolder(@NonNull View itemView) {
             super(itemView);
             status = itemView.findViewById(R.id.status);
@@ -69,8 +75,9 @@ public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHisto
             from = itemView.findViewById(R.id.from);
             driverName = itemView.findViewById(R.id.driver_name);
             driverUsername = itemView.findViewById(R.id.driver_username);
+            /* on click of the drivers user name, pass snapshot of it */
             driverUsername.setOnClickListener(v -> {
-                if(listener != null){
+                if(listener != null){ /* only if the listener is not null */
                     int position = getAdapterPosition();
                     listener.onItemClick(getSnapshots().getSnapshot(position), position);
                 }

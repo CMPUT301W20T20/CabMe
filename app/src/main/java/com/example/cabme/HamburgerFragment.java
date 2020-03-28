@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cabme.riders.RecreateType;
+import com.example.cabme.riders.RideInactiveFragment;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 /**
