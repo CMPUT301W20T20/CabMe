@@ -37,7 +37,8 @@ public class RiderRequestsListAdapter extends FirestoreRecyclerAdapter<RiderHist
         {
             Driver driver = new Driver(driverUID);
             driver.readData((email, firstname, lastname, username, phone, rating) -> {
-                String driverFullName = firstname + " " + lastname;
+//                String driverFullName = "Your ride with " + firstname + " " + lastname"
+                String driverFullName = "Your ride with";
                 String ATusername = "@" + username;
                 holder.driverName.setText(driverFullName);
                 holder.driverUsername.setText(ATusername);

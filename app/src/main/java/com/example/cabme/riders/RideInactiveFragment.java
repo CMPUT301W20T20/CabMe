@@ -30,7 +30,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.r_ride_inactive, container, false);
         user = (User) getArguments().getSerializable("user");
         findViewsSetListeners(view);
-//        setWelcome();
+        setWelcome();
         return view;
     }
 

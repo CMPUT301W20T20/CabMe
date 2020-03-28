@@ -30,91 +30,165 @@
         android:orientation="vertical"
         android:layout_below="@+id/title">
 
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:paddingLeft="25dp"
-            android:paddingStart="25dp"
-            android:paddingRight="25dp"
-            android:paddingEnd="25dp"
-            android:ems="10"
-            android:hint="User Name"
-            android:enabled="false"
-            android:inputType="textPersonName" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/search_bg_grey" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/firstname"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:paddingLeft="25dp"
-            android:paddingStart="25dp"
-            android:paddingRight="25dp"
-            android:paddingEnd="25dp"
-            android:ems="10"
-            android:hint="First Name"
-            android:enabled="false"
-            android:inputType="textPersonName" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_at_grey_24dp"
+                android:layout_marginStart="25dp" />
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="Username"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/search_bg_grey" />
 
-        <EditText
-            android:id="@+id/lastname"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:paddingLeft="25dp"
-            android:paddingStart="25dp"
-            android:paddingRight="25dp"
-            android:paddingEnd="25dp"
-            android:ems="10"
-            android:hint="Last Name"
-            android:enabled="false"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_fn_grey_24dp"
+                android:layout_marginStart="25dp" />
+
+            <EditText
+                android:id="@+id/firstname"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="First Name"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/search_bg_grey" />
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:paddingLeft="25dp"
-            android:paddingStart="25dp"
-            android:paddingRight="25dp"
-            android:paddingEnd="25dp"
-            android:ems="10"
-            android:hint="Email"
-            android:enabled="false"
-            android:inputType="textEmailAddress" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_ln_grey_24dp"
+                android:layout_marginStart="25dp" />
+
+            <EditText
+                android:id="@+id/lastname"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="Last Name"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/search_bg_grey" />
 
-        <EditText
-            android:id="@+id/phone"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_email_grey_24dp"
+                android:layout_marginStart="25dp" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="Email"
+                android:enabled="false"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:paddingLeft="25dp"
-            android:paddingStart="25dp"
-            android:paddingRight="25dp"
-            android:paddingEnd="25dp"
-            android:ems="10"
-            android:hint="Phone"
-            android:enabled="false"
-            android:inputType="phone" />
+            android:layout_height="2dp"
+            android:background="@color/search_bg_grey" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_phone_grey_24dp"
+                android:layout_marginStart="25dp" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="Phone"
+                android:enabled="false"
+                android:inputType="phone" />
+        </LinearLayout>
+
+
 
         <View
             android:layout_width="match_parent"
@@ -126,15 +200,16 @@
             android:id="@+id/saveprofile"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="25dp"
             android:layout_marginLeft="25dp"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
             android:layout_marginRight="25dp"
-            android:background="@color/search_bg_grey"
+            android:background="@color/cabme_accent_blue"
             style="?android:attr/borderlessButtonStyle"
             android:text="Save"
             android:textAllCaps="false"
-            android:textColor="@color/quantum_black_100"
+            android:textColor="@color/quantum_white_100"
             android:visibility="gone" />
 
         <Button
@@ -146,11 +221,11 @@
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
             android:layout_marginRight="25dp"
-            android:background="@color/cabme_accent_blue"
+            android:background="@color/search_bg_grey"
             style="?android:attr/borderlessButtonStyle"
             android:text="Edit Profile"
             android:textAllCaps="false"
-            android:textColor="@color/quantum_white_100" />
+            android:textColor="@color/quantum_grey600"/>
 
         <Button
             android:id="@+id/deletedprofile"

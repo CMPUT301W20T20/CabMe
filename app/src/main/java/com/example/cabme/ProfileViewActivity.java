@@ -1,5 +1,7 @@
 package com.example.cabme;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ public class ProfileViewActivity extends Fragment implements View.OnClickListene
     private TextView driverRating;
     private TextView phoneNumber;
     private TextView emailAddress;
+    private User user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,7 @@ public class ProfileViewActivity extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.profile_view_activity, container, false);
         String uid = (String) getArguments().getSerializable("uid");
-        User user = new User(uid);
+        user = new User(uid);
         Driver driver = new Driver(uid);
         findViewsSetListeners(view);
         setInformation(user, driver);
@@ -56,7 +59,7 @@ public class ProfileViewActivity extends Fragment implements View.OnClickListene
         user.readData((email, firstname, lastname, username, phone, rating) -> {
             String fullname = firstname + " " + lastname;
             this.fullname.setText(fullname);
-            this.username.setText(username);
+            this.username.setText(String.format("@%s", username));
             this.phoneNumber.setText(phone);
             this.emailAddress.setText(email);
         });
@@ -69,10 +72,21 @@ public class ProfileViewActivity extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.phonenumber:
-                // call number
+                user.readData((email, firstname, lastname, username, phone, rating) -> {
+                    String uri = "tel:" + phone.trim() ;
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse(uri));
+                    startActivity(intent);
+                });
                 break;
             case R.id.emailaddress:
-                // email them
+                user.readData((email, firstname, lastname, username, phone, rating) -> {
+                    String eSubj = username + " from CabMe messaged you";
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Uri data = Uri.parse("mailto:?to="+ email + "&subject=" + eSubj + "&body=" + "body");
+                    intent.setData(data);
+                    startActivity(intent);
+                });
                 break;
             case R.id.button_close:
                 getParentFragmentManager().beginTransaction().remove(ProfileViewActivity.this).commit();

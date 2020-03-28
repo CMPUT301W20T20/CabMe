@@ -13,7 +13,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/hamburger_menu"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         app:cardElevation="50dp"
         app:cardBackgroundColor="@color/quantum_white_100">
@@ -45,8 +45,7 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginBottom="30dp"
-                android:textColor="@color/cabme_accent_yellow"
-                android:textStyle="bold"
+                android:textColor="@color/quantum_grey600"
                 android:textSize="15dp" />
 
             <Button
