@@ -20,6 +20,7 @@ import com.example.cabme.ProfileActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.example.cabme.riders.RecreateType;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 /**
@@ -111,11 +112,17 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
                 startActivityForResult(intent, 1);
                 break;
             case R.id.button_switch_user_type:
-                getActivity().onBackPressed();
+                intent = new Intent(getActivity(), TitleActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 break;
             case R.id.button_balance:
                 break;
             case R.id.button_logout:
+                FirebaseAuth.getInstance().signOut();
+                intent = new Intent(getContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 break;
 
         }

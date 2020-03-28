@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
  * Imported Classes
  */
 import com.example.cabme.drivers.DriverRequestListActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class TitleActivity extends AppCompatActivity {
     private Button profileButton;
@@ -48,6 +49,7 @@ public class TitleActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
                 finish();
             }
         });
