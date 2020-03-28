@@ -67,33 +67,30 @@
 
         <Button
             android:id="@+id/phone"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="28dp"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:layout_marginBottom="20dp"
+            android:background="@color/fui_transparent"
             android:gravity="start"
             android:text="PHONE"
-            android:textStyle="bold"
             android:textSize="20dp"
-            android:background="@color/fui_transparent"
-            style="@style/Widget.AppCompat.Button.Borderless"/>
-
-
+            android:textStyle="bold" />
 
 
         <Button
             android:id="@+id/email"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
+            android:background="@color/fui_transparent"
             android:gravity="start"
             android:text="\@email"
             android:textAllCaps="false"
-            android:textSize="20dp"
-            android:background="@color/fui_transparent"
-            style="@style/Widget.AppCompat.Button.Borderless"/>
+            android:textSize="20dp" />
 
 
     </LinearLayout>
