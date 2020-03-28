@@ -82,20 +82,32 @@
             android:text="PHONE"
             android:textSize="20dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/email"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
+            android:layout_width="249dp"
+            android:layout_height="35dp"
             android:background="@color/fui_transparent"
             android:gravity="start"
             android:text="\@email"
             android:textAllCaps="false"
             android:textSize="20dp" />
 
+        <Button
+            android:id="@+id/accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Accpet"
+            android:background="@color/fui_transparent"
+            android:textSize="15dp" />
+    </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

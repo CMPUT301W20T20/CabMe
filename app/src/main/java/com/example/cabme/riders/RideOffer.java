@@ -93,48 +93,29 @@ public class RideOffer extends AppCompatActivity {
                 holder.phone.setText(model.getPhone());
                 holder.email.setText(model.getEmail());
 
+                /*onClick listener to start email intent*/
                 holder.email.setOnClickListener(new View.OnClickListener() {
-                    /**
-                     * Purpose: this is the onClick to open the email intent, with the recipients name passed through
-                     * @param v
-                     */
                     @Override
                     public void onClick(View v) {
                         String recipientList = holder.email.getText().toString();
-                        String [] recipient = recipientList.split(",");
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.setData(Uri.parse("mailto:"));
-                        intent.putExtra(Intent.EXTRA_EMAIL, recipient);
-                        intent.setType("message/rfc822"); //MIME type rcf822
-                        startActivity(intent);
+                        emailIntent(recipientList);
                     }
                 });
 
-
+                /*onClick listener to start phone intent*/
                 holder.phone.setOnClickListener(new View.OnClickListener() {
-                    /**
-                     * Purpose: onClick that first requests permission for the phone app, then calls the phone number
-                     * @param v
-                     */
                     @Override
                     public void onClick(View v) {
                         String phone = holder.phone.getText().toString();
-
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(RideOffer.this, Manifest.permission.CALL_PHONE)) {
-                            ActivityCompat.requestPermissions(RideOffer.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PERMISSION);
-                        } else {
-                            Intent callIntent = new Intent(Intent.ACTION_CALL);
-                            callIntent.setData(Uri.parse("tel:" + phone));
-                            if (ActivityCompat.checkSelfPermission(RideOffer.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                                startActivity(callIntent);
-                            }
-                        }
+                        phoneIntent(phone);
                     }
                 });
+
+
             }
         };
 
-        /*recycleview settings*/
+        /*recyclerview settings*/
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -151,6 +132,7 @@ public class RideOffer extends AppCompatActivity {
         private TextView rating;
         private Button phone;
         private Button email;
+
 
         /**
          * Purpose: contains all the respective button and text views
@@ -182,6 +164,36 @@ public class RideOffer extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         adapter.startListening();
+    }
+
+    /**
+     * Purpose: first requests permission, then opens the phone app
+     * @param phone
+     */
+    private void phoneIntent(String phone){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(RideOffer.this, Manifest.permission.CALL_PHONE)) {
+            ActivityCompat.requestPermissions(RideOffer.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PERMISSION);
+        } else {
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + phone));
+            if (ActivityCompat.checkSelfPermission(RideOffer.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                startActivity(callIntent);
+            }
+        }
+    }
+
+    /**
+     * Purpose: open the email intent, with the recipients name passed through
+     * @param recipientList
+     */
+    private void emailIntent(String recipientList){
+
+        String [] recipient = recipientList.split(",");
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, recipient);
+        intent.setType("message/rfc822"); //MIME type rcf822
+        startActivity(intent);
     }
 
 }
