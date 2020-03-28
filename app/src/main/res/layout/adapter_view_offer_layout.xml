@@ -26,14 +26,18 @@
                 android:layout_height="match_parent"
                 android:gravity="start"
                 android:text="Username"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textAllCaps="true"/>
 
             <TextView
                 android:id="@+id/rating"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Rating" />
+                android:text="3.4"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/cabme_accent_yellow"/>
 
 
         </LinearLayout>
@@ -41,29 +45,30 @@
 
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/contactInfo"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="start"
-                android:text="NAME"
+                android:text="Contact Info"
                 android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="30dp" />
 
 
 
         <TextView
             android:id="@+id/fullname"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:gravity="start"
             android:text="full name"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/phone"
@@ -75,8 +80,7 @@
             android:background="@color/fui_transparent"
             android:gravity="start"
             android:text="PHONE"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textSize="20dp" />
 
 
         <Button
