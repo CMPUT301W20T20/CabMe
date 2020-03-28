@@ -143,7 +143,7 @@ public class RideOffer extends AppCompatActivity {
     }
 
     /**
-     * Purpose: is a "container" that holds all the information we need to display to the rider
+     * Purpose: "container" that holds all the information we need to display to the rider
      */
     private class RideOfferHolder extends RecyclerView.ViewHolder{
         private TextView name;
@@ -153,7 +153,7 @@ public class RideOffer extends AppCompatActivity {
         private Button email;
 
         /**
-         * Purpose
+         * Purpose: contains all the respective button and text views
          */
         public RideOfferHolder (@NonNull View itemView){
             super(itemView);
