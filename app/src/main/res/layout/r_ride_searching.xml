@@ -23,7 +23,7 @@
             android:padding="13dp">
 
             <Button
-                android:id="@+id/ride_offers"
+                android:id="@+id/AcceptOffer"
                 android:text="View Offers"
                 android:textColor="@color/quantum_black_100"
                 android:textAllCaps="false"
@@ -36,7 +36,7 @@
             </Button>
 
             <Button
-                android:id="@+id/ride_cancel"
+                android:id="@+id/AcceptPayment"
                 android:text="Cancel Request"
                 android:textAllCaps="false"
                 android:textColor="@color/quantum_white_100"

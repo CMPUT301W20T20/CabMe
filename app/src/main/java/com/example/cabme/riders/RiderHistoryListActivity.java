@@ -85,4 +85,3 @@ public class RiderHistoryListActivity extends AppCompatActivity{
         adapter.stopListening();
     }
 }
-

@@ -8,34 +8,52 @@
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        tools:context="com.example.mapwithmarker.MapsMarkerActivity"
         android:layout_width="match_parent"
-        android:layout_height="550dp" />
+        android:layout_height="match_parent"
+        tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
 
-    <Button
-        android:id="@+id/driver_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:text="Driver's Name (Clickable)"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_below="@+id/map" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:padding="13dp">
 
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="65dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
-        android:text="Back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/AcceptOffer"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/cabme_button_blue"
+            android:text="Accept Offer"
+            android:textAllCaps="false"
+            android:textColor="@color/quantum_black_100">
+
+        </Button>
+
+        <Button
+            android:id="@+id/AcceptPayment"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@color/cabme_cancel_red"
+            android:shadowColor="@color/fui_transparent"
+            android:text="Receive Payment"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:textColor="@color/quantum_white_100" />
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -186,7 +187,9 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
                 intent.putExtra("destLatLng", destLngLat);
                 setResult(RESULT_OK, intent);
                 finish();
-            } else { /* fix later */ }
+            } else {
+                Toast.makeText(RideRequestSearchActivity.this,"Empty Field(s) not valid", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

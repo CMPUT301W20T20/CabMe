@@ -55,6 +55,7 @@
                 android:id="@+id/ride_history"
                 android:text="/ you can remove /"
                 android:textAllCaps="false"
+                android:visibility="gone"
                 android:textColor="@color/quantum_white_100"
                 android:shadowColor="@color/fui_transparent"
                 android:background="@drawable/cabme_button_blue"

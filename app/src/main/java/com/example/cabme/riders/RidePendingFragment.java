@@ -32,8 +32,8 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
     }
 
     private void findViewsSetListeners(View view){
-        Button rideOffersBtn = view.findViewById(R.id.ride_offers);
-        Button rideCancelBtn = view.findViewById(R.id.ride_cancel);
+        Button rideOffersBtn = view.findViewById(R.id.AcceptOffer);
+        Button rideCancelBtn = view.findViewById(R.id.AcceptPayment);
         rideOffersBtn.setOnClickListener(this);
         rideCancelBtn.setOnClickListener(this);
     }
@@ -42,7 +42,7 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         Intent intent;
         switch(v.getId()) {
-            case R.id.ride_cancel:
+            case R.id.AcceptPayment:
                 RideRequest rideRequest = new RideRequest(user.getUid());
                 rideRequest.updateRideStatus("Cancelled");
                 rideRequest.removeRequest();
@@ -53,7 +53,7 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
                 manager.popBackStack();
                 ((HomeMapActivity)getActivity()).recreateActivity(RecreateType.REQUEST_CANCELLED, 0, null);
                 break;
-            case R.id.ride_offers:
+            case R.id.AcceptOffer:
                 // list of driver offers activity
                 break;
         }
