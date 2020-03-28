@@ -45,9 +45,8 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
     }
 
     private void setWelcome(){
-        user.readData(documentSnapshot -> {
-            String firstName = documentSnapshot.getString("first");
-            String welcomeText = "Hello " + firstName +",";
+        user.readData((email, firstname, lastname, username, phone, rating) -> {
+            String welcomeText = "Hello " + firstname +",";
             helloUser.setText(welcomeText);
         });
     }

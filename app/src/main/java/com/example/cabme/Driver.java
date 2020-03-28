@@ -72,7 +72,7 @@ public class Driver extends User implements Serializable {
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
                         rating = documentSnapshot.get("rating", Rating.class);
-                        userCallback.onCallback(documentSnapshot);
+                        userCallback.onCallback(email, firstName, lastName, username, phone, rating);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

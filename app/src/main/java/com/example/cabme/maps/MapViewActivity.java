@@ -1,12 +1,16 @@
 package com.example.cabme.maps;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.cabme.R;
+import com.example.cabme.qrscanner.ScannerQR;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,8 +27,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
  *
  */
 public class MapViewActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback{
-    Button driverButton;
-    Button backButton;
+    Button AcceptOffer;
+    Button AcceptPayment;
 
     GoogleMap googleMap;
 
@@ -51,8 +55,8 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.r_mapview_activity);
 
-        driverButton = findViewById(R.id.driver_name);
-        backButton = findViewById(R.id.back_button);
+        AcceptOffer = findViewById(R.id.AcceptOffer);
+        AcceptPayment = findViewById(R.id.AcceptPayment);
 
         destLngLat = (LongLat) getIntent().getSerializableExtra("destLongLat");
         startLngLat = (LongLat) getIntent().getSerializableExtra("startLongLat");
@@ -70,13 +74,22 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         new FetchURL(MapViewActivity.this)
                 .execute(getUrl(markStart.getPosition(), markDest.getPosition(), "driving"), "driving");
 
-        backButton.setOnClickListener(v -> {
-            if(Rider == true){
-                finish();
-            } else if (Rider == false){
-                finish();
+        AcceptOffer.setOnClickListener(v -> {
+            Toast.makeText(MapViewActivity.this, "Offer is Accepted", Toast.LENGTH_LONG).show();
+            AcceptPayment.setVisibility(View.VISIBLE);
+            AcceptOffer.setVisibility(View.GONE);
+            //Delete the request from the Data base
+        });
+
+
+        AcceptPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapViewActivity.this, ScannerQR.class));
+                Toast.makeText(MapViewActivity.this, "Opening Scanner...", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     void setRiderFalse(){

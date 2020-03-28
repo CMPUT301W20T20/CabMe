@@ -98,8 +98,6 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                     }
                 });
 
-
-
         db = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.request_list);
 

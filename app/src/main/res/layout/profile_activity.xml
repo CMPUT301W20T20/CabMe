@@ -1,173 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/cabme_accent_grey">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/CabMeTitle"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginLeft="130dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginRight="130dp"
-        android:textColor="#F6D55C"
-        android:text="@string/app_name"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_horizontal" />
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:background="@color/cabme_accent_grey">
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:hint="Email"
-        android:enabled="false"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#F6D55C"
-        android:textColorHint="@color/quantum_white_100"
-        app:layout_constraintTop_toBottomOf="@+id/lastname" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:text="Edit Account"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginBottom="15dp"
+            android:textColor="@color/quantum_white_100"/>
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:hint="User Name"
-        android:enabled="false"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#F6D55C"
-        android:textColorHint="@color/quantum_white_100"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/title">
 
-    <EditText
-        android:id="@+id/phone"
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:hint="Phone"
-        android:enabled="false"
-        android:inputType="phone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#F6D55C"
-        android:textColorHint="@color/quantum_white_100"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_at_grey_24dp"
+                android:layout_marginStart="25dp" />
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="Username"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/search_bg_grey" />
 
 
-    <Button
-        android:id="@+id/saveprofile"
-        android:layout_width="200dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:text="Save Changes"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/editprofile"
-        android:layout_width="200dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:text="Edit Profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#FFFFFF"
-        android:background="#24567D"
-        app:layout_constraintTop_toBottomOf="@+id/phone" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_fn_grey_24dp"
+                android:layout_marginStart="25dp" />
 
-    <Button
-        android:id="@+id/deletedprofile"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:background="#F44336"
-        android:text="Delete Profile"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveprofile" />
+            <EditText
+                android:id="@+id/firstname"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="First Name"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/lastname"
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:hint="Last Name"
-        android:textColorHint="@color/quantum_white_100"
-        android:enabled="false"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#F6D55C"
-        app:layout_constraintTop_toBottomOf="@+id/firstname" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/search_bg_grey" />
 
-    <EditText
-        android:id="@+id/firstname"
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:ems="10"
-        android:hint="First Name"
-        android:textColorHint="@color/quantum_white_100"
-        android:enabled="false"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#F6D55C"
-        app:layout_constraintTop_toBottomOf="@+id/CabMeTitle" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_ln_grey_24dp"
+                android:layout_marginStart="25dp" />
+
+            <EditText
+                android:id="@+id/lastname"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="Last Name"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/search_bg_grey" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_email_grey_24dp"
+                android:layout_marginStart="25dp" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="Email"
+                android:enabled="false"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/search_bg_grey" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_phone_grey_24dp"
+                android:layout_marginStart="25dp" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="25dp"
+                android:paddingEnd="25dp"
+                android:ems="10"
+                android:hint="Phone"
+                android:enabled="false"
+                android:inputType="phone" />
+        </LinearLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/search_bg_grey" />
+
+
+        <Button
+            android:id="@+id/saveprofile"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@color/cabme_accent_blue"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@color/quantum_white_100"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/editprofile"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@color/search_bg_grey"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="Edit Profile"
+            android:textAllCaps="false"
+            android:textColor="@color/quantum_grey600"/>
+
+        <Button
+            android:id="@+id/deletedprofile"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_gravity="center"
+            android:background="@color/fui_transparent"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="Delete Profile"
+            android:textAllCaps="false"
+            android:textColor="@color/cabme_cancel_red"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</RelativeLayout>

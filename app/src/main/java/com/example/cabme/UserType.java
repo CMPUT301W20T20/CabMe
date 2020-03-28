@@ -1,7 +1,8 @@
 package com.example.cabme;
 
-import java.io.Serializable;
-
+/**
+ * To determine the "user-type" of a user
+ */
 public enum UserType {
     RIDER,
     DRIVER

@@ -116,6 +116,7 @@ public class RideRequest {
     /**
      * This method sets the given variables.
      * This method is called in the RideRequest() method.
+     * Purpose: set the given variables, used in NewRideRequest
      *
      * @param startGeo start location of the ride request
      * @param endGeo   end location of the ride request

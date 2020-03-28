@@ -15,6 +15,9 @@ import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 
+/**
+ * This is the fragment you see when there is a ride pending for driver offers on the HomeMapActivity
+ */
 public class RidePendingFragment extends Fragment implements View.OnClickListener {
     public User user;
 
@@ -32,29 +35,41 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
     }
 
     private void findViewsSetListeners(View view){
-        Button rideOffersBtn = view.findViewById(R.id.ride_offers);
-        Button rideCancelBtn = view.findViewById(R.id.ride_cancel);
+        Button rideOffersBtn = view.findViewById(R.id.ViewOffers);
+        Button rideCancelBtn = view.findViewById(R.id.Cancel);
         rideOffersBtn.setOnClickListener(this);
         rideCancelBtn.setOnClickListener(this);
     }
 
+    /**
+     * Has a switch case that handles all the button clicks as the fragment implements the onClickListener
+     * @param v the vew
+     */
     @Override
     public void onClick(View v) {
         Intent intent;
         switch(v.getId()) {
-            case R.id.ride_cancel:
+            case R.id.Cancel:
+                /* Removes the fragment and starts the HomeMapActivity recreation here*/
                 RideRequest rideRequest = new RideRequest(user.getUid());
                 rideRequest.updateRideStatus("Cancelled");
+                /* removes the ride request from the database */
                 rideRequest.removeRequest();
+                /* remove the fragment from the stack */
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 FragmentTransaction trans = manager.beginTransaction();
                 trans.remove(RidePendingFragment.this);
                 trans.commit();
                 manager.popBackStack();
+                /* recreate the previous activity */
                 ((HomeMapActivity)getActivity()).recreateActivity(RecreateType.REQUEST_CANCELLED, 0, null);
                 break;
-            case R.id.ride_offers:
-                // list of driver offers activity
+            case R.id.ViewOffers:
+                /* list of driver offers activity */
+                getActivity().getFragmentManager().popBackStack(); /*not sure if we need to close this or not, i dont think so....*/
+                intent = new Intent(getActivity(), RideOfferActivity.class);
+                intent.putExtra("user", user);
+                this.startActivity(intent);
                 break;
         }
     }

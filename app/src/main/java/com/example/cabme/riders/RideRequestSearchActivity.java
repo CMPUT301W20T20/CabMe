@@ -10,11 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cabme.R;
@@ -52,6 +50,7 @@ import java.util.Arrays;
  *  [ ] Text Watcher - err.ch. valid input
  *  [ ] OnClick - else
  *  [ ] Handle case where there is NO DRIVABLE ROUTE between locations coz app goes nuts and crashes
+ *  [ ] comments
  *
  */
 public class RideRequestSearchActivity extends AppCompatActivity implements View.OnClickListener {
@@ -186,7 +185,9 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
                 intent.putExtra("destLatLng", destLngLat);
                 setResult(RESULT_OK, intent);
                 finish();
-            } else { /* fix later */ }
+            } else {
+                Toast.makeText(RideRequestSearchActivity.this,"Empty Field(s) not valid", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

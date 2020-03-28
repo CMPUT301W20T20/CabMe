@@ -16,6 +16,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.cabme.R;
 import com.example.cabme.User;
 
+/**
+ * This is the fragment for when there is not active ride - displays on MapViewActivity
+ */
 public class RideInactiveFragment extends Fragment implements View.OnClickListener {
     private TextView helloUser;
     public User user;
@@ -33,6 +36,10 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
         return view;
     }
 
+    /**
+     * Setting the listeners and finding views here
+     * @param view the view bro lol
+     */
     private void findViewsSetListeners(View view){
         Button rideHistoryBtn = view.findViewById(R.id.ride_history);
         Button rideNewBtn = view.findViewById(R.id.new_offer);
@@ -41,14 +48,20 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
         rideNewBtn.setOnClickListener(this);
     }
 
+    /**
+     * Sets the welcome message of the user
+     */
     private void setWelcome(){
-        user.readData(documentSnapshot -> {
-            String firstName = documentSnapshot.getString("first");
-            String welcomeText = "Hello " + firstName +",";
+        user.readData((email, firstname, lastname, username, phone, rating) -> {
+            String welcomeText = "Hello " + firstname +",";
             helloUser.setText(welcomeText);
         });
     }
 
+    /**
+     * overrides the onclick and has the buttons for requesting a new ride and viewing the ride history
+     * @param v the view
+     */
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -58,7 +71,13 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
                 intent.putExtra("user", user);
                 startActivity(intent);
                 break;
-            case R.id.new_offer:
+
+            case R.id.ride_new:
+                /*
+                 * new ride request starts for a result -> onActivityResult
+                 *  takes you back there after onFinish() in the next activity
+                 */
+
                 intent = new Intent(getContext(), RideRequestSearchActivity.class);
                 intent.putExtra("user", user);
                 startActivityForResult(intent, 1);
@@ -66,6 +85,13 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
         }
     }
 
+
+    /**
+     * On finish of the last activity go hereto remove this fragment from the stack
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

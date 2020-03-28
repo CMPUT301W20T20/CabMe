@@ -5,8 +5,11 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.DIAL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -15,6 +18,8 @@
     <uses-feature android:name="android.hardware.camera2.autofocus"/>
     <uses-permission android:name="android.permission.VIBRATE" />
 
+
+    <!-- App Activity -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -52,9 +57,12 @@
             </intent-filter>
         </activity>
 
+
+        <!-- Library Activity -->
         <activity android:name=".TitleActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignupActivity" />
+        <activity android:name=".UserProfileActivity" />
 
         <activity android:name=".HomeMapActivity" />
         <activity android:name=".HamburgerFragment"/>
@@ -62,10 +70,15 @@
 
         <activity android:name=".maps.MapViewActivity" />
 
-        <activity android:name=".drivers.DriverRequestListActivity" />
+        <activity android:name=".qrscanner.ScannerQR"/>
+        <activity android:name=".qrscanner.QRActivity"/>
 
+        <activity android:name=".drivers.DriverRequestListActivity" />
         <activity android:name=".riders.RiderHistoryListActivity" />
         <activity android:name=".riders.RideRequestSearchActivity" />
+
+        <activity android:name=".riders.RideOfferActivity"
+                  android:exported="true"/>
 
 
     </application>
