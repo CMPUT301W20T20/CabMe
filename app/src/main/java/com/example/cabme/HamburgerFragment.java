@@ -77,17 +77,11 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
 
     }
     private void setNames(){
-        user.readData(new User.userCallback() {
-            @Override
-            public void onCallback(DocumentSnapshot documentSnapshot) {
-                String username = documentSnapshot.getString("username");
-                String first = documentSnapshot.getString("first");
-                String last = documentSnapshot.getString("last");
-                String fullname = first + " " + last;
-                String ATusername = "@" + username;
-                fullnameTv.setText(fullname);
-                usernameTv.setText(ATusername);
-            }
+        user.readData((email, firstname, lastname, username, phone, rating) -> {
+            String fullname = firstname + " " + lastname;
+            String ATusername = "@" + username;
+            fullnameTv.setText(fullname);
+            usernameTv.setText(ATusername);
         });
     }
 

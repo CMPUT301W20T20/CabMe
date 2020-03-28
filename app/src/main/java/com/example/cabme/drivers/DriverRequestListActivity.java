@@ -78,8 +78,6 @@ public class DriverRequestListActivity extends AppCompatActivity implements Loca
                     }
                 });
 
-
-
         db = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.request_list);
 

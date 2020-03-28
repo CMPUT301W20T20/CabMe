@@ -66,6 +66,7 @@
 
         <activity android:name=".riders.RiderHistoryListActivity" />
         <activity android:name=".riders.RideRequestSearchActivity" />
+        <activity android:name=".ProfileViewActivity" />
 
 
     </application>

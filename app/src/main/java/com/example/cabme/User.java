@@ -102,7 +102,7 @@ public class User extends Observable implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
-                        userCallback.onCallback(documentSnapshot);
+                        userCallback.onCallback(email, firstName, lastName, username, phone, null);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -114,7 +114,7 @@ public class User extends Observable implements Serializable {
     }
 
     public interface userCallback{
-        void onCallback(DocumentSnapshot documentSnapshot);
+        void onCallback(String email, String firstname, String lastname, String username, String phone, Rating rating);
     }
 
     /**

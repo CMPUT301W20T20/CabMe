@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cabme.R;
+import com.example.cabme.Rating;
 import com.example.cabme.User;
 
 public class RideInactiveFragment extends Fragment implements View.OnClickListener {
@@ -29,7 +30,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.r_ride_inactive, container, false);
         user = (User) getArguments().getSerializable("user");
         findViewsSetListeners(view);
-        setWelcome();
+//        setWelcome();
         return view;
     }
 
@@ -42,9 +43,8 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
     }
 
     private void setWelcome(){
-        user.readData(documentSnapshot -> {
-            String firstName = documentSnapshot.getString("first");
-            String welcomeText = "Hello " + firstName +",";
+        user.readData((email, firstname, lastname, username, phone, rating) -> {
+            String welcomeText = "Hello " + firstname +",";
             helloUser.setText(welcomeText);
         });
     }

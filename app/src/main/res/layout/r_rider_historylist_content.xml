@@ -87,20 +87,19 @@
                     android:layout_height="wrap_content"
                     android:paddingRight="6dp"
                     android:gravity="start"
-                    android:text="Driver"
                     android:textSize="15dp"
                     android:textColor="@color/quantum_black_100"/>
 
-                <Button
+                <TextView
                     android:id="@+id/driver_username"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:gravity="start"
-                    android:text="\@driverusername"
                     android:textAllCaps="false"
                     android:textSize="15dp"
                     android:textColor="@color/cabme_accent_yellow"
                     android:background="@color/fui_transparent"
+                    android:clickable="true"
                     style="@style/Widget.AppCompat.Button.Borderless" />
             </LinearLayout>
 
