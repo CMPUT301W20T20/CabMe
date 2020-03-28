@@ -31,6 +31,9 @@ public class TitleActivity extends AppCompatActivity {
         user = new User(uid);
         user.setDocumentListener();
 
+        user = new User(uid);
+        user.setDocumentListener();
+
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
         riderButton = findViewById(R.id.rider);

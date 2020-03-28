@@ -79,6 +79,9 @@ public class RiderHistoryListActivity extends AppCompatActivity{
         adapter.startListening();
     }
 
+    /**
+     * Purpose: stop listener at end of activity
+     */
     @Override
     protected void onStop() {
         super.onStop();
