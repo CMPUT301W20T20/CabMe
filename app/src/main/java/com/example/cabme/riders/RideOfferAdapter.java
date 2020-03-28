@@ -33,6 +33,9 @@ public class RideOfferAdapter extends FirestoreRecyclerAdapter<RideOfferModel, R
         });
     }
 
+    /**
+     * Purpose: "container" that holds all the information we need to display to the rider
+     */
     @NonNull
     @Override
     public RideOfferHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +43,9 @@ public class RideOfferAdapter extends FirestoreRecyclerAdapter<RideOfferModel, R
         return new RideOfferHolder(view);
     }
 
+    /**
+     * Purpose: contains all the respective button and text views
+     */
     class RideOfferHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView username;

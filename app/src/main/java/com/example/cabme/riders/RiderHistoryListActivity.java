@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cabme.ProfileViewActivity;
+import com.example.cabme.UserProfileActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -72,11 +72,11 @@ public class RiderHistoryListActivity extends AppCompatActivity{
             bundle = new Bundle();
             bundle.putSerializable("uid", driverID);
             Log.wtf("UID", driverID+"");
-            ProfileViewActivity profileViewActivity = new ProfileViewActivity();
-            profileViewActivity.setArguments(bundle);
+            UserProfileActivity userProfileActivity = new UserProfileActivity();
+            userProfileActivity.setArguments(bundle);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.r_historylist_activity, profileViewActivity)
+                    .add(R.id.r_historylist_activity, userProfileActivity)
                     .commit();
         });
     }

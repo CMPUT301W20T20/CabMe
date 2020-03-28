@@ -1,23 +1,21 @@
 package com.example.cabme;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.firestore.DocumentSnapshot;
-
-public class ProfileViewActivity extends Fragment implements View.OnClickListener{
+public class UserProfileActivity extends Fragment implements View.OnClickListener{
     private ImageButton close;
     private TextView fullname;
     private TextView username;
@@ -25,6 +23,7 @@ public class ProfileViewActivity extends Fragment implements View.OnClickListene
     private TextView phoneNumber;
     private TextView emailAddress;
     private User user;
+    private Integer REQUEST_PERMISSION = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,10 @@ public class ProfileViewActivity extends Fragment implements View.OnClickListene
         return view;
     }
 
+    /**
+     * Setting views and listeners
+     * @param view the view
+     */
     private void findViewsSetListeners(View view){
         fullname = view.findViewById(R.id.fullname);
         username = view.findViewById(R.id.username);
@@ -55,7 +58,13 @@ public class ProfileViewActivity extends Fragment implements View.OnClickListene
         close.setOnClickListener(this);
     }
 
+    /**
+     * Sets the information of the user from the database
+     * @param user the user model used to get data from
+     * @param driver the driver model used to get data from
+     */
     private void setInformation(User user, Driver driver){
+        /* necessary to pull data like this bc firebase is async */
         user.readData((email, firstname, lastname, username, phone, rating) -> {
             String fullname = firstname + " " + lastname;
             this.fullname.setText(fullname);
@@ -68,6 +77,10 @@ public class ProfileViewActivity extends Fragment implements View.OnClickListene
         });
     }
 
+    /**
+     * handles all the clicking in the activity (clicking on the phone number & email address)
+     * @param v the view
+     */
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -89,9 +102,39 @@ public class ProfileViewActivity extends Fragment implements View.OnClickListene
                 });
                 break;
             case R.id.button_close:
-                getParentFragmentManager().beginTransaction().remove(ProfileViewActivity.this).commit();
+                getParentFragmentManager().beginTransaction().remove(UserProfileActivity.this).commit();
                 break;
 
         }
+    }
+
+    /**
+     * Purpose: first requests permission, then opens the phone app
+     * @param phone
+     */
+    private void phoneIntent(String phone){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CALL_PHONE)) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PERMISSION);
+        } else {
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + phone));
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                startActivity(callIntent);
+            }
+        }
+    }
+
+    /**
+     * Purpose: open the email intent, with the recipients name passed through
+     * @param recipientList
+     */
+    private void emailIntent(String recipientList){
+
+        String [] recipient = recipientList.split(",");
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, recipient);
+        intent.setType("message/rfc822"); //MIME type rcf822
+        startActivity(intent);
     }
 }
