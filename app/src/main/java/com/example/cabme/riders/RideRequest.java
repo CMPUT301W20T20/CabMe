@@ -321,7 +321,8 @@ public class RideRequest implements Serializable {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Log.d(TAG, "Data retrieval successful");
                         String UID = documentSnapshot.getString("UIDdriver");
-                        dataCallBack.onCallback(UID);
+                        String rideStatus = documentSnapshot.getString("rideStatus");
+                        dataCallBack.onCallback(UID, rideStatus);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -333,6 +334,6 @@ public class RideRequest implements Serializable {
     }
 
     public interface dataCallBack{
-        void onCallback(String UIDdriver);
+        void onCallback(String driverID, String status);
     }
 }

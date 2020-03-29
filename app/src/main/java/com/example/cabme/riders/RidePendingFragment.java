@@ -1,8 +1,6 @@
 package com.example.cabme.riders;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 
@@ -30,7 +27,7 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.r_ride_searching, container, false);
+        View view = inflater.inflate(R.layout.r_ride_pending_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
         findViewsSetListeners(view);
         return view;

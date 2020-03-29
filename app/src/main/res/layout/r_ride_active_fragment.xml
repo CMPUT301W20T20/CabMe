@@ -23,21 +23,8 @@
             android:padding="13dp">
 
             <Button
-                android:id="@+id/ViewOffers"
-                android:text="A"
-                android:textColor="@color/quantum_black_100"
-                android:textAllCaps="false"
-                android:background="@drawable/bg_search"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                style="?android:attr/borderlessButtonStyle">
-
-            </Button>
-
-            <Button
-                android:id="@+id/Cancel"
-                android:text="B"
+                android:id="@+id/complete_ride"
+                android:text="Complete ride"
                 android:textAllCaps="false"
                 android:textColor="@color/quantum_white_100"
                 android:shadowColor="@color/fui_transparent"

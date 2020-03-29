@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 
@@ -30,7 +29,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.r_ride_inactive, container, false);
+        View view = inflater.inflate(R.layout.r_ride_inactive_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
         findViewsSetListeners(view);
         setWelcome();

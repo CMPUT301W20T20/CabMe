@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cabme.drivers.DriveActiveFragment;
 import com.example.cabme.drivers.DriveInactiveFragment;
+import com.example.cabme.drivers.DrivePendingFragment;
 import com.example.cabme.drivers.DriverRequestListActivity;
 import com.example.cabme.maps.FetchURL;
 import com.example.cabme.maps.TaskLoadedCallback;
@@ -114,6 +115,8 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     RideActiveFragment rideActiveFragment;
     DriveInactiveFragment driverInactiveFragment;
     DriveActiveFragment driveActiveFragment;
+    DrivePendingFragment drivePendingFragment;
+
 
     private transient FirebaseFirestore firebaseFirestore;
     private transient CollectionReference collectionReference;
@@ -155,8 +158,6 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 checkFireBaseDrive(uid);
                 break;
         }
-
-
     }
 
     public void checkFireBaseRide(String UID){
@@ -239,11 +240,40 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                         }
                     }
                 });
+        collectionReference.whereArrayContains("offers", UID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot documentSnapshots : task.getResult()){
+                                /* should only be 1 doc here */
+                                Log.wtf("8888888888", ""+documentSnapshots.exists());
+                                if(documentSnapshots.exists()){
+                                    Log.wtf("4444444",documentSnapshots.toString());
+                                    String docID = documentSnapshots.getId();
+                                    checkFireBaseRide(docID);
+                                    break;
+                                }
+                            }
+                        } else {
+                            Log.wtf("4444444","nothing");
+                            // task not successful
+                            //error
+                        }
+                    }
+                });
+        Log.d(TAG, "Document does not exist!");
         getFireBaseRide = GetFireBaseRide.NO_RIDE;
         activeRide = false;
         getMapType();
         getFragmentType(UID);
     }
+
+    public interface docIDCallBack{
+        void onCallback(LatLng start, LatLng end);
+    }
+
     /**
      * sets the gets the map type depending on what kind of user a person is (rider, driver)
      */
@@ -318,7 +348,16 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                                 .beginTransaction()
                                 .add(R.id.fragment_container, driveActiveFragment)
                                 .commit();
-
+                        break;
+                    case RIDE_PENDING:
+                        Log.wtf("111111", "in pending");
+                        drivePendingFragment = new DrivePendingFragment();
+                        bundle.putSerializable("docID", docID);
+                        drivePendingFragment.setArguments(bundle);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.fragment_container, drivePendingFragment)
+                                .commit();
                         break;
                     case NO_RIDE:
                         Log.wtf("111111", "in noride");

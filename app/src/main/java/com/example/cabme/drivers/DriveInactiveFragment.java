@@ -14,6 +14,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.cabme.R;
 import com.example.cabme.User;
+import com.example.cabme.riders.RideRequest;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DriveInactiveFragment extends Fragment implements View.OnClickListener {
     private TextView helloUser;
