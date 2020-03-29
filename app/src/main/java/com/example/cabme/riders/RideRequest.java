@@ -24,8 +24,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 
 import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -173,7 +175,7 @@ public class RideRequest {
         HashMap<String, Object> newRideRequest = new HashMap<>();
         newRideRequest.put("UIDdriver", UIDdriver);
         newRideRequest.put("UIDrider", UIDrider);
-        newRideRequest.put("offers", Arrays.asList(""));
+        newRideRequest.put("offers", new ArrayList());
         newRideRequest.put("distanceText", distanceText);
         newRideRequest.put("distanceValue", distanceValue);
         newRideRequest.put("durationText", durationText);

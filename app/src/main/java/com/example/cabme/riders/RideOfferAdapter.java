@@ -1,5 +1,6 @@
 package com.example.cabme.riders;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,26 +12,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
 import com.example.cabme.R;
+import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.gson.internal.$Gson$Preconditions;
 
-public class RideOfferAdapter extends FirestoreRecyclerAdapter<RideOfferModel, RideOfferAdapter.RideOfferHolder>{
+public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAdapter.RideOfferHolder>{
     private String driverUID;
     private OnItemClickListener listener;
 
-    public RideOfferAdapter(@NonNull FirestoreRecyclerOptions<RideOfferModel> options) {
+    public RideOfferAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull RideOfferHolder holder, int position, @NonNull RideOfferModel model) {
-        Driver driver = new Driver(model.getUID());
-        driver.readData((email, firstname, lastname, username, phone, rating) -> {
-            holder.name.setText(String.format("%s %s", firstname, lastname));
-            holder.username.setText(String.format("@%s", username));
-            holder.rating.setText(String.valueOf(rating));
-        });
+    protected void onBindViewHolder(@NonNull RideOfferHolder holder, int position, @NonNull User model) {
+        holder.itemView.setBackgroundColor(position == position ? Color.WHITE : Color.TRANSPARENT);
+        String firstname = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("first");
+        String lastname = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("last");
+        String username = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("username");
+        holder.name.setText(String.format("%s %s", firstname, lastname));
+        holder.username.setText(String.format("@%s", username));
+
     }
 
     /**
@@ -66,12 +70,19 @@ public class RideOfferAdapter extends FirestoreRecyclerAdapter<RideOfferModel, R
                     listener.onItemClick(getSnapshots().getSnapshot(position), position);
                 }
             });
+            itemView.setOnClickListener(v -> {
+                if(listener != null){
+                    int position = getAdapterPosition();
+                    listener.onDriverSelect(getSnapshots().getSnapshot(position), position);
+                    notifyItemChanged(position);
+                }
+            });
         }
     }
 
     public interface OnItemClickListener{
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
-
+        void onDriverSelect(DocumentSnapshot documentSnapshot, int position);
     }
 
     public void setOnItemClickListener(RideOfferAdapter.OnItemClickListener listener) {

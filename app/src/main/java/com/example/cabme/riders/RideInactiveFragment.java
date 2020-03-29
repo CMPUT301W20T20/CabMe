@@ -72,7 +72,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
                 startActivity(intent);
                 break;
 
-            case R.id.ride_new:
+            case R.id.new_offer:
                 /*
                  * new ride request starts for a result -> onActivityResult
                  *  takes you back there after onFinish() in the next activity
