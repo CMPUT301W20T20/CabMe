@@ -12,7 +12,7 @@ public class RideOfferModel extends Observable {
 
     private String phone;
     private String email;
-    private Integer rating;
+    //private Integer rating;
 
     private RideOfferModel(){}
 
@@ -30,7 +30,7 @@ public class RideOfferModel extends Observable {
         setFirst(first);
         setLast(last);
         setPhone(phone);
-        setRating(rating);
+        //setRating(rating);
     }
 
 
@@ -136,22 +136,25 @@ public class RideOfferModel extends Observable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
     /**
      * Purpose: return rating of requesting driver
      *
      * @return rating
-     */
+     *
     public Integer getRating() {
         return rating;
     }
+    */
 
     /**
      * Purpose: set rating of requesting driver
      *
      * @param rating
-     */
+     *
     public void setRating(Integer rating) {
         this.rating = rating;
     }
+    */
 }
+
+

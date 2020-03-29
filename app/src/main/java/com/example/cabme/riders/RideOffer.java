@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +30,25 @@ import com.example.cabme.R;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
-public class RideOffer extends AppCompatActivity {
+public class RideOffer extends AppCompatActivity{
 
     // Log Tags
     private static final String TAG = "Firelog";
@@ -44,20 +57,23 @@ public class RideOffer extends AppCompatActivity {
     private FirebaseFirestore mFirestore;
     private FirestoreRecyclerAdapter<RideOfferModel, RideOfferHolder> adapter;
     private RecyclerView recyclerView;
+
+    // Query
     Query query;
 
-    // key
+    // Key
     private User user;
+    private List<String> offers;
     private Integer REQUEST_PERMISSION = 1;
+    private transient CollectionReference collectionReference;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.r_offerlist_activity);
 
-
         // get user intent
-        user = (User) getIntent().getSerializableExtra("user");
+        user = (User) getIntent().getSerializableExtra("User");
 
         // starting the database references
         mFirestore = FirebaseFirestore.getInstance();
@@ -65,10 +81,28 @@ public class RideOffer extends AppCompatActivity {
         // setting recycleview
         recyclerView = findViewById(R.id.recycleView);
 
+        //get the "offers" list
+        //"499LGKdwIbWFap3nNpe3Huo0Fkj2"
+        // need to get user.getUID() working, currently it is not working for some reason.
+        collectionReference = mFirestore.collection("testrequests");
+        collectionReference.document("499LGKdwIbWFap3nNpe3Huo0Fkj2").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if (documentSnapshot == null) {
+                    return;
+                }
+                offers = (ArrayList<String>) documentSnapshot.get("offers");
+                //print out values in logcat
+                for (String s : offers) {
+                    Log.d(TAG, s);
+                }
+            }
+        });
+
         // Query
         // getting the ridehistory collection in the user's document
         query = mFirestore
-                .collection("requests");
+                .collection("users");
 
 
         // Recycler Options
@@ -87,9 +121,11 @@ public class RideOffer extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             protected void onBindViewHolder(@NonNull RideOfferHolder holder, int position, @NonNull RideOfferModel model) {
+
+                /*set all the respective fields with text*/
                 holder.name.setText(model.getFirst() + " " + model.getLast());
                 holder.username.setText(model.getUsername());
-                holder.rating.setText(String.valueOf(model.getRating()));
+               // holder.rating.setText(String.valueOf(model.getRating()));
                 holder.phone.setText(model.getPhone());
                 holder.email.setText(model.getEmail());
 
