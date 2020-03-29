@@ -2,6 +2,7 @@ package com.example.cabme.drivers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
-import com.example.cabme.riders.RiderHistoryListActivity;
 
 public class DriveInactiveFragment extends Fragment implements View.OnClickListener {
     private TextView helloUser;
     private Button offer;
+    private Button accepted;
     private TextView question;
     private boolean offered;
     public User user;
@@ -29,8 +29,9 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.d_ride_inactive, container, false);
+        View view = inflater.inflate(R.layout.d_ride_inactive_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
+        Log.wtf("USER", user.getUid());
         offered = false;
         findViewsSetListeners(view);
         setWelcome();
@@ -39,9 +40,11 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
 
     private void findViewsSetListeners(View view){
         offer = view.findViewById(R.id.new_offer);
+        accepted = view.findViewById(R.id.accepted_offers);
         question = view.findViewById(R.id.question);
         helloUser = view.findViewById(R.id.hello_user);
         offer.setOnClickListener(this);
+        accepted.setOnClickListener(this);
     }
 
     private void setWelcome(){
@@ -53,17 +56,19 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (offered) {
-            offer.setText("Offer");
-            question.setText("Make Offer?");
-        }
-        else {
-            offer.setText("Remove Offer");
-            question.setText("Offered");
-        }
-        offered = !offered;
-        ((HomeMapActivity)getActivity()).manageOffer();
-
+//        if (offered) {
+//            offer.setText("Offer");
+//            question.setText("Make Offer?");
+//        }
+//        else {
+//            offer.setText("Remove Offer");
+//            question.setText("Offered");
+//        }
+//        offered = !offered;
+//        ((HomeMapActivity)getActivity()).manageOffer();
+        Intent intent = new Intent(getContext(), DriverRequestListActivity.class);
+        intent.putExtra("uid", user.getUid());
+        startActivityForResult(intent, 1);
     }
 
     @Override

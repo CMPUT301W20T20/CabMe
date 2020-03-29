@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ import com.example.cabme.maps.JsonParser;
 
 
 import com.example.cabme.HamburgerFragment;
+import com.example.cabme.riders.RideRequest;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -56,13 +58,14 @@ import java.util.Comparator;
 public class DriverRequestListActivity extends FragmentActivity implements LocationListener, View.OnClickListener {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
-    private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
+    private DriverRequestListAdapter firestoreRecyclerAdapter;
     private LocationManager locationManager;
     private String provider;
     private Driver driver;
     private FusedLocationProviderClient mFusedLocationClient;
     private Bundle bundle;
-    private UserType userType;
+    Button confirmRideButton;
+    String uid;
     Query query;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
@@ -72,8 +75,8 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_reqlist_activity);
 
-        userType = (UserType) getIntent().getSerializableExtra("userType");
-        String uid = getIntent().getStringExtra("user");
+        uid = getIntent().getStringExtra("uid");
+        confirmRideButton = findViewById(R.id.confirm_ride);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
@@ -92,16 +95,13 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                             driver.setDocumentListener();
                             bundle = new Bundle();
                             bundle.putSerializable("user", driver);
-                            ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
-                            hamburgerMenuBtn.setOnClickListener(DriverRequestListActivity.this);
+//                            ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
+//                            hamburgerMenuBtn.setOnClickListener(DriverRequestListActivity.this);
                         }
                     }
                 });
 
         db = FirebaseFirestore.getInstance();
-        recyclerView = findViewById(R.id.request_list);
-
-
 
         // Query
         query = db.collection("testrequests");
@@ -123,85 +123,33 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
             }
         });
 
-        firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<RiderHistoryListModel, RequestsViewHolder>(options) {
-            @NonNull
-            @Override
-            public RequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.d_reqlist_content, parent, false);
-                return new RequestsViewHolder(view);
-            }
+        firestoreRecyclerAdapter = new DriverRequestListAdapter(options);
 
-            @Override
-            protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull RiderHistoryListModel model) {
-                holder.itemView.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
-                        GeoPoint startLoc = snapshot.getGeoPoint("startLocation");
-                        GeoPoint destLoc = snapshot.getGeoPoint("endLocation");
-                        if(destLoc != null && startLoc != null){
-                            Intent intent = new Intent(DriverRequestListActivity.this, HomeMapActivity.class);
-
-                            LatLng startLongLat = new LatLng(startLoc.getLatitude(), startLoc.getLongitude());
-                            LatLng destLongLat = new LatLng(destLoc.getLatitude(), destLoc.getLongitude());
-
-                            intent.putExtra("startLatLng", startLongLat);
-                            intent.putExtra("destLatLng", destLongLat);
-                            intent.putExtra("userType", userType);
-                            intent.putExtra("user", uid);
-                            intent.putExtra("request", snapshot.getId());
-
-                            startActivity(intent);
-
-                            Log.wtf("LOG-LATLNG",  startLoc.toString()+" "+destLoc.toString());
-                        }
-                    }
-                });
-                String UID = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("UIDrider");
-                String address = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("startAddress");
-                Double cost = (Double) getSnapshots().getSnapshot(holder.getAdapterPosition()).get("rideCost");
-                db.collection("users")
-                        .document(UID)
-                        .get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                Log.d("LOG", "Data Retrieved");
-                                String fName = documentSnapshot.getString("first");
-                                String lName = documentSnapshot.getString("last");
-
-                                // Case for if the user deleted their profile.
-                                // - If the user deleted their profile UID no longer attached to a name.
-                                // - Instead show that they are deleted insead of null.
-                                if(fName != null || lName != null){
-                                    String fullName = fName + " " + lName;
-                                    holder.name.setText(fullName);
-                                } else {
-                                    holder.name.setText("* This user no longer exists");
-                                }
-                            }
-                        });
-                // -> change this to distance from the user in the future!
-                holder.fare.setText(cost.toString());
-                holder.sLocation.setText(address);
-            }
-        };
+        recyclerView = findViewById(R.id.request_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(firestoreRecyclerAdapter);
-    }
 
-    private class RequestsViewHolder extends RecyclerView.ViewHolder{
-        private TextView name;
-        private TextView fare;
-        private TextView sLocation;
+        firestoreRecyclerAdapter.setOnItemClickListener(new DriverRequestListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Log.wtf("RIDERUID", documentSnapshot.getString("UIDrider"));
+                String riderID = documentSnapshot.getString("UIDrider");
 
-        public RequestsViewHolder(@NonNull View itemView){
-            super(itemView);
-            name = itemView.findViewById(R.id.name);
-            fare = itemView.findViewById(R.id.fare);
-            sLocation = itemView.findViewById(R.id.slocation);
-        }
+                confirmRideButton.setText(String.format("%s", documentSnapshot.getId()));
+                confirmRideButton.setVisibility(View.VISIBLE);
+                confirmRideButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RideRequest rideRequest = new RideRequest(documentSnapshot.getId());
+                        rideRequest.addOffer(uid);
+                        Intent intent = new Intent();
+                        setResult(1, intent);
+                        finish();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -213,8 +161,6 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                 .add(R.id.fragment_container, hamburgerFragment, "driver")
                 .commit();
     }
-
-
 
     @Override
     protected void onStop(){

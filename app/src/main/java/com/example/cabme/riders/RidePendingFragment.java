@@ -1,6 +1,8 @@
 package com.example.cabme.riders;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,26 +52,35 @@ public class RidePendingFragment extends Fragment implements View.OnClickListene
         Intent intent;
         switch(v.getId()) {
             case R.id.Cancel:
-                /* Removes the fragment and starts the HomeMapActivity recreation here*/
+                /* remove the fragment from the stack */
+
+                /* removes the ride request from the database */
                 RideRequest rideRequest = new RideRequest(user.getUid());
                 rideRequest.updateRideStatus("Cancelled");
-                /* removes the ride request from the database */
-                rideRequest.removeRequest();
-                /* remove the fragment from the stack */
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction trans = manager.beginTransaction();
-                trans.remove(RidePendingFragment.this);
-                trans.commit();
-                manager.popBackStack();
-                /* recreate the previous activity */
-                ((HomeMapActivity)getActivity()).recreateActivity(RecreateType.REQUEST_CANCELLED, 0, null);
+                rideRequest.removeRequest(new RideRequest.requestCallback() {
+                    @Override
+                    public void onCallback() {
+                        FragmentManager manager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction trans = manager.beginTransaction();
+                        trans.remove(RidePendingFragment.this);
+                        trans.commit();
+                        manager.popBackStack();
+                        getActivity().recreate();
+                    }
+                });
+
                 break;
             case R.id.ViewOffers:
                 /* list of driver offers activity */
                 getActivity().getFragmentManager().popBackStack(); /*not sure if we need to close this or not, i dont think so....*/
                 intent = new Intent(getActivity(), RideOfferActivity.class);
                 intent.putExtra("user", user);
-                this.startActivity(intent);
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentTransaction trans = manager.beginTransaction();
+                trans.remove(RidePendingFragment.this);
+                trans.commit();
+                manager.popBackStack();
+                startActivityForResult(intent, 1);
                 break;
         }
     }

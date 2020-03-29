@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 
@@ -77,7 +78,6 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
                  * new ride request starts for a result -> onActivityResult
                  *  takes you back there after onFinish() in the next activity
                  */
-
                 intent = new Intent(getContext(), RideRequestSearchActivity.class);
                 intent.putExtra("user", user);
                 startActivityForResult(intent, 1);

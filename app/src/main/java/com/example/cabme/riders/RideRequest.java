@@ -1,12 +1,16 @@
 package com.example.cabme.riders;
 
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.cabme.HomeMapActivity;
+import com.example.cabme.Rating;
 import com.example.cabme.User;
 import com.example.cabme.maps.CostAlgorithm;
 import com.example.cabme.maps.JsonParser;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +27,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 
+import java.io.Serializable;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +59,7 @@ import java.util.Map;
  *  [X] Constructor for moving the document to the users ride history
  *
  */
-public class RideRequest {
+public class RideRequest implements Serializable {
 
     private String TAG = "LOG";
 
@@ -107,12 +112,12 @@ public class RideRequest {
      * @param API_KEY  the Google API key
      */
     public RideRequest(GeoPoint startGeo, GeoPoint endGeo,
-                       String UIDrider, String API_KEY, Double rideCost) {
+                       String UIDrider, String API_KEY, Double rideCost, requestCallback requestCallback) {
         setGiven(startGeo, endGeo, UIDrider, API_KEY);
         setParsedGeoPoints();
         setRideCost(rideCost);
         initializeFireBase();
-        putInFirebaseCollection();
+        putInFirebaseCollection(requestCallback);
     }
 
     /**
@@ -171,7 +176,7 @@ public class RideRequest {
      * This method put the ride request information from the variables to a document in the Firebase
      * collection where the drivers can view each riders' ride request.
      */
-    private void putInFirebaseCollection() {
+    public void putInFirebaseCollection(requestCallback requestCallback) {
         HashMap<String, Object> newRideRequest = new HashMap<>();
         newRideRequest.put("UIDdriver", UIDdriver);
         newRideRequest.put("UIDrider", UIDrider);
@@ -190,7 +195,10 @@ public class RideRequest {
         collectionReference
                 .document(UIDrider)
                 .set(newRideRequest)
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "Ride request added "))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Ride request added ");
+                    requestCallback.onCallback();
+                })
                 .addOnFailureListener(e -> Log.d(TAG, "Ride request unable to be added " + e.toString()));
     }
 
@@ -198,7 +206,7 @@ public class RideRequest {
      * This method removes a the ride request tied to a user's ID in the Firebase collection where
      * the drivers can view each riders' ride request. .
      */
-    public void removeRequest() {
+    public void removeRequest(requestCallback requestCallback) {
         String DOCID = FirebaseDatabase.getInstance().getReference("ridehistory").push().getKey();
         DocumentReference ridehistoryRef = firebaseFirestore
                 .collection("users")
@@ -218,8 +226,14 @@ public class RideRequest {
                                             documentReference
                                                     .delete()
                                                     .addOnFailureListener(e -> Log.d(TAG, "Ride request unable to be deleted "+ e.toString()))
-                                                    .addOnSuccessListener(aVoid1 -> Log.d(TAG, "Ride request deleted "));
-                                        }
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d(TAG, "Ride request deleted ");
+                                                            requestCallback.onCallback();
+                                                        }
+                                                    });
+                                            }
                                     )
                                     .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));
                         }
@@ -228,6 +242,10 @@ public class RideRequest {
                         }
                     }
                 });
+    }
+
+    public interface requestCallback{
+        void onCallback();
     }
 
     /**
@@ -264,5 +282,57 @@ public class RideRequest {
         collectionReference
                 .document(UIDrider)
                 .update("offers", FieldValue.arrayRemove(UIDdriver));
+    }
+
+    public void readData(RideRequest.rideCallBack rideCallBack) {
+        collectionReference
+                .document(UIDrider)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Log.d(TAG, "Data retrieval successful");
+
+                        GeoPoint start = documentSnapshot.getGeoPoint("startLocation");
+                        GeoPoint end = documentSnapshot.getGeoPoint("endLocation");
+                        LatLng s = new LatLng(start.getLatitude(), start.getLongitude());
+                        LatLng e = new LatLng(end.getLatitude(), end.getLongitude());
+                        rideCallBack.onCallback(s, e);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Data retrieval failed " + e.toString());
+                    }
+                });
+    }
+
+    public interface rideCallBack{
+        void onCallback(LatLng start, LatLng end);
+    }
+
+    public void readData(RideRequest.dataCallBack dataCallBack) {
+        collectionReference
+                .document(UIDrider)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Log.d(TAG, "Data retrieval successful");
+                        String UID = documentSnapshot.getString("UIDdriver");
+                        dataCallBack.onCallback(UID);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Data retrieval failed " + e.toString());
+                    }
+                });
+    }
+
+    public interface dataCallBack{
+        void onCallback(String UIDdriver);
     }
 }

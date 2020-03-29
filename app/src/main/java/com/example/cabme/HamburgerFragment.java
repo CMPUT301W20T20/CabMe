@@ -152,9 +152,8 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
         trans.remove(HamburgerFragment.this);
         trans.commit();
         manager.popBackStack();
-        if (TAG.equals("Rider")) {
-            ((HomeMapActivity)getActivity()).recreateActivity(RecreateType.PROFILE_UPDATE, 0, null);
-        }
+//        ((HomeMapActivity)getActivity()).recreate();
+
 
     }
 }

@@ -7,5 +7,14 @@ public enum RecreateType
 {
     REQUEST_SENT,
     REQUEST_CANCELLED,
-    PROFILE_UPDATE
+    PROFILE_UPDATE,
+    REQUEST_CONFIRMED;
+
+    public static RecreateType toRecreateType(String recreateTypeString){
+        try {
+            return valueOf(recreateTypeString);
+        } catch (Exception e){
+            return REQUEST_CANCELLED;
+        }
+    }
 }

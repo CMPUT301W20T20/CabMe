@@ -15,16 +15,21 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.cabme.drivers.DriveActiveFragment;
 import com.example.cabme.drivers.DriveInactiveFragment;
+import com.example.cabme.drivers.DriverRequestListActivity;
 import com.example.cabme.maps.FetchURL;
 import com.example.cabme.maps.TaskLoadedCallback;
 import com.example.cabme.riders.RecreateType;
+import com.example.cabme.riders.RideActiveFragment;
 import com.example.cabme.riders.RideInactiveFragment;
 import com.example.cabme.riders.RidePendingFragment;
 import com.example.cabme.riders.RideRequest;
@@ -40,7 +45,17 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.io.Serializable;
 
 /**
  *
@@ -61,6 +76,9 @@ import com.google.android.gms.tasks.Task;
  *  [x] opens from shared preference for backup
  *  [ ] COMMENTS :/
  *  [x] fix fragments stacking
+ *  [ ] why do i have so many global variables this is confusing
+ *
+ *  FIXME (BUT PROBABLY NOT) this is super hacky im so sorry LOOOL
  *
  */
 public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {
@@ -84,16 +102,33 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     private MarkerOptions markStart;
     private MarkerOptions markDest;
 
-    private Boolean activeRide;
+    private RecreateType recreateType;
     private LatLng startLatLng;
     private LatLng destLatLng;
 
     private boolean offered;
+
     /* fragments */
     RideInactiveFragment riderInactiveFragment;
     RidePendingFragment riderPendingFragment;
+    RideActiveFragment rideActiveFragment;
     DriveInactiveFragment driverInactiveFragment;
+    DriveActiveFragment driveActiveFragment;
 
+    private transient FirebaseFirestore firebaseFirestore;
+    private transient CollectionReference collectionReference;
+
+    private Boolean onStart;
+    private Boolean activeRide;
+
+    private Boolean loadFromFirebase = false;
+    private GetFireBaseRide getFireBaseRide;
+
+    public enum GetFireBaseRide{
+        RIDE_PENDING,
+        RIDE_INPROGRESS,
+        NO_RIDE
+    }
     /**
      * Checks for the bundle.
      *
@@ -106,59 +141,124 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         setContentView(R.layout.home_map_activity);
         offered = false;
 
-        /* check if there is an active ride saved in SharedPrefs */
-        SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
-        /* set active ride to true if there is, otherwise false */
-        activeRide = sharedPreferences.getBoolean("activeRide", false);
-
-
-        uid = getIntent().getStringExtra("user");
-        user = new User(uid);
-
+        /* get the type of user driver/rider - Shared Pref*/
         userType = (UserType) getIntent().getSerializableExtra("userType");
-
-        Log.wtf("USERTYPE", userType + "");
-
+        uid = getIntent().getStringExtra("uid");
+        user = new User(uid);
+        Log.wtf("STATS1", userType + "");
         findViewsSetListeners();
-        getMapType(sharedPreferences, userType);
-        getFragmentType(userType);
+        switch (userType) {
+            case RIDER:
+                checkFireBaseRide(uid);
+                break;
+            case DRIVER:
+                checkFireBaseDrive(uid);
+                break;
+        }
 
 
     }
 
-    /*----------------------------- SUP. ON CREATE ------------------------------------------------*/
+    public void checkFireBaseRide(String UID){
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        collectionReference = firebaseFirestore.collection("testrequests");
+        collectionReference
+                .document(UID)
+                .get()
+                .addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    activeRide = true;
 
+                    Log.d(TAG, "Document exists!");
+                    Log.d(TAG, "Starting from Firebase");
+
+                    GeoPoint start = document.getGeoPoint("startLocation");
+                    GeoPoint end = document.getGeoPoint("endLocation");
+                    String status = document.getString("rideStatus");
+
+                    Log.d(TAG, "start "+ start);
+                    Log.d(TAG, "end "+ end);
+                    Log.d(TAG, "STATUSU "+ status);
+
+                    startLatLng = new LatLng(start.getLatitude(), start.getLongitude());
+                    destLatLng = new LatLng(end.getLatitude(), end.getLongitude());
+
+                    /* there is a ride in progress but no confirmed driver */
+                    if(status.equals("")){
+                        getFireBaseRide = GetFireBaseRide.RIDE_PENDING;
+                        getMapType();
+                        getFragmentType(UID);
+                    }
+                    /* there is a confirmed driver driving the ride */
+                    else {
+                        getFireBaseRide = GetFireBaseRide.RIDE_INPROGRESS;
+                        getMapType();
+                        getFragmentType(UID);
+                    }
+                } else {
+                    /* you have no requests in the firebase db */
+                    Log.d(TAG, "Document does not exist!");
+                    getFireBaseRide = GetFireBaseRide.NO_RIDE;
+                    activeRide = false;
+                    getMapType();
+                    getFragmentType(UID);
+                }
+            } else { Log.wtf(TAG, "Failed with: ", task.getException()); }
+        });
+    }
+
+    public void checkFireBaseDrive(String UID){
+        // check firebase if you are in an active ride
+        Log.wtf("8888888888", "0000000000");
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        collectionReference = firebaseFirestore.collection("testrequests");
+        /* really bad */
+        collectionReference.whereEqualTo("UIDdriver", UID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot documentSnapshots : task.getResult()){
+                                /* should only be 1 here */
+                                Log.wtf("8888888888", ""+documentSnapshots.exists());
+                                if(documentSnapshots.exists()){
+                                    Log.wtf("4444444",documentSnapshots.toString());
+                                    String docID = documentSnapshots.getId();
+                                    checkFireBaseRide(docID);
+                                    return;
+                                }
+                            }
+                        } else {
+                            Log.wtf("4444444","nothing");
+                            // task not successful
+                            //error
+                        }
+                    }
+                });
+        getFireBaseRide = GetFireBaseRide.NO_RIDE;
+        activeRide = false;
+        getMapType();
+        getFragmentType(UID);
+    }
     /**
      * sets the gets the map type depending on what kind of user a person is (rider, driver)
-     * @param sharedPreferences the information containing if there was an active ride saved
-     * @param userType the typer of user a user is (rider, driver)
      */
-    public void getMapType(SharedPreferences sharedPreferences, UserType userType){
+    public void getMapType(){
         switch (userType){
             case RIDER:
-                if(activeRide){
-                    startLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("startLat", "")),
-                            Double.parseDouble(sharedPreferences.getString("startLng", "")));
-                    destLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("destLat", "")),
-                            Double.parseDouble(sharedPreferences.getString("destLng", "")));
-                    activeRideMapSetUp();
-                }
-                else{
-                    getLocationPermission();
-                }
-                break;
             case DRIVER:
-                rid = getIntent().getStringExtra("request");
-                request = new RideRequest(rid);
+                /* there is an active ride in firebase */
                 if(activeRide){
-                    startLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("startLat", "")),
-                            Double.parseDouble(sharedPreferences.getString("startLng", "")));
-                    destLatLng = new LatLng(Double.parseDouble(sharedPreferences.getString("destLat", "")),
-                            Double.parseDouble(sharedPreferences.getString("destLng", "")));
+                    Log.wtf("22222", "isActive");
                     activeRideMapSetUp();
                 }
-                else{
-                    recreateActivity(RecreateType.REQUEST_SENT, RESULT_OK, this.getIntent());
+                else {
+                    Log.wtf("22222", "!isActive");
+                    getLocationPermission();
                 }
                 break;
         }
@@ -166,49 +266,73 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     /**
      * Shows the fragment types shown to either type of user
-     * @param userType the type of user a person using the app is
      */
-    public void getFragmentType(UserType userType){
+    public void getFragmentType(String docID) {
         bundle = new Bundle();
         bundle.putSerializable("user", user);
-        switch (userType){
+        switch (userType) {
             /* cases for is the user is a rider */
             case RIDER:
-                Log.wtf("USERTYPE", "rider goes here");
-                /* if there is already an active ride and they are a rider */
-                if(activeRide){
-                    /* show the ride pending offers fragment on screen */
-                    riderPendingFragment = new RidePendingFragment();
-                    riderPendingFragment.setArguments(bundle);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .add(R.id.fragment_container, riderPendingFragment)
-                            .commit();
-                }
-                /* there is no active ride */
-                else {
-                    /* show the inactive fragment where the user can view history and request a ride */
-                    riderInactiveFragment = new RideInactiveFragment();
-                    riderInactiveFragment.setArguments(bundle);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .add(R.id.fragment_container, riderInactiveFragment)
-                            .commit();
+                /* if there is no ride */
+                switch (getFireBaseRide) {
+                    case RIDE_INPROGRESS:
+                        Log.wtf("000000", "in progress");
+                        rideActiveFragment = new RideActiveFragment();
+                        rideActiveFragment.setArguments(bundle);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.fragment_container, rideActiveFragment)
+                                .commit();
+                        break;
+                    case RIDE_PENDING:
+                        Log.wtf("000000", "in pending");
+                        riderPendingFragment = new RidePendingFragment();
+                        riderPendingFragment.setArguments(bundle);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.fragment_container, riderPendingFragment)
+                                .commit();
+                        break;
+                    case NO_RIDE:
+                        Log.wtf("000000", "in noride");
+                        riderInactiveFragment = new RideInactiveFragment();
+                        riderInactiveFragment.setArguments(bundle);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.fragment_container, riderInactiveFragment)
+                                .commit();
+                        break;
+
                 }
                 break;
             /* cases for is the user is a driver */
             case DRIVER:
-                Log.wtf("USERTYPE", "driver goes here");
-                driverInactiveFragment = new DriveInactiveFragment();
-                driverInactiveFragment.setArguments(bundle);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.fragment_container, driverInactiveFragment)
-                        .commit();
+                /* if there is no ride */
+                switch (getFireBaseRide) {
+                    case RIDE_INPROGRESS:
+                        Log.wtf("111111", "in progress");
+                        bundle.putSerializable("docID", docID);
+                        driveActiveFragment = new DriveActiveFragment();
+                        driveActiveFragment.setArguments(bundle);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.fragment_container, driveActiveFragment)
+                                .commit();
+
+                        break;
+                    case NO_RIDE:
+                        Log.wtf("111111", "in noride");
+                        driverInactiveFragment = new DriveInactiveFragment();
+                        driverInactiveFragment.setArguments(bundle);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.fragment_container, driverInactiveFragment)
+                                .commit();
+                        break;
+                }
                 break;
         }
     }
-
     /**
      * I mean, it finds the views and sets the listeners
      */
@@ -219,53 +343,8 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     /**
      * handles each time the activity is recreated
-     * @param recreateType the type of recreation; what is recreated
-     * @param resultCode the result code from onActivityResult
-     * @param data the intent
      */
-    public void recreateActivity(RecreateType recreateType, int resultCode, Intent data){
-        SharedPreferences sharedPreferences = getSharedPreferences("locations", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        switch(recreateType){
-            /* recreate on request sent */
-            case REQUEST_SENT:
-                if(resultCode==RESULT_OK){
-                    startLatLng = data.getParcelableExtra("startLatLng");
-                    destLatLng = data.getParcelableExtra("destLatLng");
-                    activeRide = true;
-                    editor.putString("startLat", String.valueOf(startLatLng.latitude));
-                    editor.putString("startLng", String.valueOf(startLatLng.longitude));
-                    editor.putString("destLat", String.valueOf(destLatLng.latitude));
-                    editor.putString("destLng", String.valueOf(destLatLng.longitude));
-                    editor.putBoolean("activeRide", activeRide);
-                    editor.apply();
-                    recreate();
-                }
-                else { recreate(); }
-                break;
-            /* recreate when cancelled */
-            case REQUEST_CANCELLED: // recreate on request cancelled
-                activeRide = false;
-                /* remove the lication values */
-                editor.remove("startLat");
-                editor.remove("startLng");
-                editor.remove("destLat");
-                editor.remove("destLng");
-                /* communicate that the active ride is false */
-                editor.putBoolean("activeRide", activeRide);
-                editor.apply();
-                /* recreate the activity */
-                recreate();
-                break;
-            /* when the profile is updated recreate to show the changes*/
-            case PROFILE_UPDATE:
-                Log.wtf("RIDER MAP", "Successful ON HERE");
-                getSupportFragmentManager().beginTransaction().remove(riderInactiveFragment).commit();
-                recreate();
-                break;
 
-        }
-    }
 
     /*----------------------------- OVERRIDES -----------------------------------------------------*/
 
@@ -278,7 +357,14 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        recreateActivity(RecreateType.REQUEST_SENT, resultCode, data);
+        FragmentManager fm = this.getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
+        Log.wtf("ONRESULT", "ONRESULT");
+
+        recreate();
+
     }
 
     /**
@@ -317,14 +403,14 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
-    /*----------------------------- MAPS/LOCATION/PERMISSION SETUP---------------------------------*/
-
     public void manageOffer() {
         if (offered) {
             request.removeOffer(uid);
         }
         else {
-            request.addOffer(uid);
+            Intent intent = new Intent(this, DriverRequestListActivity.class);
+            intent.putExtra("uid", user.getUid());
+            startActivityForResult(intent, 1);
         }
         offered = !offered;
     }
@@ -482,6 +568,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
      */
     public void activeRideMapSetUp(){
         initMap();
+        Log.wtf("22222", "ActiveMapReady1");
         /* sets the locations on the map */
         markStart = new MarkerOptions().position(startLatLng).title("Start Location");
         markDest = new MarkerOptions().position(destLatLng).title("Destination Location");
@@ -498,6 +585,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     public void activeRideMapOnReady(){
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         moveCamera(startLatLng, DEFAULT_ZOOM);
+        Log.wtf("22222", "ActiveMapReady2");
         addMarkers();
     }
 
@@ -505,11 +593,14 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
      * Adds the markers on the map
      */
     public void addMarkers(){
+        Log.wtf("22222", "ActiveMapReady3");
         mMap.addMarker(markStart);
         mMap.addMarker(markDest);
     }
 
-    /* gets the url of the google maps directions info */
+    /**
+     *  gets the url of the google maps directions info
+     */
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
@@ -525,7 +616,9 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         return url;
     }
 
-    /* when done with the map set up, draw the polylines between locations */
+    /**
+     * when done with the map set up, draw the polylines between locations
+     */
     @Override
     public void onTaskDone(Object... values) {
         if (currPolyline != null)

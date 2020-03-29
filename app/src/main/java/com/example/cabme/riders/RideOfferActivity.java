@@ -4,6 +4,7 @@ package com.example.cabme.riders;
  * the onClick for calling is from https://www.youtube.com/watch?v=DiIXhdseGgY
  */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.type.LatLng;
 
 import java.util.List;
 
@@ -54,7 +56,7 @@ public class RideOfferActivity extends AppCompatActivity {
         setContentView(R.layout.r_offerlist_activity);
         user = (com.example.cabme.User) getIntent().getSerializableExtra("user"); // get intent
         mFirestore = FirebaseFirestore.getInstance(); // starting the database references
-        confirmRideButton = (Button)findViewById(R.id.confirm_ride);
+        confirmRideButton = findViewById(R.id.confirm_ride);
         setUpRecyclerView();
     }
 
@@ -98,8 +100,6 @@ public class RideOfferActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                                 String driverID = documentSnapshot.getId();
-                                Log.wtf("USERNAMECLICK", position+"");
-                                Log.wtf("USENAMECLICK", driverID+"");
                                 bundle = new Bundle();
                                 bundle.putSerializable("uid", driverID);
                                 UserProfileActivity userProfileActivity = new UserProfileActivity();
@@ -112,8 +112,6 @@ public class RideOfferActivity extends AppCompatActivity {
                             @Override
                             public void onDriverSelect(DocumentSnapshot documentSnapshot, int position) {
                                 String driverID = documentSnapshot.getId();
-                                Log.wtf("DRIVERSELECT", position+"");
-                                Log.wtf("DRIVERSELECT", driverID+"");
                                 confirmRideButton.setText(""+ driverID);
                                 confirmRideButton.setVisibility(View.VISIBLE);
                                 confirmRideButton.setOnClickListener(new View.OnClickListener() {
@@ -124,8 +122,10 @@ public class RideOfferActivity extends AppCompatActivity {
                                         RideRequest rideRequest = new RideRequest(user.getUid());
                                         rideRequest.updateRideStatus("Active");
                                         rideRequest.updateDriver(driverID);
-
-                                        // go back to the previous screeen
+                                        Intent intent = new Intent();
+                                        Log.wtf("WTFWTF", driverID);
+                                        setResult(1, intent);
+                                        finish();
                                     }
                                 });
                             }

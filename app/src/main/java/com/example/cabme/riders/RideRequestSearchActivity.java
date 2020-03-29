@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.example.cabme.maps.CostAlgorithm;
@@ -75,7 +76,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.r_ride_request_search_activity);
-
         user = (User)getIntent().getSerializableExtra("user");
 
         initializePlacesClient();
@@ -157,7 +157,16 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
     }
 
     public void addNewRideRequest(){
-        new RideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), rideCost);
+        new RideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), rideCost, new RideRequest.requestCallback() {
+            @Override
+            public void onCallback() {
+                Intent intent = new Intent();
+                intent.putExtra("startLatLng", startLngLat);
+                intent.putExtra("destLatLng", destLngLat);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
     /* Correct input in the cost field - do this later */
@@ -180,11 +189,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
             if(destLngLat != null && startLngLat != null)
             {
                 addNewRideRequest();
-                Intent intent = new Intent();
-                intent.putExtra("startLatLng", startLngLat);
-                intent.putExtra("destLatLng", destLngLat);
-                setResult(RESULT_OK, intent);
-                finish();
             } else {
                 Toast.makeText(RideRequestSearchActivity.this,"Empty Field(s) not valid", Toast.LENGTH_SHORT).show();
             }

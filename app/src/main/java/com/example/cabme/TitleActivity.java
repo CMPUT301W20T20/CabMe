@@ -61,7 +61,7 @@ public class TitleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
-                intent.putExtra("user", uid);
+                intent.putExtra("uid", uid);
                 intent.putExtra("userType", UserType.RIDER);
                 startActivity(intent);
             }
@@ -70,8 +70,8 @@ public class TitleActivity extends AppCompatActivity {
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
-                intent.putExtra("user", uid);
+                Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
+                intent.putExtra("uid", uid);
                 intent.putExtra("userType", UserType.DRIVER);
                 startActivity(intent);
             }
