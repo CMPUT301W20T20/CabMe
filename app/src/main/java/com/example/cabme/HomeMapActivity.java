@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -51,7 +52,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -142,6 +145,9 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_map_activity);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        collectionReference = firebaseFirestore.collection("testrequests");
         offered = false;
 
         /* get the type of user driver/rider - Shared Pref*/
@@ -163,13 +169,33 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 destLatLng = getIntent().getParcelableExtra("destLatLng");
                 getMapType();
                 getFragmentType(rid);
+                collectionReference.document(rid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (documentSnapshot == null) {
+                            return;
+                        }
+                        if (documentSnapshot.getString("rideStatus").equals("Active")) {
+                            getFireBaseRide = GetFireBaseRide.RIDE_INPROGRESS;
+
+                            new AlertDialog.Builder(HomeMapActivity.this)
+                                    .setMessage("The rider accepted your offer, start the ride!")
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            FragmentManager manager = HomeMapActivity.this.getSupportFragmentManager();
+                                            manager.popBackStack();                           }
+                                    })
+                                    .show();
+                            getFragmentType(rid);
+                        }
+
+                    }
+                });
                 break;
         }
     }
 
     public void checkFireBaseRide(String UID){
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        collectionReference = firebaseFirestore.collection("testrequests");
         collectionReference
                 .document(UID)
                 .get()
