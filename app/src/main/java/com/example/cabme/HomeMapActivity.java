@@ -150,14 +150,8 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         user = new User(uid);
         Log.wtf("STATS1", userType + "");
         findViewsSetListeners();
-        switch (userType) {
-            case RIDER:
-                checkFireBaseRide(uid);
-                break;
-            case DRIVER:
-                checkFireBaseDrive(uid);
-                break;
-        }
+        checkFireBaseRide(uid);
+
     }
 
     public void checkFireBaseRide(String UID){
@@ -210,65 +204,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         });
     }
 
-    public void checkFireBaseDrive(String UID){
-        // check firebase if you are in an active ride
-        Log.wtf("8888888888", "0000000000");
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        collectionReference = firebaseFirestore.collection("testrequests");
-        /* really bad */
-        collectionReference.whereEqualTo("UIDdriver", UID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot documentSnapshots : task.getResult()){
-                                /* should only be 1 here */
-                                Log.wtf("8888888888", ""+documentSnapshots.exists());
-                                if(documentSnapshots.exists()){
-                                    Log.wtf("4444444",documentSnapshots.toString());
-                                    String docID = documentSnapshots.getId();
-                                    checkFireBaseRide(docID);
-                                    return;
-                                }
-                            }
-                        } else {
-                            Log.wtf("4444444","nothing");
-                            // task not successful
-                            //error
-                        }
-                    }
-                });
-        collectionReference.whereArrayContains("offers", UID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot documentSnapshots : task.getResult()){
-                                /* should only be 1 doc here */
-                                Log.wtf("8888888888", ""+documentSnapshots.exists());
-                                if(documentSnapshots.exists()){
-                                    Log.wtf("4444444",documentSnapshots.toString());
-                                    String docID = documentSnapshots.getId();
-                                    checkFireBaseRide(docID);
-                                    break;
-                                }
-                            }
-                        } else {
-                            Log.wtf("4444444","nothing");
-                            // task not successful
-                            //error
-                        }
-                    }
-                });
-        Log.d(TAG, "Document does not exist!");
-        getFireBaseRide = GetFireBaseRide.NO_RIDE;
-        activeRide = false;
-        getMapType();
-        getFragmentType(UID);
-    }
 
     public interface docIDCallBack{
         void onCallback(LatLng start, LatLng end);

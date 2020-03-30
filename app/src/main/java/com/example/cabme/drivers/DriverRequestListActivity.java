@@ -95,8 +95,8 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                             driver.setDocumentListener();
                             bundle = new Bundle();
                             bundle.putSerializable("user", driver);
-//                            ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
-//                            hamburgerMenuBtn.setOnClickListener(DriverRequestListActivity.this);
+                            ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
+                            hamburgerMenuBtn.setOnClickListener(DriverRequestListActivity.this);
                         }
                     }
                 });
@@ -141,11 +141,23 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                 confirmRideButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RideRequest rideRequest = new RideRequest(documentSnapshot.getId());
-                        rideRequest.addOffer(uid);
-                        Intent intent = new Intent();
-                        setResult(1, intent);
-                        finish();
+                        GeoPoint startLoc = documentSnapshot.getGeoPoint("startLocation");
+                        GeoPoint destLoc = documentSnapshot.getGeoPoint("endLocation");
+                        if(destLoc != null && startLoc != null) {
+                            Intent intent = new Intent(DriverRequestListActivity.this, HomeMapActivity.class);
+
+                            LatLng startLongLat = new LatLng(startLoc.getLatitude(), startLoc.getLongitude());
+                            LatLng destLongLat = new LatLng(destLoc.getLatitude(), destLoc.getLongitude());
+
+                            intent.putExtra("startLatLng", startLongLat);
+                            intent.putExtra("destLatLng", destLongLat);
+                            intent.putExtra("userType", userType);
+                            intent.putExtra("user", uid);
+                            intent.putExtra("request", documentSnapshot.getId());
+
+                            startActivity(intent);
+                            ;
+                        }
                     }
                 });
             }
