@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
 import com.example.cabme.R;
+import com.example.cabme.UserProfileActivity;
 import com.example.cabme.maps.JsonParser;
 
 
@@ -124,7 +125,6 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Log.wtf("RIDERUID", documentSnapshot.getString("UIDrider"));
                 String riderID = documentSnapshot.getString("UIDrider");
-
                 confirmRideButton.setText(String.format("%s", documentSnapshot.getId()));
                 confirmRideButton.setVisibility(View.VISIBLE);
                 confirmRideButton.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +137,19 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                         finish();
                     }
                 });
+            }
+
+            @Override
+            public void onUsernameClick(DocumentSnapshot documentSnapshot, int position) {
+                String riderID = documentSnapshot.getString("UIDrider");
+                bundle = new Bundle();
+                bundle.putSerializable("uid", riderID);
+                UserProfileActivity userProfileActivity = new UserProfileActivity();
+                userProfileActivity.setArguments(bundle);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.d_reqlist_activity, userProfileActivity)
+                        .commit();
             }
         });
     }

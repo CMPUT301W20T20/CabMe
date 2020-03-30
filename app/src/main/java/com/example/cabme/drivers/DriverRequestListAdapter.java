@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.R;
+import com.example.cabme.Rating;
+import com.example.cabme.User;
 import com.example.cabme.riders.RiderHistoryListAdapter;
 import com.example.cabme.riders.RiderHistoryListModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -32,6 +34,8 @@ public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHist
         String UID = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("UIDrider");
         String address = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("startAddress");
         Double cost = (Double) getSnapshots().getSnapshot(holder.getAdapterPosition()).get("rideCost");
+        User rider = new User(UID);
+        rider.readData((email, firstname, lastname, username, phone, rating) -> holder.driverUsername.setText(String.format("@%s", username)));
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users")
@@ -72,12 +76,14 @@ public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHist
         private TextView name;
         private TextView fare;
         private TextView sLocation;
+        private TextView driverUsername;
 
         public RequestsViewHolder(@NonNull View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.name);
             fare = itemView.findViewById(R.id.fare);
             sLocation = itemView.findViewById(R.id.slocation);
+            driverUsername = itemView.findViewById(R.id.username);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,12 +91,20 @@ public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHist
                     listener.onItemClick(getSnapshots().getSnapshot(position), position);
                     notifyItemChanged(position);
                 }
+                /* on click of the drivers user name, pass snapshot of it */
+            });
+            driverUsername.setOnClickListener(v -> {
+                if(listener != null){ /* only if the listener is not null */
+                    int position = getAdapterPosition();
+                    listener.onUsernameClick(getSnapshots().getSnapshot(position), position);
+                }
             });
         }
     }
 
     public interface OnItemClickListener {
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
+        void onUsernameClick(DocumentSnapshot documentSnapshot, int position);
     }
 
     public void setOnItemClickListener(DriverRequestListAdapter.OnItemClickListener listener) {
