@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.example.cabme.riders.RideRequest;
@@ -60,19 +61,17 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-//        if (offered) {
-//            offer.setText("Offer");
-//            question.setText("Make Offer?");
-//        }
-//        else {
-//            offer.setText("Remove Offer");
-//            question.setText("Offered");
-//        }
-//        offered = !offered;
-//        ((HomeMapActivity)getActivity()).manageOffer();
-        Intent intent = new Intent(getContext(), DriverRequestListActivity.class);
-        intent.putExtra("uid", user.getUid());
-        startActivityForResult(intent, 1);
+        if (offered) {
+            offer.setText("Offer");
+            question.setText("Make Offer?");
+        }
+        else {
+            offer.setText("Remove Offer");
+            question.setText("Offered");
+        }
+        offered = !offered;
+        ((HomeMapActivity) getActivity()).manageOffer();
+        
     }
 
     @Override

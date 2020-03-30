@@ -150,8 +150,19 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         user = new User(uid);
         Log.wtf("STATS1", userType + "");
         findViewsSetListeners();
-        checkFireBaseRide(uid);
-
+        switch (userType) {
+            case RIDER:
+                checkFireBaseRide(uid);
+                break;
+            case DRIVER:
+                getFireBaseRide = GetFireBaseRide.RIDE_PENDING;
+                activeRide = true;
+                startLatLng = getIntent().getParcelableExtra("startLatLng");
+                destLatLng = getIntent().getParcelableExtra("destLatLng");
+                getMapType();
+                getFragmentType(uid);
+                break;
+        }
     }
 
     public void checkFireBaseRide(String UID){
