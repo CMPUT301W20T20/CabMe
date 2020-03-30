@@ -5,23 +5,32 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.DIAL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+
     <uses-feature android:name="android.hardware.camera2"/>
     <uses-feature android:name="android.hardware.camera2.autofocus"/>
     <uses-permission android:name="android.permission.VIBRATE" />
 
+
+    <!-- App Activity -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+        android:hardwareAccelerated="true">
+        <!--        android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"-->
+        <!--        android:theme="@style/Theme.AppCompat.NoActionBar"-->
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -47,27 +56,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".TitleActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".ProfileActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".SignupActivity"
-            android:label="Sign Up" />
-        <activity
-            android:name=".MapViewActivity"
-            android:label="Map View" />
-        <activity
-            android:name=".DriverRequestListActivity"
-            android:label="Driver Request List Activity"/>
-        <activity
-            android:name=".NewRideInfoActivity"
-            android:label="New Ride" />
-        <activity
-            android:name=".r_historylist_activity"
-            android:label="History View"/>
+
+
+        <!-- Library Activity -->
+        <activity android:name=".TitleActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".UserProfileActivity" />
+
+        <activity android:name=".HomeMapActivity" />
+        <activity android:name=".HamburgerFragment"/>
+        <activity android:name=".riders.RideInactiveFragment"/>
+
+        <activity android:name=".maps.MapViewActivity" />
+
+        <activity android:name=".qrscanner.ScannerQR"/>
+        <activity android:name=".qrscanner.QRActivity"/>
+
+        <activity android:name=".drivers.DriverRequestListActivity" />
+        <activity android:name=".riders.RiderHistoryListActivity" />
+        <activity android:name=".riders.RideRequestSearchActivity" />
+
+        <activity android:name=".riders.RideOfferActivity"
+                  android:exported="true"/>
+
+
     </application>
 
 </manifest>
