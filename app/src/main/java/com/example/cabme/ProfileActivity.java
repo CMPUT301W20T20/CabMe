@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -228,7 +230,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
     public void onBackPressed() {
         super.onBackPressed();
         Log.wtf("PROFILE", "Successful Backpress");
-        setResult(RESULT_FIRST_USER);
         finish();
     }
 }

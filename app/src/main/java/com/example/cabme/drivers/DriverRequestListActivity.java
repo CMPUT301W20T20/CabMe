@@ -12,14 +12,9 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -29,19 +24,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
-import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
-import com.example.cabme.UserType;
 import com.example.cabme.maps.JsonParser;
 
 
 import com.example.cabme.HamburgerFragment;
 import com.example.cabme.riders.RideRequest;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,8 +40,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 
 // In other folders
-import com.example.cabme.maps.LongLat;
-import com.example.cabme.maps.MapViewActivity;
 import com.example.cabme.riders.RiderHistoryListModel;
 
 import java.util.Comparator;

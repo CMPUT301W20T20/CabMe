@@ -68,8 +68,6 @@
         <activity android:name=".HamburgerFragment"/>
         <activity android:name=".riders.RideInactiveFragment"/>
 
-        <activity android:name=".maps.MapViewActivity" />
-
         <activity android:name=".qrscanner.ScannerQR"/>
         <activity android:name=".qrscanner.QRActivity"/>
 

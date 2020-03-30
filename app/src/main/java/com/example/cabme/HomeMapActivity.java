@@ -2,10 +2,8 @@ package com.example.cabme;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,24 +13,19 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.cabme.drivers.DriveActiveFragment;
 import com.example.cabme.drivers.DriveInactiveFragment;
-import com.example.cabme.drivers.DrivePendingFragment;
+import com.example.cabme.drivers.DriveActiveFragment;
 import com.example.cabme.drivers.DriverRequestListActivity;
 import com.example.cabme.maps.FetchURL;
 import com.example.cabme.maps.TaskLoadedCallback;
 import com.example.cabme.riders.RecreateType;
 import com.example.cabme.riders.RideActiveFragment;
 import com.example.cabme.riders.RideInactiveFragment;
-import com.example.cabme.riders.RidePendingFragment;
 import com.example.cabme.riders.RideRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -48,15 +41,12 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.io.Serializable;
 
 /**
  *
@@ -72,14 +62,13 @@ import java.io.Serializable;
  * (2) https://github.com/mitchtabian/Google-Maps-Google-Places
  *
  * TODO:
- *  [ ] finish rider side basic no bug checks
- *  [ ] LOAD FROM FIRE BASE when you log in check if you have any requests in fireBase - Online
- *  [x] opens from shared preference for backup
+ *  [x] finish rider side basic no bug checks
+ *  [x] LOAD FROM FIRE BASE when you log in check if you have any requests in fireBase - Online
+ *  [ ] opens from shared preference for backup
  *  [ ] COMMENTS :/
  *  [x] fix fragments stacking
- *  [ ] why do i have so many global variables this is confusing
+ *  [x] why do i have so many global variables this is confusing
  *
- *  FIXME (BUT PROBABLY NOT) this is super hacky im so sorry LOOOL
  *
  */
 public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {
@@ -111,12 +100,9 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     /* fragments */
     RideInactiveFragment riderInactiveFragment;
-    RidePendingFragment riderPendingFragment;
-    RideActiveFragment rideActiveFragment;
+    RideActiveFragment riderPendingFragment;
     DriveInactiveFragment driverInactiveFragment;
     DriveActiveFragment driveActiveFragment;
-    DrivePendingFragment drivePendingFragment;
-
 
     private transient FirebaseFirestore firebaseFirestore;
     private transient CollectionReference collectionReference;
@@ -132,6 +118,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         RIDE_INPROGRESS,
         NO_RIDE
     }
+
     /**
      * Checks for the bundle.
      *
@@ -150,6 +137,12 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         user = new User(uid);
         Log.wtf("STATS1", userType + "");
         findViewsSetListeners();
+
+        FragmentManager fm = HomeMapActivity.this.getSupportFragmentManager();
+        for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
+
         switch (userType) {
             case RIDER:
                 checkFireBaseRide(uid);
@@ -270,10 +263,6 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         getFragmentType(UID);
     }
 
-    public interface docIDCallBack{
-        void onCallback(LatLng start, LatLng end);
-    }
-
     /**
      * sets the gets the map type depending on what kind of user a person is (rider, driver)
      */
@@ -306,21 +295,14 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 /* if there is no ride */
                 switch (getFireBaseRide) {
                     case RIDE_INPROGRESS:
-                        Log.wtf("000000", "in progress");
-                        rideActiveFragment = new RideActiveFragment();
-                        rideActiveFragment.setArguments(bundle);
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .add(R.id.fragment_container, rideActiveFragment)
-                                .commit();
-                        break;
                     case RIDE_PENDING:
                         Log.wtf("000000", "in pending");
-                        riderPendingFragment = new RidePendingFragment();
+                        riderPendingFragment = new RideActiveFragment();
                         riderPendingFragment.setArguments(bundle);
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .add(R.id.fragment_container, riderPendingFragment)
+                                .addToBackStack(null)
                                 .commit();
                         break;
                     case NO_RIDE:
@@ -329,7 +311,8 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                         riderInactiveFragment.setArguments(bundle);
                         getSupportFragmentManager()
                                 .beginTransaction()
-                                .add(R.id.fragment_container, riderInactiveFragment)
+                                .replace(R.id.fragment_container, riderInactiveFragment)
+                                .addToBackStack(null)
                                 .commit();
                         break;
 
@@ -340,38 +323,32 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 /* if there is no ride */
                 switch (getFireBaseRide) {
                     case RIDE_INPROGRESS:
-                        Log.wtf("111111", "in progress");
-                        bundle.putSerializable("docID", docID);
+                    case RIDE_PENDING:
+                        Log.wtf("111111", "in pending");
                         driveActiveFragment = new DriveActiveFragment();
+                        bundle.putSerializable("docID", docID);
                         driveActiveFragment.setArguments(bundle);
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .add(R.id.fragment_container, driveActiveFragment)
+                                .addToBackStack(null)
                                 .commit();
                         break;
-                    case RIDE_PENDING:
-                        Log.wtf("111111", "in pending");
-                        drivePendingFragment = new DrivePendingFragment();
-                        bundle.putSerializable("docID", docID);
-                        drivePendingFragment.setArguments(bundle);
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .add(R.id.fragment_container, drivePendingFragment)
-                                .commit();
-                        break;
-                    case NO_RIDE:
+                    case NO_RIDE: // TODO -- SLATED FOR REMOVAL START DRIVER AT LIST
                         Log.wtf("111111", "in noride");
                         driverInactiveFragment = new DriveInactiveFragment();
                         driverInactiveFragment.setArguments(bundle);
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .add(R.id.fragment_container, driverInactiveFragment)
+                                .addToBackStack(null)
                                 .commit();
                         break;
                 }
                 break;
         }
     }
+
     /**
      * I mean, it finds the views and sets the listeners
      */
@@ -379,11 +356,6 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
         hamburgerMenuBtn.setOnClickListener(this);
     }
-
-    /**
-     * handles each time the activity is recreated
-     */
-
 
     /*----------------------------- OVERRIDES -----------------------------------------------------*/
 
@@ -397,9 +369,6 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         FragmentManager fm = this.getSupportFragmentManager();
-        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-            fm.popBackStack();
-        }
         Log.wtf("ONRESULT", "ONRESULT");
 
         recreate();
@@ -417,6 +386,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, hamburgerFragment, userType.toString())
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -611,8 +581,8 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         /* sets the locations on the map */
         markStart = new MarkerOptions().position(startLatLng).title("Start Location");
         markDest = new MarkerOptions().position(destLatLng).title("Destination Location");
-        markStart.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_start_30));
         markDest.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_dest_30));
+        markStart.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_start_30));
         /* fetches the url */
         new FetchURL(HomeMapActivity.this)
                 .execute(getUrl(markStart.getPosition(), markDest.getPosition(), "driving"), "driving");

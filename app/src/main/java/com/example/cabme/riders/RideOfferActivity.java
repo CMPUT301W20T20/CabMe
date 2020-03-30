@@ -72,64 +72,69 @@ public class RideOfferActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot ddocumentSnapshot) {
                         offers = (List<String>) ddocumentSnapshot.get("offers");
-                        query = mFirestore
-                                .collection("users")
-                                .whereIn(FieldPath.documentId(), offers);
 
-                        Log.wtf("Check", "" + user.getUid());
-                        Log.wtf("Check", "" + query.toString());
+                        if(offers.size() == 0) {
+                            Log.wtf("QUERYCHECK", "check status" + query);
+                            return;
+                        }else{
+                            query = mFirestore
+                                    .collection("users")
+                                    .whereIn(FieldPath.documentId(), offers);
 
+                            Log.wtf("Check", "" + user.getUid());
+                            Log.wtf("Check", "" + query.toString());
 
-                        /* set options */
-                        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
-                                .setQuery(query, User.class)
-                                .build();
+                            /* set options */
+                            FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                                    .setQuery(query, User.class)
+                                    .build();
 
-                        /* set the adapter */
-                        adapter = new RideOfferAdapter(options);
+                            /* set the adapter */
+                            adapter = new RideOfferAdapter(options);
 
-                        /*recyclerview settings*/
-                        recyclerView = findViewById(R.id.recycleView); // setting recycleview
-                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(RideOfferActivity.this));
-                        recyclerView.setAdapter(adapter);
-                        adapter.startListening();
-                        /* on click listen for thr adapter opens profile fragment */
+                            /*recyclerview settings*/
+                            recyclerView = findViewById(R.id.recycleView); // setting recycleview
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(RideOfferActivity.this));
+                            recyclerView.setAdapter(adapter);
+                            adapter.startListening();
+                            /* on click listen for thr adapter opens profile fragment */
 
-                        adapter.setOnItemClickListener(new RideOfferAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                                String driverID = documentSnapshot.getId();
-                                bundle = new Bundle();
-                                bundle.putSerializable("uid", driverID);
-                                UserProfileActivity userProfileActivity = new UserProfileActivity();
-                                userProfileActivity.setArguments(bundle);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .add(R.id.r_offerlist_activity, userProfileActivity)
-                                        .commit();
-                            }
-                            @Override
-                            public void onDriverSelect(DocumentSnapshot documentSnapshot, int position) {
-                                String driverID = documentSnapshot.getId();
-                                confirmRideButton.setText(""+ driverID);
-                                confirmRideButton.setVisibility(View.VISIBLE);
-                                confirmRideButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // change fields in requests
-                                        /* Removes the fragment and starts the HomeMapActivity recreation here*/
-                                        RideRequest rideRequest = new RideRequest(user.getUid());
-                                        rideRequest.updateRideStatus("Active");
-                                        rideRequest.updateDriver(driverID);
-                                        Intent intent = new Intent();
-                                        Log.wtf("WTFWTF", driverID);
-                                        setResult(1, intent);
-                                        finish();
-                                    }
-                                });
-                            }
-                        });
+                            adapter.setOnItemClickListener(new RideOfferAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                                    String driverID = documentSnapshot.getId();
+                                    bundle = new Bundle();
+                                    bundle.putSerializable("uid", driverID);
+                                    UserProfileActivity userProfileActivity = new UserProfileActivity();
+                                    userProfileActivity.setArguments(bundle);
+                                    getSupportFragmentManager()
+                                            .beginTransaction()
+                                            .add(R.id.r_offerlist_activity, userProfileActivity)
+                                            .commit();
+                                }
+                                @Override
+                                public void onDriverSelect(DocumentSnapshot documentSnapshot, int position) {
+                                    String driverID = documentSnapshot.getId();
+                                    confirmRideButton.setText(""+ driverID);
+                                    confirmRideButton.setVisibility(View.VISIBLE);
+                                    confirmRideButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            // change fields in requests
+                                            /* Removes the fragment and starts the HomeMapActivity recreation here*/
+                                            RideRequest rideRequest = new RideRequest(user.getUid());
+                                            rideRequest.updateRideStatus("Active");
+                                            rideRequest.updateDriver(driverID);
+//                                            Intent intent = new Intent();
+//                                            Log.wtf("WTFWTF", driverID);
+//                                            setResult(1, intent);
+                                            finish();
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     }
                 });
     }
@@ -149,6 +154,8 @@ public class RideOfferActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.stopListening();
+        if(adapter != null){
+            adapter.stopListening();
+        }
     }
 }

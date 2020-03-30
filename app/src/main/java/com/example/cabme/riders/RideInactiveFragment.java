@@ -53,7 +53,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
      */
     private void setWelcome(){
         user.readData((email, firstname, lastname, username, phone, rating) -> {
-            String welcomeText = "Hello " + firstname +",";
+            String welcomeText = "Hey " + firstname +",";
             helloUser.setText(welcomeText);
         });
     }
@@ -64,6 +64,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
      */
     @Override
     public void onClick(View v) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
         Intent intent;
         switch(v.getId()){
             case R.id.ride_history:
@@ -73,6 +74,9 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
                 break;
 
             case R.id.new_offer:
+                if(fm.getBackStackEntryCount()>0) {
+                    fm.popBackStack();
+                }
                 /*
                  * new ride request starts for a result -> onActivityResult
                  *  takes you back there after onFinish() in the next activity

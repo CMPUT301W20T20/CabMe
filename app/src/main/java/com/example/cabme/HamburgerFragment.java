@@ -153,7 +153,5 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
         trans.commit();
         manager.popBackStack();
 //        ((HomeMapActivity)getActivity()).recreate();
-
-
     }
 }

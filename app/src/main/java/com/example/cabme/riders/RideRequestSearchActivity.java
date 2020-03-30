@@ -176,7 +176,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            customCost = Double.parseDouble(rideCostEditText.getText().toString());
         }
 
         @Override

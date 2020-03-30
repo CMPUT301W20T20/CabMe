@@ -27,7 +27,6 @@
 		<EditText
 			android:id="@+id/SignupFirstName"
 			android:layout_width="match_parent"
-			android:height="50dp"
 			android:capitalize="characters"
 			android:layout_marginTop="50dp"
 			android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

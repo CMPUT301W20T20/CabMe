@@ -1,18 +1,14 @@
 package com.example.cabme.drivers;
 
 import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,20 +17,23 @@ import com.example.cabme.R;
 import com.example.cabme.User;
 import com.example.cabme.riders.RideRequest;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class DriveActiveFragment extends Fragment implements View.OnClickListener {
     private TextView status;
+    private Button cancel;
+    private Button qrScan;
     private TextView to;
     private TextView from;
     private TextView cost;
     public User user;
-    public String docID;
+    private String docID;
+    private RideRequest rideRequest;
 
     ScheduledThreadPoolExecutor executor;
+    ScheduledThreadPoolExecutor executor2;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,62 +46,104 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
         user = (User) getArguments().getSerializable("user");
         docID = (String) getArguments().getSerializable("docID");
 
-        Log.wtf("USER", user.getUid());
+        rideRequest = new RideRequest(docID);
         findViewsSetListeners(view);
-
-        RideRequest rideRequest = new RideRequest(docID);
+        setAll();
         executor = new ScheduledThreadPoolExecutor(1);
-        executor.scheduleAtFixedRate(() -> updateStatusThread(rideRequest, view), 0, 1, TimeUnit.SECONDS);
-
+        executor.scheduleAtFixedRate(() -> updateStatusActive(rideRequest, view), 0, 1, TimeUnit.SECONDS);
+        executor2 = new ScheduledThreadPoolExecutor(1);
+        executor2.scheduleAtFixedRate(() -> updateStatusCompleted(rideRequest, view), 0, 1, TimeUnit.SECONDS);
 
         return view;
     }
 
-    private void updateStatusThread(RideRequest rideRequest, View view){
-        Log.wtf("IM GERE", "HERE1");
-        rideRequest.readData((RideRequest.dataCallBack) (driverID, status) -> {
+    private void setAll(){
+        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
             if(status.equals("")){
-                this.status.setText("Pending Rider Confirmation...");
+                this.status.setText("Waiting for a driver...");
             }else {
                 this.status.setText(status);
+                cancel.setVisibility(View.GONE);
+                qrScan.setVisibility(View.VISIBLE);
             }
-            if(status.equals("Completed")){
-                executor.shutdown();
+            to.setText(startAddress);
+            from.setText(endAddress);
+            this.cost.setText(String.format("QR$%s", String.valueOf(fare)));
+        });
+    }
 
+
+    private void updateStatusActive(RideRequest rideRequest, View view){
+        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
+            if(status.equals("Active")){
+                executor.shutdownNow();
+                this.status.setText(status);
                 new AlertDialog.Builder(getContext())
-                        .setMessage("The ride is complete!")
+                        .setMessage("The rider accepted your offer, start the ride!")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // TODO DO THIS NOW
-                                // do something on ride completion
+                                cancel.setVisibility(View.GONE);
+                                qrScan.setVisibility(View.VISIBLE);
+                          }
+                        }).show();
+
+            }
+        });
+    }
+
+    private void updateStatusCompleted(RideRequest rideRequest, View view){
+        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
+            if(status.equals("Completed")){
+                executor2.shutdownNow();
+                this.status.setText(status);
+                new AlertDialog.Builder(getContext())
+                        .setMessage("QRSCAN?")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                cancel.setVisibility(View.GONE);
+                                qrScan.setVisibility(View.VISIBLE);
                             }
-                        })
-                        .show();
+                        }).show();
             }
         });
     }
 
     private void findViewsSetListeners(View view){
+        cancel = view.findViewById(R.id.cancel);
+        qrScan = view.findViewById(R.id.qr_scan);
         status = view.findViewById(R.id.status);
         to = view.findViewById(R.id.to);
         from = view.findViewById(R.id.from);
         cost = view.findViewById(R.id.money);
+        cancel.setOnClickListener(this);
+        qrScan.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getContext(), DriverRequestListActivity.class);
-        intent.putExtra("uid", user.getUid());
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction trans = manager.beginTransaction();
-        trans.remove(DriveActiveFragment.this);
-        trans.commit();
-        manager.popBackStack();
+        RideRequest rideRequest = new RideRequest(docID);
+        switch(v.getId()){
+            case R.id.cancel:
+                /* call to remove the request */
+                /* remove fragments from backstack */
+                /* finish */
+                executor.shutdownNow();
+                executor2.shutdownNow();
+                rideRequest.updateRideStatus("Cancelled");
+                rideRequest.removeRequest(() -> {
+                    FragmentManager manager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction trans = manager.beginTransaction();
+                    trans.remove(DriveActiveFragment.this);
+                    trans.commit();
+                    manager.popBackStack();
+                    getActivity().recreate();
+                });
+                break;
+            case R.id.qr_scan:
+                /* on completions when the status is completed */
+                /* instantiate th qr thing how ever */
+                // TODO on driver completion
+                break;
+        }
     }
 }
