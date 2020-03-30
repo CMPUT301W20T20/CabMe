@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#24567d</color>
+    <color name="colorPrimary">#003e6d</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#24567d</color>
+    <color name="colorAccent">#003e6d</color>
 
     <color name="textColorPrimary">#000000</color>
     <color name="textColorSecondary">#FFFFFF</color>
@@ -14,7 +14,8 @@
     <color name="search_text_grey">#999999</color>
 
     <color name="cabme_accent_yellow">#f6d55c</color>
-    <color name="cabme_accent_blue">#24567d</color>
+    <color name="cabme_accent_yellow_light">#FFF0B7</color>
+    <color name="cabme_accent_blue">#003e6d</color>
     <color name="cabme_accent_grey">#303030</color>
     <color name="cabme_cancel_red">#EF1C1C</color>
     <color name="cabme_complete_green">#69CE66</color>

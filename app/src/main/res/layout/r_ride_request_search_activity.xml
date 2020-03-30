@@ -13,13 +13,14 @@
         android:layout_height="100dp"
         android:gravity="bottom"
         android:orientation="vertical"
-        android:background="@color/cabme_accent_grey">
+        android:background="@color/cabme_accent_blue">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30dp"
             android:text="Ride Search"
+            android:textStyle="bold"
             android:layout_marginStart="25dp"
             android:layout_marginLeft="25dp"
             android:layout_marginBottom="15dp"
@@ -132,7 +133,7 @@
             android:hint="@string/fare_estimate"
             android:textColorHint="@color/search_hint_grey"
             android:textColor="@color/quantum_black_100"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:inputType="numberDecimal"
             android:maxLength="10"
             android:background="@null"/>

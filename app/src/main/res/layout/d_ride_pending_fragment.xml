@@ -26,31 +26,33 @@
                 android:id="@+id/summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ride summary"/>
+                android:text="Ride Summary"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
 
             <TextView
                 android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="status: waiting for rider"/>
+                android:text="Waiting for rider..."/>
 
             <TextView
                 android:id="@+id/from"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="from: location"/>
+                android:text="Start Location"/>
 
             <TextView
                 android:id="@+id/to"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="to: location"/>
+                android:text="End Location"/>
 
             <TextView
                 android:id="@+id/money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="fare: $$$"/>
+                android:text="Fare QR $0.00"/>
 
             <Button
                 android:id="@+id/cancel"

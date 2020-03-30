@@ -17,10 +17,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="center"
             android:padding="13dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Finding offers for your ride..."
+                android:textSize="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_margin="5dp"
+                />
 
             <Button
                 android:id="@+id/ViewOffers"
@@ -29,8 +38,9 @@
                 android:textAllCaps="false"
                 android:background="@drawable/bg_search"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="80dp"
                 android:layout_margin="5dp"
+                android:layout_marginTop="10dp"
                 style="?android:attr/borderlessButtonStyle">
 
             </Button>
@@ -41,9 +51,9 @@
                 android:textAllCaps="false"
                 android:textColor="@color/quantum_white_100"
                 android:shadowColor="@color/fui_transparent"
-                android:background="@color/cabme_cancel_red"
+                android:background="@color/cabme_accent_yellow"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
                 android:layout_margin="5dp"
                 style="?android:attr/borderlessButtonStyle"/>
 

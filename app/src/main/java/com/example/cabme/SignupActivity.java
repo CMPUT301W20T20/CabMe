@@ -32,10 +32,12 @@ public class SignupActivity extends AppCompatActivity {
 	private EditText passwordEditText;
 	private EditText repasswordEditText;
 	private EditText phoneEditText;
+
 	FirebaseFirestore db;
 	FirebaseAuth mauth;
 	private String fname, lname, email, uname, phone, pass, repass;
 	Button signupButton;
+	Button loginButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +52,19 @@ public class SignupActivity extends AppCompatActivity {
 		passwordEditText = findViewById(R.id.SignupPassword);
 		repasswordEditText = findViewById(R.id.SignupREpassword);
 		signupButton = findViewById(R.id.signUpButton);
+		loginButton = findViewById(R.id.logInButton);
+
 
 		db = FirebaseFirestore.getInstance();
 		mauth = FirebaseAuth.getInstance();
 
+
+		loginButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
 		signupButton.setOnClickListener(new View.OnClickListener() {
 			@Override
