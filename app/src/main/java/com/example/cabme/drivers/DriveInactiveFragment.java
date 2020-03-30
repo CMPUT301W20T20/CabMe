@@ -45,11 +45,9 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
 
     private void findViewsSetListeners(View view){
         offer = view.findViewById(R.id.new_offer);
-        accepted = view.findViewById(R.id.accepted_offers);
         question = view.findViewById(R.id.question);
         helloUser = view.findViewById(R.id.hello_user);
         offer.setOnClickListener(this);
-        accepted.setOnClickListener(this);
     }
 
     private void setWelcome(){

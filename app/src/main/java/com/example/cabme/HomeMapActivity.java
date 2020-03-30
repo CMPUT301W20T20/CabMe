@@ -155,12 +155,14 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 checkFireBaseRide(uid);
                 break;
             case DRIVER:
+                rid = getIntent().getStringExtra("request");
+                request = new RideRequest(rid);
                 getFireBaseRide = GetFireBaseRide.RIDE_PENDING;
                 activeRide = true;
                 startLatLng = getIntent().getParcelableExtra("startLatLng");
                 destLatLng = getIntent().getParcelableExtra("destLatLng");
                 getMapType();
-                getFragmentType(uid);
+                getFragmentType(rid);
                 break;
         }
     }
@@ -298,23 +300,15 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                         break;
                     case RIDE_PENDING:
                         Log.wtf("111111", "in pending");
-                        drivePendingFragment = new DrivePendingFragment();
-                        bundle.putSerializable("docID", docID);
-                        drivePendingFragment.setArguments(bundle);
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .add(R.id.fragment_container, drivePendingFragment)
-                                .commit();
-                        break;
-                    case NO_RIDE:
-                        Log.wtf("111111", "in noride");
                         driverInactiveFragment = new DriveInactiveFragment();
+                        bundle.putSerializable("docID", docID);
                         driverInactiveFragment.setArguments(bundle);
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .add(R.id.fragment_container, driverInactiveFragment)
                                 .commit();
                         break;
+
                 }
                 break;
         }
@@ -394,9 +388,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
             request.removeOffer(uid);
         }
         else {
-            Intent intent = new Intent(this, DriverRequestListActivity.class);
-            intent.putExtra("uid", user.getUid());
-            startActivityForResult(intent, 1);
+            request.addOffer(uid);
         }
         offered = !offered;
     }

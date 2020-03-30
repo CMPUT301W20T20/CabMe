@@ -45,23 +45,9 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:background="@drawable/bg_search"
-                android:text="New Offers"
+                android:text="New Offer"
                 android:textAllCaps="false"
-                android:textColor="@color/quantum_black_100">
-            </Button>
-
-            <Button
-                android:id="@+id/accepted_offers"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_search"
-                android:text="Accepted Offers"
-                android:textAllCaps="false"
-                android:textColor="@color/quantum_black_100">
-
-            </Button>
+                android:textColor="@color/quantum_black_100"></Button>
 
 
         </LinearLayout>
