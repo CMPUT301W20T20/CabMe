@@ -74,6 +74,8 @@
         <activity android:name=".riders.RideRequestSearchActivity" />
         <activity android:name=".riders.RideOffer"
                   android:exported="true"/>
+        <activity android:name=".riders.Pop"
+                  android:theme="@style/AppTheme.PopupTheme"/>
 
 
     </application>

@@ -2,6 +2,12 @@ package com.example.cabme.riders;
 /**
  * the onClick for email is from https://www.youtube.com/watch?v=nj-STGrL7Zc
  * the onClick for calling is from https://www.youtube.com/watch?v=DiIXhdseGgY
+ *
+ *
+ *
+ *
+ * Note to self: Work on todo's
+ * secondly need to be able to click on view and accept ride....means move database or whatever
  */
 
 import android.Manifest;
@@ -45,6 +51,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 
@@ -60,17 +67,21 @@ public class RideOffer extends AppCompatActivity{
 
     // Query
     Query query;
-
+    //private CollectionReference docref;
     // Key
     private User user;
     private List<String> offers;
+    private ArrayList<String> test = new ArrayList<>();
+
     private Integer REQUEST_PERMISSION = 1;
     private transient CollectionReference collectionReference;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.r_offerlist_activity);
+
 
         // get user intent
         user = (User) getIntent().getSerializableExtra("User");
@@ -81,10 +92,14 @@ public class RideOffer extends AppCompatActivity{
         // setting recycleview
         recyclerView = findViewById(R.id.recycleView);
 
+        //declare arraylist
+
         //get the "offers" list
         //"499LGKdwIbWFap3nNpe3Huo0Fkj2"
         // need to get user.getUID() working, currently it is not working for some reason.
         collectionReference = mFirestore.collection("testrequests");
+
+        //TODO: need to change document path to user.getUID()
         collectionReference.document("499LGKdwIbWFap3nNpe3Huo0Fkj2").addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
@@ -92,23 +107,24 @@ public class RideOffer extends AppCompatActivity{
                     return;
                 }
                 offers = (ArrayList<String>) documentSnapshot.get("offers");
-                //print out values in logcat
-                for (String s : offers) {
-                    Log.d(TAG, s);
-                }
+
+                test.addAll(offers);
+
             }
         });
 
         // Query
         // getting the ridehistory collection in the user's document
-        query = mFirestore
-                .collection("users");
-
+        //oyP44B7VSZerbMYGYNw3eCwbcHW2
+        //CdeNP3Lb4UhmWlfaIqXnGI2Cq763
+        query = mFirestore.collection("users");
 
         // Recycler Options
+        //TODO: need to change this to a list
         FirestoreRecyclerOptions<RideOfferModel> options = new FirestoreRecyclerOptions.Builder<RideOfferModel>()
-                .setQuery(query, RideOfferModel.class)
+                .setQuery(query.whereIn("uid",Arrays.asList("CdeNP3Lb4UhmWlfaIqXnGI2Cq763", "oyP44B7VSZerbMYGYNw3eCwbcHW2")), RideOfferModel.class)
                 .build();
+
 
         adapter = new FirestoreRecyclerAdapter<RideOfferModel, RideOfferHolder>(options) {
             @NonNull
@@ -122,14 +138,14 @@ public class RideOffer extends AppCompatActivity{
             @Override
             protected void onBindViewHolder(@NonNull RideOfferHolder holder, int position, @NonNull RideOfferModel model) {
 
-                /*set all the respective fields with text*/
+                //set all the respective fields with text
                 holder.name.setText(model.getFirst() + " " + model.getLast());
                 holder.username.setText(model.getUsername());
                // holder.rating.setText(String.valueOf(model.getRating()));
                 holder.phone.setText(model.getPhone());
                 holder.email.setText(model.getEmail());
 
-                /*onClick listener to start email intent*/
+                //onClick listener to start email intent
                 holder.email.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -138,7 +154,7 @@ public class RideOffer extends AppCompatActivity{
                     }
                 });
 
-                /*onClick listener to start phone intent*/
+                //onClick listener to start phone intent
                 holder.phone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -147,11 +163,30 @@ public class RideOffer extends AppCompatActivity{
                     }
                 });
 
+                /** setting the onclick for the recycleview */
+                holder.itemView.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        //get snapshot of data
+                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+
+                        Log.d(TAG, "onClick: clicked on " + snapshot.getString("username"));
+
+                        //setting intent
+                        Intent intent = new Intent(RideOffer.this, Pop.class);
+
+                        //passing variables through using putExtra
+                        intent.putExtra("username", snapshot.getString("username"));
+                        intent.putExtra("uid", snapshot.getString("uid"));
+                        startActivity(intent);
+
+                    }
+                });
 
             }
         };
 
-        /*recyclerview settings*/
+        //recyclerview settings
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -162,7 +197,7 @@ public class RideOffer extends AppCompatActivity{
     /**
      * Purpose: "container" that holds all the information we need to display to the rider
      */
-    private class RideOfferHolder extends RecyclerView.ViewHolder{
+    private class RideOfferHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView username;
         private TextView rating;
@@ -182,7 +217,9 @@ public class RideOffer extends AppCompatActivity{
             phone = itemView.findViewById(R.id.phone);
             email = itemView.findViewById(R.id.email);
 
+
         }
+
     }
     /**
      * Purpose: stop listener at end of activity
