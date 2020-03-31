@@ -199,7 +199,7 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 //startActivity(intent2);
 
                 //pass through diver id, to get driver id we need to call RideRequest.readData
-                /**
+
                 rideRequest.readData(new RideRequest.dataCallBack() {
                     @Override
                     public void onCallback(String driverID, String status, String startAddress, String endAddress, Double fare) {
@@ -208,7 +208,7 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                         startActivity(intent);
                     }
                 });
-                 */
+
 
 
 

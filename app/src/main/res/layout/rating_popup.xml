@@ -22,13 +22,15 @@
         <Button
             android:id="@+id/thumb_up_popup"
             android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="15dp"
             android:text="Thumbs Up" />
 
         <Button
             android:id="@+id/thumbs_down_popup"
             android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="15dp"
             android:text="Thumbs Down" />
     </LinearLayout>
 
