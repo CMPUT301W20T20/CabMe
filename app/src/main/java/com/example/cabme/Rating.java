@@ -27,4 +27,11 @@ public class Rating implements Serializable {
         neg_rev += neg_rev;
     }
 
+    public int getNeg_rev() {
+        return neg_rev;
+    }
+
+    public int getPos_rev() {
+        return pos_rev;
+    }
 }
