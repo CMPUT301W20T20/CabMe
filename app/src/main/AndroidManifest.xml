@@ -83,7 +83,6 @@
                   android:theme="@style/PopupTheme"/>
 
 
-
     </application>
 
 </manifest>
