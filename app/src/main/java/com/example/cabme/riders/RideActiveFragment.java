@@ -209,19 +209,27 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 rideRequest.updateRideStatus("Completed");
                 stats.setText("Completed");
 
-                //start pop-up intent
-                //Intent intent2 = new Intent(getActivity(), Pop.class);
-                //intent2.putExtra("uid", "asd");
-                //startActivity(intent2);
-
                 //pass through diver id, to get driver id we need to call RideRequest.readData
-
-
                 rideRequest.readData(new RideRequest.dataCallBack() {
                     @Override
                     public void onCallback(String driverID, String status, String startAddress, String endAddress, Double fare) {
+
+                        //start pop-up intent
                         Intent intent = new Intent(getActivity(), Pop.class);
+
+                        //pass through driver uid, and user uid
                         intent.putExtra("uid", driverID);
+                        intent.putExtra("fare",fare);
+                        /*
+                         * TODO: pass "uid" through to Pop.java -> QRActivity.java -> TitleActivity.java
+                         *  TitleActivity is crashing because don't have "user":
+                         *                 Intent intent = new Intent(QRActivity.this, HomeMapActivity.class);
+                         *           ->    intent.putExtra("user", user);
+                         *                 intent.putExtra("userType", UserType.RIDER);
+                         *                 startActivity(intent);
+                         */
+                        //intent.putExtra("user",user.getUid());
+
                         startActivity(intent);
                     }
                 });

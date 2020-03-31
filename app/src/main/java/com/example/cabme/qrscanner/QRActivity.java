@@ -11,9 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.TitleActivity;
 import com.example.cabme.User;
+import com.example.cabme.UserType;
 
 
 public class QRActivity extends AppCompatActivity {
@@ -35,14 +37,15 @@ public class QRActivity extends AppCompatActivity {
         imageView = findViewById(R.id.GenBarCode);
         GoBackButton = findViewById(R.id.GoBack);
         user = (User)getIntent().getSerializableExtra("user");
+        fare = getIntent().getStringExtra("fare");
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentRider = (user.getFirstName());
+                //String currentRider = (user.getFirstName());
                 String currentFair = fare;
 
-                String text = (currentRider + " paid you $" + currentFair);
+                String text = ("$" + currentFair + " was received");
                 if (!text.equals("")){
                     new ImageDownloaderClass(imageView).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text);
                     button.setVisibility(View.GONE);
@@ -57,7 +60,9 @@ public class QRActivity extends AppCompatActivity {
         GoBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(QRActivity.this, TitleActivity.class);
+                Intent intent = new Intent(QRActivity.this, HomeMapActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("userType", UserType.RIDER);
                 startActivity(intent);
             }
         });
