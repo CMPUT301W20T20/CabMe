@@ -47,12 +47,11 @@
             android:id="@+id/confirm_ride"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Confirm ride with Name"
             android:textAllCaps="false"
             style="?android:attr/borderlessButtonStyle"
             android:background="@color/cabme_accent_blue"
             android:textColor="@color/quantum_white_100"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
     </LinearLayout>
 

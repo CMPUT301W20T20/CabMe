@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:textSize="30dp"
             android:text="Ride History"
-            android:textStyle="bold"
             android:layout_marginStart="25dp"
             android:layout_marginLeft="25dp"
             android:layout_marginBottom="15dp"

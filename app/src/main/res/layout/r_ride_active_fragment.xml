@@ -105,8 +105,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/money"
@@ -120,6 +119,33 @@
 
                 </LinearLayout>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttons_ll"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/callbutton"
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:background="@color/cabme_accent_blue"
+                    android:text="Call"
+                    android:textColor="@color/quantum_white_100" />
+
+                <Button
+                    android:id="@+id/emailbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:background="@drawable/blue_border_button"
+                    android:text="E-mail"
+                    android:textColor="@color/cabme_accent_blue" />
             </LinearLayout>
 
             <Button

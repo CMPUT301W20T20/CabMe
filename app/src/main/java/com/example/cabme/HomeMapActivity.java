@@ -180,7 +180,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                     destLatLng = new LatLng(end.getLatitude(), end.getLongitude());
 
                     /* there is a ride in progress but no confirmed driver */
-                    if(status.equals("")){
+                    if(status == null || status.equals("")){
                         getFireBaseRide = GetFireBaseRide.RIDE_PENDING;
                         getMapType();
                         getFragmentType(UID);
