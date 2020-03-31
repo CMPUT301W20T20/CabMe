@@ -12,7 +12,7 @@
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/logo_blue"
-        android:backgroundTint="@color/quantum_white_100"/>
+        android:backgroundTint="@color/cabme_accent_blue"/>
 
 <LinearLayout
     android:id="@+id/buttons"
@@ -29,8 +29,7 @@
         android:orientation="vertical"
         android:gravity="center_vertical"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
-        android:background="">
+        android:layout_marginBottom="30dp">
 
         <ImageButton
             android:id="@+id/driver"
