@@ -133,6 +133,8 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                                     break;
                                 case "Completed":
                                     if(getActivity() != null) {
+                                        stats.setText(status);
+                                        /**
                                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
                                         buttonsLL.setVisibility(View.GONE);
 //                                        LayoutInflater inflater = getLayoutInflater();
@@ -147,6 +149,7 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                                                     dialog.cancel();
                                                     dialog.dismiss();
                                                 }).show();
+                                         */
                                     }
                             }
                         });
