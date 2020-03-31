@@ -12,7 +12,7 @@
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/logo_blue"
-        android:backgroundTint="@color/cabme_accent_blue"/>
+        android:backgroundTint="@color/quantum_white_100"/>
 
 <LinearLayout
     android:id="@+id/buttons"
