@@ -137,15 +137,15 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
 //                                        LayoutInflater inflater = getLayoutInflater();
 //                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment, null);
 //                                        dialogBuilder.setView(dialogView);
-                                        dialogBuilder
-                                                .setMessage("there is a barcoodde here u can scan")
-                                                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                                                    rideCancelBtn.setVisibility(View.GONE);
-                                                    rideOffersBtn.setVisibility(View.GONE);
-                                                    rideCompleteBtn.setVisibility(View.VISIBLE);
-                                                    dialog.cancel();
-                                                    dialog.dismiss();
-                                                }).show();
+ //                                       dialogBuilder
+//                                                .setMessage("there is a barcoodde here u can scan")
+//                                                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                           rideCancelBtn.setVisibility(View.GONE);
+                                           rideOffersBtn.setVisibility(View.GONE);
+                                           rideCompleteBtn.setVisibility(View.VISIBLE);
+//                                                    dialog.cancel();
+//                                                    dialog.dismiss();
+//                                                }).show();
                                     }
                             }
                         });
