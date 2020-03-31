@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
+import com.example.cabme.qrscanner.QRActivity;
 import com.google.firebase.database.core.view.Change;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -209,10 +210,10 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 rideRequest.updateRideStatus("Completed");
                 stats.setText("Completed");
 
-                //start pop-up intent
-                //Intent intent2 = new Intent(getActivity(), Pop.class);
-                //intent2.putExtra("uid", "asd");
-                //startActivity(intent2);
+//                start pop-up intent
+                Intent intent3 = new Intent(getActivity(), QRActivity.class);
+                intent3.putExtra("uid", "asd");
+                startActivity(intent3);
 
                 //pass through diver id, to get driver id we need to call RideRequest.readData
                 /**
