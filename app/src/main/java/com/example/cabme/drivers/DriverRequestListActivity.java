@@ -96,11 +96,11 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         db = FirebaseFirestore.getInstance();
 
         // Query
-        query = db.collection("testrequests");
+        query = db.collection("testrequests").whereEqualTo("rideStatus", "");
 
         // Recycler options
         FirestoreRecyclerOptions<RiderHistoryListModel> options = new FirestoreRecyclerOptions.Builder<RiderHistoryListModel>()
-                .setQuery(query.orderBy("rideCost"), RiderHistoryListModel.class)
+                .setQuery(query, RiderHistoryListModel.class)
                 .build();
 
         // Sample Sort --- REMOVE

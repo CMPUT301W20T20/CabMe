@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
 import com.example.cabme.R;
+import com.example.cabme.Rating;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -32,8 +33,15 @@ public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAd
         String firstname = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("first");
         String lastname = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("last");
         String username = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("username");
+        Rating rating = getSnapshots().getSnapshot(holder.getAdapterPosition()).get("rating", Rating.class);
         holder.name.setText(String.format("%s %s", firstname, lastname));
         holder.username.setText(String.format("@%s", username));
+        if (rating.isReviewed()) {
+            holder.rating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPos_rev(), rating.getNeg_rev()));
+        }
+        else {
+            holder.rating.setText("Not Reviewed");
+        }
 
     }
 

@@ -82,6 +82,10 @@
         <activity android:name=".riders.Pop"
                   android:theme="@style/PopupTheme"/>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ba1713d63aa1136bf9c761c64b0a1fbded09e22b
     </application>
 
 </manifest>
