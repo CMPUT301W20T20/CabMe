@@ -70,6 +70,7 @@ public class ScannerQR extends AppCompatActivity implements ZXingScannerView.Res
         vibrate.vibrate(400);
 
         Intent intent = new Intent(ScannerQR.this, TitleActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 }
