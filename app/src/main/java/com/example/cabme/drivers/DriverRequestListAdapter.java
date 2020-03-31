@@ -59,9 +59,9 @@ public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHist
                         }
                     }
                 });
-
         // -> change this to distance from the user in the future!
-        holder.fare.setText(cost.toString());
+        Log.wtf("DRIVERENDCOST", cost+"");
+        holder.fare.setText("$"+cost.toString());
         holder.sLocation.setText(address);
     }
 

@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30dp"
-            android:text="Edit Account"
+            android:text="Account Details"
             android:layout_marginStart="25dp"
             android:layout_marginLeft="25dp"
             android:layout_marginBottom="15dp"
@@ -200,10 +200,7 @@
             android:id="@+id/saveprofile"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
+
             android:layout_marginRight="25dp"
             android:background="@color/cabme_accent_blue"
             style="?android:attr/borderlessButtonStyle"
@@ -216,14 +213,10 @@
             android:id="@+id/editprofile"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginRight="25dp"
+
             android:background="@color/search_bg_grey"
             style="?android:attr/borderlessButtonStyle"
-            android:text="Edit Profile"
+            android:text="Edit Account"
             android:textAllCaps="false"
             android:textColor="@color/quantum_grey600"/>
 

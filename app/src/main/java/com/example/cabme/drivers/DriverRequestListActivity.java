@@ -25,6 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
 import com.example.cabme.R;
+import com.example.cabme.Rating;
+import com.example.cabme.User;
 import com.example.cabme.UserProfileActivity;
 import com.example.cabme.maps.JsonParser;
 
@@ -125,17 +127,16 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Log.wtf("RIDERUID", documentSnapshot.getString("UIDrider"));
                 String riderID = documentSnapshot.getString("UIDrider");
-                confirmRideButton.setText(String.format("%s", documentSnapshot.getId()));
+                User user = new User(riderID);
+                user.readData((email, firstname, lastname, username, phone, rating) ->
+                        confirmRideButton.setText(String.format("Ride with %s", firstname)));
                 confirmRideButton.setVisibility(View.VISIBLE);
-                confirmRideButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        RideRequest rideRequest = new RideRequest(documentSnapshot.getId());
-                        rideRequest.addOffer(uid);
-                        Intent intent = new Intent();
-                        setResult(1, intent);
-                        finish();
-                    }
+                confirmRideButton.setOnClickListener(v -> {
+                    RideRequest rideRequest = new RideRequest(documentSnapshot.getId());
+                    rideRequest.addOffer(uid);
+                    Intent intent = new Intent();
+                    setResult(1, intent);
+                    finish();
                 });
             }
 
