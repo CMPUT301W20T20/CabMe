@@ -184,9 +184,8 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
                 /* on completions when the status is completed */
                 /* instantiate th qr thing how ever */
 
-//                Intent intent = new Intent(DriveActiveFragment.this, ScannerQR.class);
-//                startActivity(intent);
-
+                Intent intent = new Intent(getActivity(), ScannerQR.class);
+                startActivity(intent);
 
                 break;
         }

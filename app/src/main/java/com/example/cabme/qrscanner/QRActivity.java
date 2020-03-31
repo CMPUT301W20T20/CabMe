@@ -8,16 +8,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cabme.R;
 import com.example.cabme.TitleActivity;
+import com.example.cabme.User;
+
 
 public class QRActivity extends AppCompatActivity {
 
     ImageView imageView;
     Button button;
     Button GoBackButton;
+    private User user;
+    private String fare;
 
     // https://www.youtube.com/watch?v=0ClcWGX2-n8
 
@@ -29,12 +34,13 @@ public class QRActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
         imageView = findViewById(R.id.GenBarCode);
         GoBackButton = findViewById(R.id.GoBack);
+        user = (User)getIntent().getSerializableExtra("user");
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentRider = "Rider"; // Change this to current rider //THIS IS DUMMY
-                String currentFair = "70"; // Change this to fair amount       //THIS IS DUMMY
+                String currentRider = (user.getFirstName());
+                String currentFair = fare;
 
                 String text = (currentRider + " paid you $" + currentFair);
                 if (!text.equals("")){

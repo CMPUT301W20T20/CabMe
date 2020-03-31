@@ -209,6 +209,25 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 rideRequest.updateRideStatus("Completed");
                 stats.setText("Completed");
 
+                //start pop-up intent
+                //Intent intent2 = new Intent(getActivity(), Pop.class);
+                //intent2.putExtra("uid", "asd");
+                //startActivity(intent2);
+
+                //pass through diver id, to get driver id we need to call RideRequest.readData
+                /**
+                rideRequest.readData(new RideRequest.dataCallBack() {
+                    @Override
+                    public void onCallback(String driverID, String status, String startAddress, String endAddress, Double fare) {
+                        Intent intent = new Intent(getActivity(), Pop.class);
+                        intent.putExtra("uid", driverID);
+                        startActivity(intent);
+                    }
+                });
+                 */
+
+
+
                 /* TODO
                  *  - barcode thing goes here.
                  *  - rider presses complete ride, a dialogue pops up
