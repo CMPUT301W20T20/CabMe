@@ -37,7 +37,7 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/quantum_grey600"
+            android:textColor="@color/cabme_accent_yellow"
             android:textSize="20dp" />
 
         <LinearLayout

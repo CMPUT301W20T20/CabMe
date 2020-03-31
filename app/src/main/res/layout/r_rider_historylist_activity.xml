@@ -12,7 +12,7 @@
         android:layout_height="100dp"
         android:gravity="bottom"
         android:orientation="vertical"
-        android:background="@color/cabme_accent_grey">
+        android:background="@color/cabme_accent_blue">
 
         <TextView
             android:layout_width="wrap_content"

@@ -12,14 +12,9 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -29,19 +24,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cabme.Driver;
-import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
-import com.example.cabme.UserType;
+import com.example.cabme.Rating;
+import com.example.cabme.User;
+import com.example.cabme.UserProfileActivity;
 import com.example.cabme.maps.JsonParser;
 
 
 import com.example.cabme.HamburgerFragment;
 import com.example.cabme.riders.RideRequest;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,8 +43,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 
 // In other folders
-import com.example.cabme.maps.LongLat;
-import com.example.cabme.maps.MapViewActivity;
 import com.example.cabme.riders.RiderHistoryListModel;
 
 import java.util.Comparator;
@@ -106,11 +98,11 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         db = FirebaseFirestore.getInstance();
 
         // Query
-        query = db.collection("testrequests");
+        query = db.collection("testrequests").whereEqualTo("rideStatus", "");
 
         // Recycler options
         FirestoreRecyclerOptions<RiderHistoryListModel> options = new FirestoreRecyclerOptions.Builder<RiderHistoryListModel>()
-                .setQuery(query.orderBy("rideCost"), RiderHistoryListModel.class)
+                .setQuery(query, RiderHistoryListModel.class)
                 .build();
 
         // Sample Sort --- REMOVE
@@ -137,30 +129,32 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Log.wtf("RIDERUID", documentSnapshot.getString("UIDrider"));
 
-                confirmRideButton.setText(String.format("%s", documentSnapshot.getId()));
+                String riderID = documentSnapshot.getString("UIDrider");
+                User user = new User(riderID);
+                user.readData((email, firstname, lastname, username, phone, rating) ->
+                        confirmRideButton.setText(String.format("Ride with %s", firstname)));
                 confirmRideButton.setVisibility(View.VISIBLE);
-                confirmRideButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        GeoPoint startLoc = documentSnapshot.getGeoPoint("startLocation");
-                        GeoPoint destLoc = documentSnapshot.getGeoPoint("endLocation");
-                        if(destLoc != null && startLoc != null) {
-                            Intent intent = new Intent(DriverRequestListActivity.this, HomeMapActivity.class);
+                confirmRideButton.setOnClickListener(v -> {
+                    RideRequest rideRequest = new RideRequest(documentSnapshot.getId());
+                    rideRequest.addOffer(uid);
+                    Intent intent = new Intent();
+                    setResult(1, intent);
+                    finish();
 
-                            LatLng startLongLat = new LatLng(startLoc.getLatitude(), startLoc.getLongitude());
-                            LatLng destLongLat = new LatLng(destLoc.getLatitude(), destLoc.getLongitude());
-
-                            intent.putExtra("startLatLng", startLongLat);
-                            intent.putExtra("destLatLng", destLongLat);
-                            intent.putExtra("userType", userType);
-                            intent.putExtra("uid", uid);
-                            intent.putExtra("request", documentSnapshot.getId());
-
-                            startActivity(intent);
-                            ;
-                        }
-                    }
                 });
+            }
+
+            @Override
+            public void onUsernameClick(DocumentSnapshot documentSnapshot, int position) {
+                String riderID = documentSnapshot.getString("UIDrider");
+                bundle = new Bundle();
+                bundle.putSerializable("uid", riderID);
+                UserProfileActivity userProfileActivity = new UserProfileActivity();
+                userProfileActivity.setArguments(bundle);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.d_reqlist_activity, userProfileActivity)
+                        .commit();
             }
         });
     }

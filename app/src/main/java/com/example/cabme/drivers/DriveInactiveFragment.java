@@ -23,7 +23,6 @@ import java.util.concurrent.Executors;
 public class DriveInactiveFragment extends Fragment implements View.OnClickListener {
     private TextView helloUser;
     private Button offer;
-    private Button accepted;
     private TextView question;
     private boolean offered;
     public User user;

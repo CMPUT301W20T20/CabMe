@@ -322,7 +322,11 @@ public class RideRequest implements Serializable {
                         Log.d(TAG, "Data retrieval successful");
                         String UID = documentSnapshot.getString("UIDdriver");
                         String rideStatus = documentSnapshot.getString("rideStatus");
-                        dataCallBack.onCallback(UID, rideStatus);
+                        String startAddress = documentSnapshot.getString("startAddress");
+                        String endAddress = documentSnapshot.getString("endAddress");
+                        Double fare = documentSnapshot.getDouble("rideCost");
+
+                        dataCallBack.onCallback(UID, rideStatus, startAddress, endAddress, fare);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -334,6 +338,6 @@ public class RideRequest implements Serializable {
     }
 
     public interface dataCallBack{
-        void onCallback(String driverID, String status);
+        void onCallback(String driverID, String status, String startAddress, String endAddress, Double fare);
     }
 }

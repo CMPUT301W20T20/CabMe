@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 
 
 public class LoginActivity extends AppCompatActivity {
-
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button signupButton;
@@ -77,31 +76,15 @@ public class LoginActivity extends AppCompatActivity {
     }
     // https://emailregex.com/
     public boolean valid(String email, String password) {
-        String emailRegex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)" +
-                 "*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|" +
-                "\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]" +
-                "*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]" +
-                "|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*" +
-                "[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\" +
-                "[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-        String passRegex = "^[\\S]+$";
+
         String error = "";
-        Pattern emailPattern = Pattern.compile(emailRegex);
-        Pattern passPattern = Pattern.compile(passRegex);
-
-        Matcher emailMatcher = emailPattern.matcher(email);
-        Matcher passMatcher = passPattern.matcher(password);
-
-        if (!emailMatcher.matches() || !passMatcher.matches()) {
-            if (!emailMatcher.matches() && !email.isEmpty()) {
-                error += "Invalid characters used in the email \n";
-            } if (!passMatcher.matches() && !password.isEmpty()) {
-                error += "Invalid characters used in the password \n";
-            } if (email.isEmpty()) {
-                error += "Email field is empty \n";
-            } if (password.isEmpty()) {
-                error += "Password field is empty \n";
-            }
+        if (email.isEmpty()) {
+            error += "Email field is empty \n";
+        }
+        if (password.isEmpty()) {
+            error += "Password field is empty \n";
+        }
+        if (!error.isEmpty()) {
             Toast.makeText(LoginActivity.this, error, Toast.LENGTH_LONG).show();
             return false;
         }

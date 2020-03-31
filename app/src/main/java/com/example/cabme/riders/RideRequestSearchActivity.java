@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,10 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 
 import com.google.firebase.firestore.GeoPoint;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
+
+import static android.view.View.GONE;
 
 /**
  *
@@ -58,14 +62,25 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
 
     public PlacesClient placesClient;
     public User user;
-    private EditText rideCostEditText;
+    private TextView rideCostEditText;
     private Button searchRideButton;
     private LatLng destLngLat;
     private LatLng startLngLat;
     private GeoPoint startGeo;
     private GeoPoint destGeo;
+
+    private Boolean textChanged  = false;
+
+    private Button addTip;
+    private Button confirmTip;
+    private Button changeTip;
+
+    private TextView faretext;
+    private EditText amtTip;
+    private Double tip = 0.00 ;
     private Double rideCost;
     private Double customCost;
+
 
     private  AutocompleteSupportFragment asfStart;
     private AutocompleteSupportFragment asfDest;
@@ -93,9 +108,18 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
 
     private void findViewsSetListeners(){
         searchRideButton = (Button) findViewById(R.id.search_ride_button);
-        rideCostEditText = (EditText) findViewById(R.id.pay_edit_text);
+        rideCostEditText = (TextView) findViewById(R.id.pay_edit_text);
+        addTip = (Button) findViewById(R.id.AddTip);
+        confirmTip = (Button) findViewById(R.id.ConfirmTip);
+        changeTip = (Button) findViewById(R.id.ChangeTip);
+        amtTip = (EditText) findViewById(R.id.tipAmt);
+        faretext = (TextView) findViewById(R.id.faretext) ;
+
         searchRideButton.setOnClickListener(this);
-        rideCostEditText.addTextChangedListener(costWatcher);
+        amtTip.addTextChangedListener(costWatcher);
+        addTip.setOnClickListener(this);
+        confirmTip.setOnClickListener(this);
+        changeTip.setOnClickListener(this);
     }
 
     public void startingLocationSearch(){
@@ -153,20 +177,33 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         rideCost = costAlgorithm.RideCost();
 
         rideCostPreview = ""+ rideCost;
-        rideCostEditText.setText(rideCostPreview);
+        rideCostEditText.setText("$" + rideCostPreview);
     }
 
     public void addNewRideRequest(){
-        new RideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), rideCost, new RideRequest.requestCallback() {
-            @Override
-            public void onCallback() {
-                Intent intent = new Intent();
-                intent.putExtra("startLatLng", startLngLat);
-                intent.putExtra("destLatLng", destLngLat);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
+        if(customCost == null){
+            new RideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), rideCost, new RideRequest.requestCallback() {
+                @Override
+                public void onCallback() {
+                    Intent intent = new Intent();
+                    intent.putExtra("startLatLng", startLngLat);
+                    intent.putExtra("destLatLng", destLngLat);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            });
+        } else {
+            new RideRequest(startGeo, destGeo, user.getUid(), getString(R.string.google_maps_key), customCost, new RideRequest.requestCallback() {
+                @Override
+                public void onCallback() {
+                    Intent intent = new Intent();
+                    intent.putExtra("startLatLng", startLngLat);
+                    intent.putExtra("destLatLng", destLngLat);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            });
+        }
     }
 
     /* Correct input in the cost field - do this later */
@@ -176,22 +213,67 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            customCost = Double.parseDouble(rideCostEditText.getText().toString());
+            textChanged = true;
         }
-
         @Override
-        public void afterTextChanged(Editable s) { }
+        public void afterTextChanged(Editable s) {
+            textChanged = true;
+        }
     };
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.search_ride_button){
-            if(destLngLat != null && startLngLat != null)
-            {
-                addNewRideRequest();
-            } else {
-                Toast.makeText(RideRequestSearchActivity.this,"Empty Field(s) not valid", Toast.LENGTH_SHORT).show();
-            }
+
+        switch (v.getId()){
+            case R.id.search_ride_button:
+                if(destLngLat != null && startLngLat != null)
+                {
+                    addNewRideRequest();
+                } else {
+                    Toast.makeText(RideRequestSearchActivity.this,"Empty Field(s) not valid", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.AddTip:
+                addTip.setVisibility(View.GONE);
+                confirmTip.setVisibility(View.VISIBLE);
+                amtTip.setVisibility(View.VISIBLE);
+                break;
+            case R.id.ConfirmTip:
+                if(textChanged){
+                    String smt = amtTip.getText().toString();
+                    if(!smt.equals("")){
+                        double amt = Double.parseDouble(amtTip.getText().toString());
+                        recalcRideCost(amt);
+                    }else { addTip.setVisibility(View.VISIBLE); }
+                }else {
+                    addTip.setVisibility(View.VISIBLE);
+                }
+                confirmTip.setVisibility(View.GONE);
+                amtTip.setVisibility(View.GONE);
+                break;
+            case R.id.ChangeTip:
+                changeTip.setVisibility(GONE);
+                confirmTip.setVisibility(View.VISIBLE);
+                amtTip.setVisibility(View.VISIBLE);
+
+                break;
+        }
+    }
+
+    public void recalcRideCost(Double tip){
+        if(rideCost != null){
+            tip = Math.floor(tip * 100) / 100;
+            customCost  = rideCost + tip;
+            DecimalFormat dec = new DecimalFormat("#.00");
+            rideCostEditText.setText("$"+ dec.format(customCost));
+            faretext.setText("Custom Fare");
+            changeTip.setVisibility(View.VISIBLE);
+        }
+        else{
+            amtTip.setText("");
+            addTip.setVisibility(View.VISIBLE);
+            Toast toast= Toast.makeText(getApplicationContext(),"You cant tip yet!",Toast. LENGTH_SHORT);
+            toast.show();
         }
     }
 
