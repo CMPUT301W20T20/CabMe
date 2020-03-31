@@ -2,6 +2,7 @@ package com.example.cabme.drivers;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cabme.R;
 import com.example.cabme.User;
+import com.example.cabme.qrscanner.ScannerQR;
 import com.example.cabme.riders.RideRequest;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -142,7 +144,11 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
             case R.id.qr_scan:
                 /* on completions when the status is completed */
                 /* instantiate th qr thing how ever */
-                // TODO on driver completion
+
+//                Intent intent = new Intent(DriveActiveFragment.this, ScannerQR.class);
+//                startActivity(intent);
+
+
                 break;
         }
     }
