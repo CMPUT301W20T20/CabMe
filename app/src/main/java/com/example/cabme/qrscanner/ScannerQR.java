@@ -1,7 +1,9 @@
 package com.example.cabme.qrscanner;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Vibrator;
@@ -9,6 +11,7 @@ import android.os.Vibrator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cabme.R;
+import com.example.cabme.TitleActivity;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -62,8 +65,11 @@ public class ScannerQR extends AppCompatActivity implements ZXingScannerView.Res
     public void handleResult(Result rawResult) {
 
         txtResult.setText(rawResult.getText());
-        Toast.makeText(ScannerQR.this, "Payment Received", Toast.LENGTH_LONG).show();
+        Toast.makeText(ScannerQR.this, rawResult.getText(), Toast.LENGTH_LONG).show();
         vibrate = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         vibrate.vibrate(400);
+
+        Intent intent = new Intent(ScannerQR.this, TitleActivity.class);
+        startActivity(intent);
     }
 }
