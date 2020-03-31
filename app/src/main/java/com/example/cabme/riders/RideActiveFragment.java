@@ -4,18 +4,30 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cabme.R;
 import com.example.cabme.User;
+import com.google.firebase.database.core.view.Change;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.remote.WatchChange;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +45,7 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
     private TextView fare;
     private TextView to;
     private TextView from;
-    private TextView status;
+    private TextView stats;
 
 
     @Override
@@ -49,9 +61,8 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
         rideRequest = new RideRequest(user.getUid());
         findViewsSetListeners(view);
         setAll();
-        executor = new ScheduledThreadPoolExecutor(1);
-        executor.scheduleAtFixedRate(() ->
-                updateStatusThread(rideRequest), 0, 1, TimeUnit.SECONDS);
+
+        updateStatusThread(rideRequest);
 
         return view;
     }
@@ -59,43 +70,61 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
     private void setAll(){
         rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
             if(status.equals("")){
-                this.status.setText("Waiting for a driver...");
+                stats.setText("Waiting for a driver...");
             }else {
-                this.status.setText(status);
+                stats.setText(status);
                 rideCancelBtn.setVisibility(View.GONE);
                 rideOffersBtn.setVisibility(View.GONE);
                 rideCompleteBtn.setVisibility(View.VISIBLE);
             }
             to.setText(startAddress);
             from.setText(endAddress);
-            this.fare.setText(String.format("QR$%s", String.valueOf(fare)));
+            this.fare.setText(String.format("$%s", String.valueOf(fare)));
         });
     }
 
-    private void updateStatusThread(RideRequest rideRequest){
-        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
-            if(status.equals("Active")){
-                executor.shutdownNow();
-                this.status.setText(status);
-                new AlertDialog.Builder(getContext())
-                        .setMessage("Your driver is on the way!")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                rideCancelBtn.setVisibility(View.GONE);
-                                rideOffersBtn.setVisibility(View.GONE);
-                                rideCompleteBtn.setVisibility(View.VISIBLE);
+    public void updateStatusThread(RideRequest rideRequest) {
+        Query query = FirebaseFirestore.getInstance().collection("testrequests").whereEqualTo("UIDrider", user.getUid());
+        query.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            if (e != null) {
+                return;
+            }
+            for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                switch (dc.getType()) {
+                    case ADDED:
+                        Log.wtf("CHANGE", "Added");
+                        break;
+                    case MODIFIED:
+                        Log.wtf("CHANGE", "Modified");
+                        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
+                            if(status.equals("Active")){
+                                stats.setText(status);
+                                new AlertDialog.Builder(getContext())
+                                        .setMessage("Your driver is on the way!")
+                                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                            rideCancelBtn.setVisibility(View.GONE);
+                                            rideOffersBtn.setVisibility(View.GONE);
+                                            rideCompleteBtn.setVisibility(View.VISIBLE);
+                                        }).show();
                             }
-                        }).show();
+
+                        });                            break;
+                    case REMOVED:
+                        Log.wtf("CHANGE", "Removed");
+
+                        break;
+                }
             }
         });
     }
+
 
     /* On dialogue */
     private void updateOnDriverReady(RideRequest rideRequest){
         rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
             if(status.equals("Driver Ready Pickup")){
-                executor.shutdownNow();
-                this.status.setText("Active");
+//                executor.shutdownNow();
+//                this.status.setText("Active");
                 new AlertDialog.Builder(getContext())
                         .setMessage("The rider accepted your offer, start the ride!")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -114,7 +143,7 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
         to = view.findViewById(R.id.to);
         from = view.findViewById(R.id.from);
         fare = view.findViewById(R.id.money);
-        status = view.findViewById(R.id.status);
+        stats = view.findViewById(R.id.status);
         rideOffersBtn.setOnClickListener(this);
         rideCancelBtn.setOnClickListener(this);
         rideCompleteBtn.setOnClickListener(this);
@@ -151,7 +180,7 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
             case R.id.CompleteRide:
                 executor.shutdown();
                 rideRequest.updateRideStatus("Completed");
-                this.status.setText("Completed");
+                stats.setText("Completed");
 
                 /* TODO
                  *  - barcode thing goes here.
