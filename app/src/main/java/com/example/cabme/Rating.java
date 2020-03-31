@@ -20,19 +20,12 @@ public class Rating implements Serializable {
     }
 
     public void pos_rev() {
-<<<<<<< HEAD
         pos_rev = pos_rev + 1;
     }
 
     public void neg_rev() {
         neg_rev = neg_rev - 1;
-=======
-        pos_rev = pos_rev + 1 ;
-    }
 
-    public void neg_rev() {
-        neg_rev = neg_rev + 1;
->>>>>>> ba1713d63aa1136bf9c761c64b0a1fbded09e22b
     }
 
     public int getNeg_rev() {
