@@ -76,7 +76,7 @@ public class RideOfferActivity extends AppCompatActivity {
                         if(offers.size() == 0) {
                             Log.wtf("QUERYCHECK", "check status" + query);
                             return;
-                        }else{
+                        } else{
                             query = mFirestore
                                     .collection("users")
                                     .whereIn(FieldPath.documentId(), offers);

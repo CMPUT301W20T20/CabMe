@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cabme.Driver;
 import com.example.cabme.R;
+import com.example.cabme.User;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import javax.annotation.Nullable;
@@ -20,14 +22,17 @@ public class Pop extends Activity {
 
     private String TAG = "Firestore";
 
+    public Driver driver;
+    public User user;
 
     TextView username;
-    Button select;
+    Button thumbsUp;
+    Button thumbsDown;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ride_offer_popup);
+        setContentView(R.layout.rating_popup);
 
         //getting device screen height and width
         DisplayMetrics dm = new DisplayMetrics();
@@ -37,25 +42,20 @@ public class Pop extends Activity {
         int height = dm.heightPixels;
 
         //setting layout settings
-        getWindow().setLayout((int) (width * 0.8), (int) (height*0.15));
+        getWindow().setLayout((int) (width * 0.8), (int) (height*0.3));
 
         //get intent
         getIncomingIntent();
 
         //make button click to set driver uid into the database
-        select = findViewById(R.id.offer_select);
-        select.setOnClickListener(new View.OnClickListener() {
+        thumbsUp.findViewById(R.id.thumb_up_popup);
+        thumbsUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //set values in database
 
-
-                //move document to different collection?
-
-
-                //change activity
             }
         });
+        thumbsDown.findViewById(R.id.thumbs_down_popup);
 
     }
 
