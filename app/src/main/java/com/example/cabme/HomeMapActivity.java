@@ -13,6 +13,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -43,7 +47,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -129,6 +135,9 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_map_activity);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        collectionReference = firebaseFirestore.collection("testrequests");
         offered = false;
 
         /* get the type of user driver/rider - Shared Pref*/
@@ -148,14 +157,41 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 checkFireBaseRide(uid);
                 break;
             case DRIVER:
-                checkFireBaseDrive(uid);
+                rid = getIntent().getStringExtra("request");
+                request = new RideRequest(rid);
+                getFireBaseRide = GetFireBaseRide.RIDE_PENDING;
+                activeRide = true;
+                startLatLng = getIntent().getParcelableExtra("startLatLng");
+                destLatLng = getIntent().getParcelableExtra("destLatLng");
+                getMapType();
+                getFragmentType(rid);
+                collectionReference.document(rid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (documentSnapshot == null) {
+                            return;
+                        }
+                        if (documentSnapshot.getString("rideStatus").equals("Active")) {
+                            getFireBaseRide = GetFireBaseRide.RIDE_INPROGRESS;
+
+                            new AlertDialog.Builder(HomeMapActivity.this)
+                                    .setMessage("The rider accepted your offer, start the ride!")
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            FragmentManager manager = HomeMapActivity.this.getSupportFragmentManager();
+                                            manager.popBackStack();                           }
+                                    })
+                                    .show();
+                            getFragmentType(rid);
+                        }
+
+                    }
+                });
                 break;
         }
     }
 
     public void checkFireBaseRide(String UID){
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        collectionReference = firebaseFirestore.collection("testrequests");
         collectionReference
                 .document(UID)
                 .get()
@@ -203,65 +239,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         });
     }
 
-    public void checkFireBaseDrive(String UID){
-        // check firebase if you are in an active ride
-        Log.wtf("8888888888", "0000000000");
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        collectionReference = firebaseFirestore.collection("testrequests");
-        /* really bad */
-        collectionReference.whereEqualTo("UIDdriver", UID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot documentSnapshots : task.getResult()){
-                                /* should only be 1 here */
-                                Log.wtf("8888888888", ""+documentSnapshots.exists());
-                                if(documentSnapshots.exists()){
-                                    Log.wtf("4444444",documentSnapshots.toString());
-                                    String docID = documentSnapshots.getId();
-                                    checkFireBaseRide(docID);
-                                    return;
-                                }
-                            }
-                        } else {
-                            Log.wtf("4444444","nothing");
-                            // task not successful
-                            //error
-                        }
-                    }
-                });
-        collectionReference.whereArrayContains("offers", UID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot documentSnapshots : task.getResult()){
-                                /* should only be 1 doc here */
-                                Log.wtf("8888888888", ""+documentSnapshots.exists());
-                                if(documentSnapshots.exists()){
-                                    Log.wtf("4444444",documentSnapshots.toString());
-                                    String docID = documentSnapshots.getId();
-                                    checkFireBaseRide(docID);
-                                    break;
-                                }
-                            }
-                        } else {
-                            Log.wtf("4444444","nothing");
-                            // task not successful
-                            //error
-                        }
-                    }
-                });
-        Log.d(TAG, "Document does not exist!");
-        getFireBaseRide = GetFireBaseRide.NO_RIDE;
-        activeRide = false;
-        getMapType();
-        getFragmentType(UID);
-    }
 
     /**
      * sets the gets the map type depending on what kind of user a person is (rider, driver)
@@ -325,6 +303,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                     case RIDE_INPROGRESS:
                     case RIDE_PENDING:
                         Log.wtf("111111", "in pending");
+
                         driveActiveFragment = new DriveActiveFragment();
                         bundle.putSerializable("docID", docID);
                         driveActiveFragment.setArguments(bundle);
@@ -336,7 +315,9 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                         break;
                     case NO_RIDE: // TODO -- SLATED FOR REMOVAL START DRIVER AT LIST
                         Log.wtf("111111", "in noride");
+
                         driverInactiveFragment = new DriveInactiveFragment();
+                        bundle.putSerializable("docID", docID);
                         driverInactiveFragment.setArguments(bundle);
                         getSupportFragmentManager()
                                 .beginTransaction()
@@ -344,6 +325,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                                 .addToBackStack(null)
                                 .commit();
                         break;
+
                 }
                 break;
         }
@@ -417,9 +399,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
             request.removeOffer(uid);
         }
         else {
-            Intent intent = new Intent(this, DriverRequestListActivity.class);
-            intent.putExtra("uid", user.getUid());
-            startActivityForResult(intent, 1);
+            request.addOffer(uid);
         }
         offered = !offered;
     }
