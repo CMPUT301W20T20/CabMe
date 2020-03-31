@@ -76,7 +76,7 @@ public class RideOfferActivity extends AppCompatActivity {
                         if(offers.size() == 0) {
                             Log.wtf("QUERYCHECK", "check status" + query);
                             return;
-                        }else{
+                        } else{
                             query = mFirestore
                                     .collection("users")
                                     .whereIn(FieldPath.documentId(), offers);
@@ -116,7 +116,7 @@ public class RideOfferActivity extends AppCompatActivity {
                                 @Override
                                 public void onDriverSelect(DocumentSnapshot documentSnapshot, int position) {
                                     String driverID = documentSnapshot.getId();
-                                    confirmRideButton.setText(""+ driverID);
+                                    confirmRideButton.setText(String.format("Ride with %s", documentSnapshot.getString("first")));
                                     confirmRideButton.setVisibility(View.VISIBLE);
                                     confirmRideButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -124,11 +124,11 @@ public class RideOfferActivity extends AppCompatActivity {
                                             // change fields in requests
                                             /* Removes the fragment and starts the HomeMapActivity recreation here*/
                                             RideRequest rideRequest = new RideRequest(user.getUid());
-                                            rideRequest.updateRideStatus("Active");
+                                            rideRequest.updateRideStatus("Rider Ready");
                                             rideRequest.updateDriver(driverID);
 //                                            Intent intent = new Intent();
-//                                            Log.wtf("WTFWTF", driverID);
-//                                            setResult(1, intent);
+////                                            Log.wtf("WTFWTF", driverID);
+////                                            setResult(1, intent);
                                             finish();
                                         }
                                     });

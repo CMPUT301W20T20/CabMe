@@ -3,12 +3,14 @@ package com.example.cabme.riders;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.google.firebase.database.core.view.Change;
@@ -40,8 +43,10 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
     private Button rideOffersBtn;
     private Button rideCancelBtn;
     private Button rideCompleteBtn;
+    private Button callDriver;
+    private Button emailDriver;
+    private LinearLayout buttonsLL;
     private RideRequest rideRequest;
-    private ScheduledThreadPoolExecutor executor;
     private TextView fare;
     private TextView to;
     private TextView from;
@@ -93,25 +98,60 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 switch (dc.getType()) {
                     case ADDED:
                         Log.wtf("CHANGE", "Added");
-                        break;
                     case MODIFIED:
                         Log.wtf("CHANGE", "Modified");
                         rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
-                            if(status.equals("Active")){
-                                stats.setText(status);
-                                new AlertDialog.Builder(getContext())
-                                        .setMessage("Your driver is on the way!")
-                                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                                            rideCancelBtn.setVisibility(View.GONE);
-                                            rideOffersBtn.setVisibility(View.GONE);
-                                            rideCompleteBtn.setVisibility(View.VISIBLE);
-                                        }).show();
-                            }
+                            switch (status){
+                                case "Active":
+                                    stats.setText(status);
+//                                    rideCancelBtn.setVisibility(View.GONE);
+//                                    rideOffersBtn.setVisibility(View.GONE);
+//                                    rideCompleteBtn.setVisibility(View.VISIBLE);
 
-                        });                            break;
+                                    if(getActivity() != null){
+                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+//                                        LayoutInflater inflater = getLayoutInflater();
+//                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment,null);
+//                                        dialogBuilder.setView(dialogView);
+                                        dialogBuilder.setMessage("Your driver is on the way!")
+                                                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                                    rideCancelBtn.setVisibility(View.GONE);
+                                                    rideOffersBtn.setVisibility(View.GONE);
+                                                    rideCompleteBtn.setVisibility(View.VISIBLE);
+                                                    dialog.cancel();
+                                                    dialog.dismiss();
+                                                }).show();
+                                    }
+                                    break;
+                                case "Rider Ready":
+                                    rideOffersBtn.setVisibility(View.GONE);
+                                    rideCompleteBtn.setVisibility(View.GONE);
+                                    rideCancelBtn.setHeight(60);
+                                    rideCancelBtn.setVisibility(View.VISIBLE);
+                                    buttonsLL.setVisibility(View.VISIBLE);
+                                    break;
+                                case "Completed":
+                                    if(getActivity() != null) {
+                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                                        buttonsLL.setVisibility(View.GONE);
+//                                        LayoutInflater inflater = getLayoutInflater();
+//                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment, null);
+//                                        dialogBuilder.setView(dialogView);
+                                        dialogBuilder
+                                                .setMessage("there is a barcoodde here u can scan")
+                                                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                                    rideCancelBtn.setVisibility(View.GONE);
+                                                    rideOffersBtn.setVisibility(View.GONE);
+                                                    rideCompleteBtn.setVisibility(View.VISIBLE);
+                                                    dialog.cancel();
+                                                    dialog.dismiss();
+                                                }).show();
+                                    }
+                            }
+                        });
+                        break;
                     case REMOVED:
                         Log.wtf("CHANGE", "Removed");
-
                         break;
                 }
             }
@@ -119,27 +159,13 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
     }
 
 
-    /* On dialogue */
-    private void updateOnDriverReady(RideRequest rideRequest){
-        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
-            if(status.equals("Driver Ready Pickup")){
-//                executor.shutdownNow();
-//                this.status.setText("Active");
-                new AlertDialog.Builder(getContext())
-                        .setMessage("The rider accepted your offer, start the ride!")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        }).show();
-
-            }
-        });
-    }
-
     private void findViewsSetListeners(View view){
         rideOffersBtn = view.findViewById(R.id.ViewOffers);
         rideCancelBtn = view.findViewById(R.id.Cancel);
         rideCompleteBtn = view.findViewById(R.id.CompleteRide);
+        emailDriver = view.findViewById(R.id.emailbutton);
+        callDriver = view.findViewById(R.id.callbutton);
+        buttonsLL = view.findViewById(R.id.buttons_ll);
         to = view.findViewById(R.id.to);
         from = view.findViewById(R.id.from);
         fare = view.findViewById(R.id.money);
@@ -147,6 +173,8 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
         rideOffersBtn.setOnClickListener(this);
         rideCancelBtn.setOnClickListener(this);
         rideCompleteBtn.setOnClickListener(this);
+        callDriver.setOnClickListener(this);
+        emailDriver.setOnClickListener(this);
     }
 
     /**
@@ -174,13 +202,31 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 /* list of driver offers activity */
                     intent = new Intent(getActivity(), RideOfferActivity.class);
                     intent.putExtra("user", user);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                 break;
 
             case R.id.CompleteRide:
-                executor.shutdown();
                 rideRequest.updateRideStatus("Completed");
                 stats.setText("Completed");
+
+                //start pop-up intent
+                //Intent intent2 = new Intent(getActivity(), Pop.class);
+                //intent2.putExtra("uid", "asd");
+                //startActivity(intent2);
+
+                //pass through diver id, to get driver id we need to call RideRequest.readData
+                /**
+                rideRequest.readData(new RideRequest.dataCallBack() {
+                    @Override
+                    public void onCallback(String driverID, String status, String startAddress, String endAddress, Double fare) {
+                        Intent intent = new Intent(getActivity(), Pop.class);
+                        intent.putExtra("uid", driverID);
+                        startActivity(intent);
+                    }
+                });
+                 */
+
+
 
                 /* TODO
                  *  - barcode thing goes here.
@@ -203,6 +249,35 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
 //                    }
 //                });
                 break;
+            case R.id.callbutton:
+                rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
+                    User user = new User(driverID);
+                    user.readData((email, firstname, lastname, username, phone, rating) -> {
+                        String uri = "tel:" + phone.trim();
+                        final Intent intent1;
+                        intent1 = new Intent(Intent.ACTION_DIAL);
+                        intent1.setData(Uri.parse(uri));
+                        startActivity(intent1);
+                    });
+                });
+                break;
+            case R.id.emailbutton:
+                rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
+                    User user = new User(driverID);
+                    user.readData((email, firstname, lastname, username, phone, rating) -> {
+                        String eSubj = username + " from CabMe messaged you";
+                        final Intent intent2 = new Intent(Intent.ACTION_VIEW);
+                        Uri data = Uri.parse("mailto:?to="+ email + "&subject=" + eSubj + "&body=" + "body");
+                        intent2.setData(data);
+                        startActivity(intent2);
+                    });
+                });
+                break;
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
