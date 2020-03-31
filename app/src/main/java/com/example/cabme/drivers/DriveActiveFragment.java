@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -91,9 +92,6 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
                                     stats.setText(status);
                                     if(getActivity() != null) {
                                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-//                                        LayoutInflater inflater = getLayoutInflater();
-//                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment, null);
-//                                        dialogBuilder.setView(dialogView);
                                         dialogBuilder
                                                 .setMessage("The rider accepted your offer, start the ride!")
                                                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -103,19 +101,14 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
                                                         rideRequest.updateRideStatus("Active");
                                                         stats.setText("Active");
                                                         dialog.dismiss();
-
                                                     }
                                                 }).show();
                                     }
                                     break;
                                 case "Completed":
                                     stats.setText(status);
-
                                     if(getActivity() != null) {
                                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-//                                        LayoutInflater inflater = getLayoutInflater();
-//                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment, null);
-//                                        dialogBuilder.setView(dialogView);
                                         dialogBuilder
                                                 .setMessage("This is when the scanner comes up")
                                                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -133,13 +126,32 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
                         break;
                     case REMOVED:
                         Log.wtf("CHANGE", "Removed");
+                        if(getActivity() != null) {
 
+                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                            dialogBuilder
+                                    .setMessage("The rider cancelled the ride!")
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            cancel.setVisibility(View.GONE);
+                                            qrScan.setVisibility(View.VISIBLE);
+                                            FragmentManager manager = getActivity().getSupportFragmentManager();
+                                            FragmentTransaction trans = manager.beginTransaction();
+                                            trans.remove(DriveActiveFragment.this);
+                                            trans.commit();
+                                            manager.popBackStack();
+                                            dialog.dismiss();
+
+                                            getActivity().recreate();
+
+                                        }
+                                    }).show();
+                        }
                         break;
                 }
             }
         });
     }
-
 
     private void findViewsSetListeners(View view){
         cancel = view.findViewById(R.id.cancel);
@@ -172,9 +184,8 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
                 /* on completions when the status is completed */
                 /* instantiate th qr thing how ever */
 
-//                Intent intent = new Intent(DriveActiveFragment.this, ScannerQR.class);
-//                startActivity(intent);
-
+                Intent intent = new Intent(getActivity(), ScannerQR.class);
+                startActivity(intent);
 
                 break;
         }

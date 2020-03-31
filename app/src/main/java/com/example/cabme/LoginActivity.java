@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 
 
 public class LoginActivity extends AppCompatActivity {
-
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button signupButton;

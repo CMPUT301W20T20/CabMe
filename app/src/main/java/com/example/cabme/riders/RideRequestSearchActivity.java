@@ -177,7 +177,7 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         rideCost = costAlgorithm.RideCost();
 
         rideCostPreview = ""+ rideCost;
-        rideCostEditText.setText(rideCostPreview);
+        rideCostEditText.setText("$" + rideCostPreview);
     }
 
     public void addNewRideRequest(){

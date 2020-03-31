@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 import androidx.annotation.NonNull;
 
 import com.example.cabme.Driver;
@@ -26,6 +27,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+=======
+import com.example.cabme.Driver;
+import com.example.cabme.R;
+import com.example.cabme.User;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+>>>>>>> a8d06270a071476e5bea3691f473bfc0f4ed9911
 
 import javax.annotation.Nullable;
 
@@ -35,16 +42,22 @@ public class Pop extends Activity {
     private String TAG = "Firestore";
 
     public Driver driver;
+<<<<<<< HEAD
     private Rating rating;
+=======
+>>>>>>> a8d06270a071476e5bea3691f473bfc0f4ed9911
     public User user;
 
     TextView username;
     Button thumbsUp;
     Button thumbsDown;
 
+<<<<<<< HEAD
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
 
+=======
+>>>>>>> a8d06270a071476e5bea3691f473bfc0f4ed9911
     @Override
     protected void onCreate( Bundle savedInstanceState ){
         super.onCreate(savedInstanceState);
@@ -60,6 +73,7 @@ public class Pop extends Activity {
         //setting layout settings
         getWindow().setLayout((int) (width * 0.8), (int) (height*0.3));
 
+<<<<<<< HEAD
         //get driver UID using intent
         String driverUID = getIncomingIntent();
 
@@ -100,12 +114,25 @@ public class Pop extends Activity {
             }
         });
         thumbsDown = findViewById(R.id.thumbs_down_popup);
+=======
+        //get intent
+        getIncomingIntent();
 
-    }
+        //make button click to set driver uid into the database
+        thumbsUp.findViewById(R.id.thumb_up_popup);
+        thumbsUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        thumbsDown.findViewById(R.id.thumbs_down_popup);
+  }
 
     /**
      * Purpose: getting the intent sent from RiderOffer activity, getting the username
      */
+
     private String getIncomingIntent(){
 
         Log.d(TAG, "Driver UID: " +getIntent().getStringExtra("uid"));
