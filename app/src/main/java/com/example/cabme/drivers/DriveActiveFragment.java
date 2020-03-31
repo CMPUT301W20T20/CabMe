@@ -3,6 +3,7 @@ package com.example.cabme.drivers;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,15 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.example.cabme.riders.RideRequest;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class DriveActiveFragment extends Fragment implements View.OnClickListener {
-    private TextView status;
+    private TextView stats;
     private Button cancel;
     private Button qrScan;
     private TextView to;
@@ -31,8 +35,6 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
     private String docID;
     private RideRequest rideRequest;
 
-    ScheduledThreadPoolExecutor executor;
-    ScheduledThreadPoolExecutor executor2;
 
 
     @Override
@@ -49,10 +51,7 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
         rideRequest = new RideRequest(docID);
         findViewsSetListeners(view);
         setAll();
-        executor = new ScheduledThreadPoolExecutor(1);
-        executor.scheduleAtFixedRate(() -> updateStatusActive(rideRequest, view), 0, 1, TimeUnit.SECONDS);
-        executor2 = new ScheduledThreadPoolExecutor(1);
-        executor2.scheduleAtFixedRate(() -> updateStatusCompleted(rideRequest, view), 0, 1, TimeUnit.SECONDS);
+        updateStatusThread(rideRequest);
 
         return view;
     }
@@ -60,58 +59,90 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
     private void setAll(){
         rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
             if(status.equals("")){
-                this.status.setText("Waiting for a driver...");
+                stats.setText("Waiting for the rider...");
             }else {
-                this.status.setText(status);
+                stats.setText(status);
                 cancel.setVisibility(View.GONE);
                 qrScan.setVisibility(View.VISIBLE);
             }
             to.setText(startAddress);
             from.setText(endAddress);
-            this.cost.setText(String.format("QR$%s", String.valueOf(fare)));
+            this.cost.setText(String.format("$%s", String.valueOf(fare)));
         });
     }
 
-
-    private void updateStatusActive(RideRequest rideRequest, View view){
-        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
-            if(status.equals("Active")){
-                executor.shutdownNow();
-                this.status.setText(status);
-                new AlertDialog.Builder(getContext())
-                        .setMessage("The rider accepted your offer, start the ride!")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                cancel.setVisibility(View.GONE);
-                                qrScan.setVisibility(View.VISIBLE);
-                          }
-                        }).show();
-
+    public void updateStatusThread(RideRequest rideRequest) {
+        Query query = FirebaseFirestore.getInstance().collection("testrequests").whereEqualTo("UIDdriver", user.getUid());
+        query.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            if (e != null) {
+                return;
             }
-        });
-    }
+            for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                switch (dc.getType()) {
+                    case ADDED:
+                        Log.wtf("CHANGE", "Added");
+                    case MODIFIED:
+                        Log.wtf("CHANGE", "Modified");
+                        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
+                            switch (status) {
+                                case "Rider Ready":
+                                    stats.setText(status);
+                                    if(getActivity() != null) {
+                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+//                                        LayoutInflater inflater = getLayoutInflater();
+//                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment, null);
+//                                        dialogBuilder.setView(dialogView);
+                                        dialogBuilder
+                                                .setMessage("The rider accepted your offer, start the ride!")
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        cancel.setVisibility(View.GONE);
+                                                        qrScan.setVisibility(View.VISIBLE);
+                                                        rideRequest.updateRideStatus("Active");
+                                                        stats.setText("Active");
+                                                        dialog.dismiss();
 
-    private void updateStatusCompleted(RideRequest rideRequest, View view){
-        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
-            if(status.equals("Completed")){
-                executor2.shutdownNow();
-                this.status.setText(status);
-                new AlertDialog.Builder(getContext())
-                        .setMessage("QRSCAN?")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                cancel.setVisibility(View.GONE);
-                                qrScan.setVisibility(View.VISIBLE);
+                                                    }
+                                                }).show();
+                                    }
+                                    break;
+                                case "Completed":
+                                    stats.setText(status);
+
+                                    if(getActivity() != null) {
+                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+//                                        LayoutInflater inflater = getLayoutInflater();
+//                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment, null);
+//                                        dialogBuilder.setView(dialogView);
+                                        dialogBuilder
+                                                .setMessage("This is when the scanner comes up")
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        cancel.setVisibility(View.GONE);
+                                                        qrScan.setVisibility(View.VISIBLE);
+                                                        dialog.dismiss();
+                                                    }
+                                                }).show();
+                                    }
+
+                                    break;
                             }
-                        }).show();
+                        });
+                        break;
+                    case REMOVED:
+                        Log.wtf("CHANGE", "Removed");
+
+                        break;
+                }
             }
         });
     }
+
 
     private void findViewsSetListeners(View view){
         cancel = view.findViewById(R.id.cancel);
         qrScan = view.findViewById(R.id.qr_scan);
-        status = view.findViewById(R.id.status);
+        stats = view.findViewById(R.id.status);
         to = view.findViewById(R.id.to);
         from = view.findViewById(R.id.from);
         cost = view.findViewById(R.id.money);
@@ -127,17 +158,13 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
                 /* call to remove the request */
                 /* remove fragments from backstack */
                 /* finish */
-                executor.shutdownNow();
-                executor2.shutdownNow();
-                rideRequest.updateRideStatus("Cancelled");
-                rideRequest.removeRequest(() -> {
-                    FragmentManager manager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction trans = manager.beginTransaction();
-                    trans.remove(DriveActiveFragment.this);
-                    trans.commit();
-                    manager.popBackStack();
-                    getActivity().recreate();
-                });
+                rideRequest.removeOffer(user.getUid());
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentTransaction trans = manager.beginTransaction();
+                trans.remove(DriveActiveFragment.this);
+                trans.commit();
+                manager.popBackStack();
+                getActivity().recreate();
                 break;
             case R.id.qr_scan:
                 /* on completions when the status is completed */

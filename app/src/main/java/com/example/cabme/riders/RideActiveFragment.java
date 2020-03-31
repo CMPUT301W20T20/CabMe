@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
 import com.google.firebase.database.core.view.Change;
@@ -41,7 +42,6 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
     private Button rideCancelBtn;
     private Button rideCompleteBtn;
     private RideRequest rideRequest;
-    private ScheduledThreadPoolExecutor executor;
     private TextView fare;
     private TextView to;
     private TextView from;
@@ -97,44 +97,56 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                     case MODIFIED:
                         Log.wtf("CHANGE", "Modified");
                         rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
-                            if(status.equals("Active")){
-                                stats.setText(status);
-                                new AlertDialog.Builder(getContext())
-                                        .setMessage("Your driver is on the way!")
-                                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                                            rideCancelBtn.setVisibility(View.GONE);
-                                            rideOffersBtn.setVisibility(View.GONE);
-                                            rideCompleteBtn.setVisibility(View.VISIBLE);
-                                        }).show();
-                            }
+                            switch (status){
+                                case "Active":
+                                    stats.setText(status);
+//                                    rideCancelBtn.setVisibility(View.GONE);
+//                                    rideOffersBtn.setVisibility(View.GONE);
+//                                    rideCompleteBtn.setVisibility(View.VISIBLE);
 
-                        });                            break;
+                                    if(getActivity() != null){
+                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+//                                        LayoutInflater inflater = getLayoutInflater();
+//                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment,null);
+//                                        dialogBuilder.setView(dialogView);
+                                        dialogBuilder.setMessage("Your driver is on the way!")
+                                                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                                    rideCancelBtn.setVisibility(View.GONE);
+                                                    rideOffersBtn.setVisibility(View.GONE);
+                                                    rideCompleteBtn.setVisibility(View.VISIBLE);
+                                                    dialog.cancel();
+                                                    dialog.dismiss();
+                                                }).show();
+                                    }
+
+                                    break;
+                                case "Completed":
+                                    if(getActivity() != null) {
+                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+//                                        LayoutInflater inflater = getLayoutInflater();
+//                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment, null);
+//                                        dialogBuilder.setView(dialogView);
+                                        dialogBuilder
+                                                .setMessage("there is a barcoodde here u can scan")
+                                                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                                    rideCancelBtn.setVisibility(View.GONE);
+                                                    rideOffersBtn.setVisibility(View.GONE);
+                                                    rideCompleteBtn.setVisibility(View.VISIBLE);
+                                                    dialog.cancel();
+                                                    dialog.dismiss();
+                                                }).show();
+                                    }
+                            }
+                        });
+                        break;
                     case REMOVED:
                         Log.wtf("CHANGE", "Removed");
-
                         break;
                 }
             }
         });
     }
 
-
-    /* On dialogue */
-    private void updateOnDriverReady(RideRequest rideRequest){
-        rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
-            if(status.equals("Driver Ready Pickup")){
-//                executor.shutdownNow();
-//                this.status.setText("Active");
-                new AlertDialog.Builder(getContext())
-                        .setMessage("The rider accepted your offer, start the ride!")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        }).show();
-
-            }
-        });
-    }
 
     private void findViewsSetListeners(View view){
         rideOffersBtn = view.findViewById(R.id.ViewOffers);
@@ -178,7 +190,6 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.CompleteRide:
-                executor.shutdown();
                 rideRequest.updateRideStatus("Completed");
                 stats.setText("Completed");
 

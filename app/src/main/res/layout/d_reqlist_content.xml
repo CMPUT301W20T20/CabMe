@@ -59,6 +59,7 @@
             android:layout_marginRight="0dp"
             android:maxLength="5"
             android:padding="15dp"
+            android:text=""
             android:textSize="18sp" />
 
     </RelativeLayout>

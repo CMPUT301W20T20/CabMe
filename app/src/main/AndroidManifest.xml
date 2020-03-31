@@ -18,7 +18,6 @@
     <uses-feature android:name="android.hardware.camera2.autofocus"/>
     <uses-permission android:name="android.permission.VIBRATE" />
 
-
     <!-- App Activity -->
     <application
         android:allowBackup="true"
@@ -28,6 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
         android:hardwareAccelerated="true">
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
         <!--        android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"-->
         <!--        android:theme="@style/Theme.AppCompat.NoActionBar"-->
 
@@ -77,8 +78,6 @@
 
         <activity android:name=".riders.RideOfferActivity"
                   android:exported="true"/>
-
-
     </application>
 
 </manifest>
