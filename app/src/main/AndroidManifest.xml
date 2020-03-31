@@ -78,14 +78,12 @@
 
         <activity android:name=".riders.RideOfferActivity"
                   android:exported="true"/>
-<<<<<<< HEAD
 
         <activity android:name=".riders.Pop"
                   android:theme="@style/PopupTheme"/>
 
 
-=======
->>>>>>> 18f2e6a83534ec13862282729958fd354894de2a
+
     </application>
 
 </manifest>
