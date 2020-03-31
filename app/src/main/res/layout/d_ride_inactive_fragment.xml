@@ -60,7 +60,6 @@
                     android:textAllCaps="false"
                     android:textColor="@color/quantum_white_100">
 
-
                 </Button>
             </LinearLayout>
 

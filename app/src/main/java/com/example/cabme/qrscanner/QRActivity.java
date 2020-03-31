@@ -39,16 +39,14 @@ public class QRActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String currentRider = (user.getFirstName());
-//                String currentFair = fare;
+                String currentRider = (user.getFirstName());
+                String currentFair = fare;
 
-                String text = ( " Payment Received" );
+                String text = (currentRider + " paid you $" + currentFair);
                 if (!text.equals("")){
                     new ImageDownloaderClass(imageView).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text);
                     button.setVisibility(View.GONE);
                     GoBackButton.setVisibility(View.VISIBLE);
-                    Toast.makeText(QRActivity.this, "QR Generating...", Toast.LENGTH_SHORT).show();
-
                 }
                 else {
                     Toast.makeText(QRActivity.this, "Text is Empty", Toast.LENGTH_SHORT).show();
@@ -56,12 +54,12 @@ public class QRActivity extends AppCompatActivity {
             }
         });
 
-
-        GoBackButton.setOnClickListener(v -> {
-//            Intent intent = new Intent(ScannerQR.this, TitleActivity.class);
-//            startActivity(intent);
-            setContentView(R.layout.title_activity);
-
+        GoBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QRActivity.this, TitleActivity.class);
+                startActivity(intent);
+            }
         });
     }
 }

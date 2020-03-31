@@ -56,7 +56,6 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
     private Driver driver;
     private FusedLocationProviderClient mFusedLocationClient;
     private Bundle bundle;
-    private UserType userType;
     Button confirmRideButton;
     String uid;
     Query query;
@@ -68,7 +67,6 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_reqlist_activity);
 
-        userType = (UserType) getIntent().getSerializableExtra("userType");
         uid = getIntent().getStringExtra("uid");
         confirmRideButton = findViewById(R.id.confirm_ride);
 
@@ -89,8 +87,8 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                             driver.setDocumentListener();
                             bundle = new Bundle();
                             bundle.putSerializable("user", driver);
-                            ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
-                            hamburgerMenuBtn.setOnClickListener(DriverRequestListActivity.this);
+//                            ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
+//                            hamburgerMenuBtn.setOnClickListener(DriverRequestListActivity.this);
                         }
                     }
                 });
@@ -98,11 +96,11 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         db = FirebaseFirestore.getInstance();
 
         // Query
-        query = db.collection("testrequests").whereEqualTo("rideStatus", "");
+        query = db.collection("testrequests");
 
         // Recycler options
         FirestoreRecyclerOptions<RiderHistoryListModel> options = new FirestoreRecyclerOptions.Builder<RiderHistoryListModel>()
-                .setQuery(query, RiderHistoryListModel.class)
+                .setQuery(query.orderBy("rideCost"), RiderHistoryListModel.class)
                 .build();
 
         // Sample Sort --- REMOVE
@@ -128,7 +126,6 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Log.wtf("RIDERUID", documentSnapshot.getString("UIDrider"));
-
                 String riderID = documentSnapshot.getString("UIDrider");
                 User user = new User(riderID);
                 user.readData((email, firstname, lastname, username, phone, rating) ->
@@ -140,7 +137,6 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                     Intent intent = new Intent();
                     setResult(1, intent);
                     finish();
-
                 });
             }
 
@@ -165,7 +161,7 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         hamburgerFragment.setArguments(bundle);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.d_reqlist_activity, hamburgerFragment, userType.toString())
+                .add(R.id.fragment_container, hamburgerFragment, "driver")
                 .commit();
     }
 

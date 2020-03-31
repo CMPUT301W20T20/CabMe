@@ -66,12 +66,10 @@ public class ScannerQR extends AppCompatActivity implements ZXingScannerView.Res
 
         txtResult.setText(rawResult.getText());
         Toast.makeText(ScannerQR.this, rawResult.getText(), Toast.LENGTH_LONG).show();
-
         vibrate = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         vibrate.vibrate(400);
 
-//        Intent intent = new Intent(ScannerQR.this, TitleActivity.class);
-//        startActivity(intent);
-        setContentView(R.layout.title_activity);
+        Intent intent = new Intent(ScannerQR.this, TitleActivity.class);
+        startActivity(intent);
     }
 }
