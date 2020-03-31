@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:textSize="20dp"
-            android:text="0.0 ★"/>
+            android:text="  "/>
 
         <TextView
             android:id="@+id/driverratingText"

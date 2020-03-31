@@ -21,7 +21,7 @@ import com.google.gson.internal.$Gson$Preconditions;
 
 public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAdapter.RideOfferHolder>{
     private String driverUID;
-    private OnItemClickListener listener;
+    public OnItemClickListener listener;
 
     public RideOfferAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
         super(options);
@@ -37,10 +37,10 @@ public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAd
         holder.name.setText(String.format("%s %s", firstname, lastname));
         holder.username.setText(String.format("@%s", username));
         if (rating.isReviewed()) {
-            holder.rating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPos_rev(), rating.getNeg_rev()));
+            holder.rating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPos_rev(), rating.getNeg_rev()) + " ★");
         }
         else {
-            holder.rating.setText("Not Reviewed");
+            holder.rating.setText("Not Reviewed ★");
         }
 
     }

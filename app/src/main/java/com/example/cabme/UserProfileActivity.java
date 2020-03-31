@@ -78,7 +78,13 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
             this.emailAddress.setText(email);
         });
         driver.readData((email, firstname, lastname, username, phone, rating) -> {
-            driverRating.setText(String.valueOf(rating));
+            if (rating.isReviewed()) {
+                driverRating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPos_rev(), rating.getNeg_rev()) + "★");
+            }
+            else {
+                driverRating.setText("Not Reviewed ★");
+            }
+
         });
     }
 
