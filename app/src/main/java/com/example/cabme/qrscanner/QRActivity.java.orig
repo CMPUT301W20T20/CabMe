@@ -42,12 +42,17 @@ public class QRActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
+                //String currentRider = (user.getFirstName());
+                String currentFair = fare;
 
+                String text = ("$" + currentFair + " was received");
+=======
 //                String currentRider = (user.getFirstName());
 //                String currentFair = fare;
 
                 String text = ( " Payment Received" );
-
+>>>>>>> ba1713d63aa1136bf9c761c64b0a1fbded09e22b
                 if (!text.equals("")){
                     new ImageDownloaderClass(imageView).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text);
                     button.setVisibility(View.GONE);
@@ -61,12 +66,23 @@ public class QRActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< HEAD
+        GoBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QRActivity.this, HomeMapActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("userType", UserType.RIDER);
+                startActivity(intent);
+            }
+=======
 
         GoBackButton.setOnClickListener(v -> {
 //            Intent intent = new Intent(ScannerQR.this, TitleActivity.class);
 //            startActivity(intent);
             setContentView(R.layout.title_activity);
 
+>>>>>>> ba1713d63aa1136bf9c761c64b0a1fbded09e22b
         });
     }
 }

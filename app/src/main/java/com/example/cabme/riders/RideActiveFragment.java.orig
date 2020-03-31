@@ -210,7 +210,14 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 rideRequest.updateRideStatus("Completed");
                 stats.setText("Completed");
 
+<<<<<<< HEAD
+=======
+//                start pop-up intent
+                Intent intent3 = new Intent(getActivity(), QRActivity.class);
+                intent3.putExtra("uid", "asd");
+                startActivity(intent3);
 
+>>>>>>> ba1713d63aa1136bf9c761c64b0a1fbded09e22b
                 //pass through diver id, to get driver id we need to call RideRequest.readData
                 rideRequest.readData(new RideRequest.dataCallBack() {
                     @Override
