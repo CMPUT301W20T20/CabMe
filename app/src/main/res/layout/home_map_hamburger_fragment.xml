@@ -78,7 +78,8 @@
                 android:textAllCaps="false"
                 android:gravity="start"
                 android:background="@color/fui_transparent"
-                style="@style/Widget.AppCompat.Button.Borderless" />
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/button_switch_user_type"

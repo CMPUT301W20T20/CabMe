@@ -188,8 +188,6 @@
                 android:inputType="phone" />
         </LinearLayout>
 
-
-
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -200,8 +198,6 @@
             android:id="@+id/saveprofile"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-
-            android:layout_marginRight="25dp"
             android:background="@color/cabme_accent_blue"
             style="?android:attr/borderlessButtonStyle"
             android:text="Save"
