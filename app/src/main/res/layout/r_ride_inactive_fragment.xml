@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_rider_home">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:cardElevation="50dp"
+        app:cardBackgroundColor="@color/quantum_white_100">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/welc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:padding="13dp">
+
+                <TextView
+                    android:id="@+id/hello_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="20sp"
+                    android:textSize="15sp"
+                    android:textColor="@color/quantum_grey900" />
+
+                <TextView
+                    android:id="@+id/question"
+                    android:layout_width="match_parent"
+                    android:textStyle="bold"
+                    android:layout_height="40sp"
+                    android:text="Do you need a ride?"
+                    android:textColor="@color/quantum_black_100"
+                    android:textSize="24sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/welc">
+                <Button
+                    android:id="@+id/new_offer"
+                    android:text="Request a Ride"
+                    android:textColor="@color/quantum_white_100"
+                    android:textAllCaps="false"
+                    android:background="@color/cabme_accent_blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    style="?android:attr/borderlessButtonStyle">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/ride_history"
+                    android:text="Ride History"
+                    android:textAllCaps="false"
+                    android:textColor="@color/quantum_grey600"
+                    android:shadowColor="@color/fui_transparent"
+                    android:background="@color/search_bg_grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

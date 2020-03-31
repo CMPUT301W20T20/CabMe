@@ -1,8 +1,5 @@
 package com.example.cabme.riders;
 
-import android.util.Log;
-
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.Observable;

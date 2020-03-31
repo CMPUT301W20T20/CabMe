@@ -22,6 +22,8 @@ public class CostAlgorithm {
         Double costPerMile = 1.25;
         Double distanceMiles = (double) distanceValue/1000;
         rideCost = (distanceMiles * costPerMile) + flatFee + baseFee;
+        /* floor only truncates positive values so i guess its okay here */
+        rideCost = Math.floor(rideCost * 100) / 100;
         return rideCost;
     }
 }

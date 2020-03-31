@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -66,7 +68,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
 
 
         saveButton = findViewById(R.id.saveprofile);
-        backButton = findViewById(R.id.back);
         editButton = findViewById(R.id.editprofile);
         deleteButton = findViewById(R.id.deletedprofile);
         emailEditText = findViewById(R.id.email);
@@ -93,13 +94,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                 saveButton.setVisibility(View.VISIBLE);
                 deleteButton.setVisibility(View.VISIBLE);
                 editButton.setVisibility(View.GONE);
-            }
-        });
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
 
@@ -232,4 +226,10 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         return valid;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.wtf("PROFILE", "Successful Backpress");
+        finish();
+    }
 }

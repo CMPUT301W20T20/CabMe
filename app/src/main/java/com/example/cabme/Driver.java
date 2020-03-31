@@ -15,9 +15,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Driver extends User implements Serializable {
     final private String TAG = "Driver";
@@ -28,23 +30,34 @@ public class Driver extends User implements Serializable {
     private String uid;
     private String phone;
     private Rating rating;
-    private Location location;
+    private transient Location location;
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
 
+
     public Driver(String uid, Location loc) {
+        super(uid);
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
         location = loc;
+        Map<String, Object> data = new HashMap<>();
+        data.put("location", loc);
         collectionReference
                 .document(uid)
-                .set(new HashMap<String, Object>().put("location", loc));
-        readData();
+                .set(data, SetOptions.merge());
+        // readData();
+    }
+
+    public Driver(String uid){
+        db = FirebaseFirestore.getInstance();
+        collectionReference = db.collection("users");
+        this.uid = uid;
+//        readData();
     }
 
     @Override
-    public void readData() {
+    public void readData(userCallback userCallback) {
         collectionReference
                 .document(uid)
                 .get()
@@ -58,7 +71,8 @@ public class Driver extends User implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
-                        rating = (Rating) documentSnapshot.get("rating");
+                        rating = documentSnapshot.get("rating", Rating.class);
+                        userCallback.onCallback(email, firstName, lastName, username, phone, rating);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -79,19 +93,16 @@ public class Driver extends User implements Serializable {
                 if (documentSnapshot == null) {
                     return;
                 }
-
                 username = documentSnapshot.getString("username");
                 firstName = documentSnapshot.getString("first");
                 lastName = documentSnapshot.getString("last");
                 email = documentSnapshot.getString("email");
                 phone = documentSnapshot.getString("phone");
-                rating = (Rating) documentSnapshot.get("rating");
-                location = (Location) documentSnapshot.get("location");
+                rating = documentSnapshot.get("rating", Rating.class);
                 Log.d("BIG", "UPDATE");
                 notifyObservers();
             }
         });
-
     }
 
 
@@ -101,5 +112,29 @@ public class Driver extends User implements Serializable {
 
     public Rating getRating() {
         return rating;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getUid() {
+        return uid;
     }
 }

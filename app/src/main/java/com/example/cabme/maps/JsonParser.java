@@ -2,9 +2,6 @@ package com.example.cabme.maps;
 
 import android.util.Log;
 
-import com.example.cabme.R;
-import com.firebase.ui.auth.data.remote.GenericIdpAnonymousUpgradeLinkingHandler;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 
 import org.json.JSONArray;

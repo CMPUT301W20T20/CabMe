@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
  * Imported Classes
  */
 import com.example.cabme.drivers.DriverRequestListActivity;
-import com.example.cabme.riders.RiderMapActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class TitleActivity extends AppCompatActivity {
     private Button profileButton;
@@ -23,24 +23,18 @@ public class TitleActivity extends AppCompatActivity {
     private User user;
     private String uid;
 
-    public enum UserType {
-        RIDER,
-        DRIVER
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
-
-
-        uid = (String)getIntent().getStringExtra("user");
-        user = new User(uid);
-        user.setDocumentListener();
+        uid = getIntent().getStringExtra("user");
 
         user = new User(uid);
         user.setDocumentListener();
-        
+
+        user = new User(uid);
+        user.setDocumentListener();
+
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
         riderButton = findViewById(R.id.rider);
@@ -58,6 +52,7 @@ public class TitleActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
                 finish();
             }
         });
@@ -65,8 +60,9 @@ public class TitleActivity extends AppCompatActivity {
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, RiderMapActivity.class);
-                intent.putExtra("user", user);
+                Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
+                intent.putExtra("uid", uid);
+                intent.putExtra("userType", UserType.RIDER);
                 startActivity(intent);
             }
         });
@@ -74,8 +70,9 @@ public class TitleActivity extends AppCompatActivity {
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
-                intent.putExtra("Driver-UID", uid);
+                Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
+                intent.putExtra("uid", uid);
+                intent.putExtra("userType", UserType.DRIVER);
                 startActivity(intent);
             }
         });

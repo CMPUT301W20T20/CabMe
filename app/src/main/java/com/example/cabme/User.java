@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -44,8 +45,7 @@ public class User extends Observable implements Serializable {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-        readData();
-
+//        readData();
     }
 
     /**
@@ -59,11 +59,9 @@ public class User extends Observable implements Serializable {
      * @param phone
      */
     public User (String uid, String email, String firstName, String lastName, String username, String phone) {
-
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-
         HashMap<String, Object> userData = new HashMap<>();
         userData.put("email", email);
         userData.put("first", firstName);
@@ -88,10 +86,9 @@ public class User extends Observable implements Serializable {
                         Log.d(TAG, "Data addition failed "+ e.toString());
                     }
                 });
-
     }
 
-    public void readData() {
+    public void readData(userCallback userCallback) {
         collectionReference
                 .document(uid)
                 .get()
@@ -105,6 +102,7 @@ public class User extends Observable implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
+                        userCallback.onCallback(email, firstName, lastName, username, phone, null);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -114,6 +112,11 @@ public class User extends Observable implements Serializable {
                     }
                 });
     }
+
+    public interface userCallback{
+        void onCallback(String email, String firstname, String lastname, String username, String phone, Rating rating);
+    }
+
     /**
      * This method sets a listener to the user's document in the database to retrieve real-time
      * updates from the database
@@ -127,7 +130,6 @@ public class User extends Observable implements Serializable {
                 if (documentSnapshot == null) {
                     return;
                 }
-
                 username = documentSnapshot.getString("username");
                 firstName = documentSnapshot.getString("first");
                 lastName = documentSnapshot.getString("last");
@@ -165,11 +167,8 @@ public class User extends Observable implements Serializable {
     }
 
     public String getUid() {
-        Log.wtf("LOG", uid+"");
         return uid;
     }
-
-
 
     public void updateData(Map<String, Object> data) {
         db = FirebaseFirestore.getInstance();

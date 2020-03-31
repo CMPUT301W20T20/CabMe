@@ -2,6 +2,7 @@ package com.example.cabme.qrscanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,11 +11,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.cabme.R;
+import com.example.cabme.TitleActivity;
 
 public class QRActivity extends AppCompatActivity {
 
     ImageView imageView;
     Button button;
+    Button GoBackButton;
 
     // https://www.youtube.com/watch?v=0ClcWGX2-n8
 
@@ -25,6 +28,7 @@ public class QRActivity extends AppCompatActivity {
 
         button = findViewById(R.id.button);
         imageView = findViewById(R.id.GenBarCode);
+        GoBackButton = findViewById(R.id.GoBack);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,10 +39,20 @@ public class QRActivity extends AppCompatActivity {
                 String text = (currentRider + " paid you $" + currentFair);
                 if (!text.equals("")){
                     new ImageDownloaderClass(imageView).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text);
+                    button.setVisibility(View.GONE);
+                    GoBackButton.setVisibility(View.VISIBLE);
                 }
                 else {
                     Toast.makeText(QRActivity.this, "Text is Empty", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        GoBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QRActivity.this, TitleActivity.class);
+                startActivity(intent);
             }
         });
     }
