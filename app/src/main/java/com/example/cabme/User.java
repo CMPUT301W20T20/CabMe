@@ -31,6 +31,7 @@ public class User extends Observable implements Serializable {
     private String username;
     private String uid;
     private String phone;
+    private Rating rating;
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
 
@@ -102,7 +103,9 @@ public class User extends Observable implements Serializable {
                         lastName = documentSnapshot.getString("last");
                         username = documentSnapshot.getString("username");
                         phone = documentSnapshot.getString("phone");
-                        userCallback.onCallback(email, firstName, lastName, username, phone, null);
+                        rating = documentSnapshot.get("rating", Rating.class);
+
+                        userCallback.onCallback(email, firstName, lastName, username, phone, rating);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
