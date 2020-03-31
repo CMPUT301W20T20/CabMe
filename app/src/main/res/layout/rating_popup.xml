@@ -22,23 +22,15 @@
         <Button
             android:id="@+id/thumb_up_popup"
             android:layout_width="100dp"
-<<<<<<< HEAD
             android:layout_height="60dp"
             android:layout_marginRight="15dp"
-=======
-            android:layout_height="50dp"
->>>>>>> a8d06270a071476e5bea3691f473bfc0f4ed9911
             android:text="Thumbs Up" />
 
         <Button
             android:id="@+id/thumbs_down_popup"
             android:layout_width="100dp"
-<<<<<<< HEAD
             android:layout_height="60dp"
             android:layout_marginLeft="15dp"
-=======
-            android:layout_height="50dp"
->>>>>>> a8d06270a071476e5bea3691f473bfc0f4ed9911
             android:text="Thumbs Down" />
     </LinearLayout>
 
