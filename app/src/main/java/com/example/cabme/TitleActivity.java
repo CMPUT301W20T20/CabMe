@@ -32,6 +32,9 @@ public class TitleActivity extends AppCompatActivity {
         user = new User(uid);
         user.setDocumentListener();
 
+        user = new User(uid);
+        user.setDocumentListener();
+
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
         riderButton = findViewById(R.id.rider);
@@ -67,7 +70,7 @@ public class TitleActivity extends AppCompatActivity {
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TitleActivity.this, DriverRequestListActivity.class);
+                Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
                 intent.putExtra("uid", uid);
                 intent.putExtra("userType", UserType.DRIVER);
                 startActivity(intent);

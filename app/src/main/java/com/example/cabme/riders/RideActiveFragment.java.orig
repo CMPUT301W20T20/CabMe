@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.User;
+import com.example.cabme.qrscanner.QRActivity;
 import com.google.firebase.database.core.view.Change;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -137,15 +138,15 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
 //                                        LayoutInflater inflater = getLayoutInflater();
 //                                        final View dialogView = inflater.inflate(R.layout.r_ride_active_fragment, null);
 //                                        dialogBuilder.setView(dialogView);
- //                                       dialogBuilder
-//                                                .setMessage("there is a barcoodde here u can scan")
-//                                                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                                           rideCancelBtn.setVisibility(View.GONE);
-                                           rideOffersBtn.setVisibility(View.GONE);
-                                           rideCompleteBtn.setVisibility(View.VISIBLE);
-//                                                    dialog.cancel();
-//                                                    dialog.dismiss();
-//                                                }).show();
+                                        dialogBuilder
+                                                .setMessage("there is a barcoodde here u can scan")
+                                                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                                    rideCancelBtn.setVisibility(View.GONE);
+                                                    rideOffersBtn.setVisibility(View.GONE);
+                                                    rideCompleteBtn.setVisibility(View.VISIBLE);
+                                                    dialog.cancel();
+                                                    dialog.dismiss();
+                                                }).show();
                                     }
                             }
                         });
@@ -209,7 +210,14 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 rideRequest.updateRideStatus("Completed");
                 stats.setText("Completed");
 
+<<<<<<< HEAD
+=======
+//                start pop-up intent
+                Intent intent3 = new Intent(getActivity(), QRActivity.class);
+                intent3.putExtra("uid", "asd");
+                startActivity(intent3);
 
+>>>>>>> ba1713d63aa1136bf9c761c64b0a1fbded09e22b
                 //pass through diver id, to get driver id we need to call RideRequest.readData
                 rideRequest.readData(new RideRequest.dataCallBack() {
                     @Override
