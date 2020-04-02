@@ -62,7 +62,13 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+
     @Override
+    /**
+     * This creates request list activity with information like driver's id and the last active location
+     * and allows the driver to conform a ride request
+     * @param savedInstanceState
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_reqlist_activity);
@@ -79,9 +85,12 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
 
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    /**
+                     * This gets the last known location. In some rare situations this can be null.
+                     * @param location
+                     */
                     @Override
                     public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             driver = new Driver(uid, location);
                             driver.setDocumentListener();
@@ -124,6 +133,12 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
 
         firestoreRecyclerAdapter.setOnItemClickListener(new DriverRequestListAdapter.OnItemClickListener() {
             @Override
+            /**
+             * This gets the rider info from the database using rider's id and displays rider's name
+             * on the confirm ride message for the driver
+             * @param documentSnapshot
+             * @param position
+             */
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Log.wtf("RIDERUID", documentSnapshot.getString("UIDrider"));
                 String riderID = documentSnapshot.getString("UIDrider");
@@ -141,6 +156,11 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
             }
 
             @Override
+            /**
+             * This takes the driver to the rider's profile upon clicking on rider's username
+             * @param documentSnapshot
+             * @param position
+             */
             public void onUsernameClick(DocumentSnapshot documentSnapshot, int position) {
                 String riderID = documentSnapshot.getString("UIDrider");
                 bundle = new Bundle();
@@ -156,6 +176,9 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
     }
 
     @Override
+    /**
+     * @param v
+     */
     public void onClick(View v) {
         HamburgerFragment hamburgerFragment = new HamburgerFragment();
         hamburgerFragment.setArguments(bundle);
@@ -178,7 +201,10 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         firestoreRecyclerAdapter.startListening();
     }
 
-
+    /**
+     * This checks the user permission to retrieve location information
+     * @return
+     */
     public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -196,6 +222,10 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                         .setMessage("here")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
+                            /**
+                             * @param dialogInterface
+                             * @param i
+                             */
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(DriverRequestListActivity.this,
@@ -220,6 +250,12 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
     }
 
     @Override
+    /**
+     * This shows the result array based on permissions
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -228,13 +264,12 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted, yay! Do the
-                    // location-related task you need to do.
+                    // Permission was granted, Do the location-related task
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
 
-                        //Request location updates:
+                        // Request location updates:
                         locationManager.requestLocationUpdates(provider, 400, 1, this);
                     }
 
@@ -250,6 +285,10 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
     }
 
     @Override
+    /**
+     * This gets latitude and longitude updates on location change and save them as strings
+     * @param location
+     */
     public void onLocationChanged(Location location) {
 
         Double lat = location.getLatitude();
@@ -260,16 +299,27 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
 
     }
     @Override
+    /**
+     * @param provider
+     * @param status
+     * @param extras
+     */
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
 
     @Override
+    /**
+     * @param provider
+     */
     public void onProviderEnabled(String provider) {
 
     }
 
     @Override
+    /**
+     * @param provider
+     */
     public void onProviderDisabled(String provider) {
 
     }
@@ -295,7 +345,4 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
             locationManager.removeUpdates(this);
         }
     }
-
-
-
 }
