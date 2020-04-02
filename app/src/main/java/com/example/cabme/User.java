@@ -38,15 +38,14 @@ public class User extends Observable implements Serializable {
     /**
      * This constructor is for users that are logging in or getting information of other
      * user involved in the current request
-     *
      * @param uid
      */
-    public User (String uid) {
-        //FirebaseApp.initializeApp(this);
+    public User (final String uid) {
+        // FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-//        readData();
+        // readData();
     }
 
     /**
@@ -59,11 +58,12 @@ public class User extends Observable implements Serializable {
      * @param username
      * @param phone
      */
-    public User (String uid, String email, String firstName, String lastName, String username, String phone) {
+    public User(final String uid, final String email, final String firstName, final String lastName,
+            final String username, final String phone) {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-        HashMap<String, Object> userData = new HashMap<>();
+        final HashMap<String, Object> userData = new HashMap<>();
         userData.put("email", email);
         userData.put("first", firstName);
         userData.put("last", lastName);
@@ -71,65 +71,61 @@ public class User extends Observable implements Serializable {
         userData.put("phone", phone);
         userData.put("rating", new Rating());
 
-        collectionReference
-                .document(uid)
-                .set(userData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Data addition successful");
+        collectionReference.document(uid).set(userData).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(final Void aVoid) {
+                Log.d(TAG, "Data addition successful");
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Data addition failed "+ e.toString());
-                    }
-                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull final Exception e) {
+                Log.d(TAG, "Data addition failed " + e.toString());
+            }
+        });
     }
 
-    public void readData(userCallback userCallback) {
-        collectionReference
-                .document(uid)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Log.d(TAG, "Data retrieval successful");
+    /**
+     * This is to retrieve user information such as email, name, phone and so on from the
+     * database with the resulting log string for success and fail.
+     * @param userCallback
+     */
+    public void readData(final userCallback userCallback) {
+        collectionReference.document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(final DocumentSnapshot documentSnapshot) {
+                Log.d(TAG, "Data retrieval successful");
 
-                        email = documentSnapshot.getString("email");
-                        firstName = documentSnapshot.getString("first");
-                        lastName = documentSnapshot.getString("last");
-                        username = documentSnapshot.getString("username");
-                        phone = documentSnapshot.getString("phone");
-                        rating = documentSnapshot.get("rating", Rating.class);
+                email = documentSnapshot.getString("email");
+                firstName = documentSnapshot.getString("first");
+                lastName = documentSnapshot.getString("last");
+                username = documentSnapshot.getString("username");
+                phone = documentSnapshot.getString("phone");
+                rating = documentSnapshot.get("rating", Rating.class);
 
-                        userCallback.onCallback(email, firstName, lastName, username, phone, rating);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Data retrieval failed " + e.toString());
-                    }
-                });
+                userCallback.onCallback(email, firstName, lastName, username, phone, rating);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull final Exception e) {
+                Log.d(TAG, "Data retrieval failed " + e.toString());
+            }
+        });
     }
 
-    public interface userCallback{
+    public interface userCallback {
         void onCallback(String email, String firstname, String lastname, String username, String phone, Rating rating);
     }
 
     /**
-     * This method sets a listener to the user's document in the database to retrieve real-time
-     * updates from the database
-     *
-     *
+     * This method sets a listener to the user's document in the database to
+     * retrieve real-time updates from the database
      */
     public void setDocumentListener() {
         collectionReference.document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+            public void onEvent(@Nullable final DocumentSnapshot documentSnapshot,
+                    @Nullable final FirebaseFirestoreException e) {
                 if (documentSnapshot == null) {
                     return;
                 }
@@ -145,9 +141,9 @@ public class User extends Observable implements Serializable {
 
     }
 
-	public User() {
-		// Default constructor required for calls to DataSnapshot.getValue(User.class)
-	}
+    public User() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
 
     public String getEmail() {
         return email;
@@ -173,28 +169,23 @@ public class User extends Observable implements Serializable {
         return uid;
     }
 
-    public void updateData(Map<String, Object> data) {
+    /**
+     * This gets data update for map from firebase
+     * @param data
+     */
+    public void updateData(final Map<String, Object> data) {
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
-        collectionReference
-                .document(uid)
-                .update(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Data update successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+        collectionReference.document(uid).update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(final Void aVoid) {
+                Log.d(TAG, "Data update successful");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull final Exception e) {
                         Log.d(TAG, "Data update failed "+ e.toString());
                     }
                 });
     }
-
-    //public int getBalance() {
-    //    return balance;
-    //}
-
 }
