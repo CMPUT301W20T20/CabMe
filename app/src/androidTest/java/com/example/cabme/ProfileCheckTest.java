@@ -26,11 +26,11 @@ public class ProfileCheckTest {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
 
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-        solo.clickOnButton("Sign Up");
+        solo.clickOnButton("Signup Instead");
         solo.enterText((EditText) solo.getView(R.id.SignupFirstName), "te");
         solo.enterText((EditText) solo.getView(R.id.SignupLastName), "st");
         solo.enterText((EditText) solo.getView(R.id.SignupEmail), "test@test.com");
-        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "tested");
+        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "test9");
         solo.enterText((EditText) solo.getView(R.id.SignupPassword), "123123");
         solo.enterText((EditText) solo.getView(R.id.SignupREpassword), "123123");
         solo.enterText((EditText) solo.getView(R.id.SignupPhone), "1800123123");
@@ -48,13 +48,13 @@ public class ProfileCheckTest {
         assertTrue(solo.waitForText("te", 1, 1000));
         assertTrue(solo.waitForText("st", 1, 1000));
         assertTrue(solo.waitForText("test@test.com", 1, 1000));
-        assertTrue(solo.waitForText("tested", 1, 1000));
+        assertTrue(solo.waitForText("test9", 1, 1000));
         assertTrue(solo.waitForText("1800123123", 1, 1000));
     }
 
     @Test
     public void checkBack() {
-        solo.clickOnButton("Return");
+        solo.goBack();
         solo.assertCurrentActivity("Wrong Activity", TitleActivity.class);
         solo.clickOnButton("View Profile");
     }
@@ -64,8 +64,8 @@ public class ProfileCheckTest {
         solo.clickOnButton("Edit Profile");
         solo.clearEditText((EditText) solo.getView(R.id.lastname));
         solo.enterText((EditText) solo.getView(R.id.lastname), "newlname");
-        solo.clickOnButton("Save Changes");
-        solo.clickOnButton("Return");
+        solo.clickOnButton("Save");
+        solo.goBack();
         solo.clickOnButton("View Profile");
         assertTrue(solo.waitForText("newlname", 1, 1000));
     }
@@ -75,12 +75,12 @@ public class ProfileCheckTest {
         solo.clickOnButton("Edit Profile");
         solo.clearEditText((EditText) solo.getView(R.id.username));
         solo.enterText((EditText) solo.getView(R.id.username), "yoyo");
-        solo.clickOnButton("Save Changes");
+        solo.clickOnButton("Save");
         assertTrue(solo.waitForText("Username is taken", 1, 1000));
         solo.clearEditText((EditText) solo.getView(R.id.username));
         solo.enterText((EditText) solo.getView(R.id.username), "newUname");
-        solo.clickOnButton("Save Changes");
-        solo.clickOnButton("Return");
+        solo.clickOnButton("Save");
+        solo.goBack();
         solo.clickOnButton("View Profile");
         assertTrue(solo.waitForText("newUname", 1, 1000));
     }

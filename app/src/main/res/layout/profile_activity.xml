@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30dp"
-            android:text="Account Details"
+            android:text="Profile Information"
             android:layout_marginStart="25dp"
             android:layout_marginLeft="25dp"
             android:layout_marginBottom="15dp"
@@ -212,7 +212,7 @@
 
             android:background="@color/search_bg_grey"
             style="?android:attr/borderlessButtonStyle"
-            android:text="Edit Account"
+            android:text="Edit Profile"
             android:textAllCaps="false"
             android:textColor="@color/quantum_grey600"/>
 
