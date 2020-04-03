@@ -74,19 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-<<<<<<< HEAD
 
-=======
-    // https://emailregex.com/
-    /**
-     * This does validation checks on email and password so only a user with correct
-     * and complete login details can log into the app. If not, it displays the required
-     * messages to the user
-     * @param email
-     * @param password
-     * @return
-     */
->>>>>>> parent of 71e47d4... fix merge conflicts with zapansa8
     public boolean valid(String email, String password) {
 
         String error = "";

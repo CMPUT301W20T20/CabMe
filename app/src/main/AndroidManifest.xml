@@ -62,7 +62,8 @@
         <!-- Library Activity -->
         <activity android:name=".TitleActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".SignupActivity" />
+        <activity android:name=".SignupActivity"
+            android:noHistory="true"/>
         <activity android:name=".UserProfileActivity" />
 
         <activity android:name=".HomeMapActivity" />

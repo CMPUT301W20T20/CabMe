@@ -15,16 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.cabme.Driver;
-import com.example.cabme.ProfileActivity;
-import com.example.cabme.R;
-import com.example.cabme.User;
-import com.example.cabme.riders.RecreateType;
 import com.google.firebase.auth.FirebaseAuth;
-
-import com.example.cabme.riders.RideInactiveFragment;
-
-import com.google.firebase.firestore.DocumentSnapshot;
 
 /**
  *
@@ -51,13 +42,9 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
     private Button balanceBtn;
     private Button logoutBtn;
 
-    public User user;
+    private User user;
     private String TAG;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -85,15 +86,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                emailEditText.setEnabled(true);
-                phoneEditText.setEnabled(true);
-                usernameEditText.setEnabled(true);
-                lnameEditText.setEnabled(true);
-                fnameEditText.setEnabled(true);
-
-                saveButton.setVisibility(View.VISIBLE);
-                deleteButton.setVisibility(View.VISIBLE);
-                editButton.setVisibility(View.GONE);
+                switchButtons(true);
             }
         });
 
@@ -108,8 +101,21 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mauth.getCurrentUser().delete();
                                 collectionReference.document(user.getUid()).delete();
+                                mauth.getCurrentUser().delete()
+                                        .addOnCompleteListener(ProfileActivity.this, new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(ProfileActivity.this, "Deletion successful",
+                                                            Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Log.wtf(TAG, "delete failed", task.getException());
+                                                    Toast.makeText(ProfileActivity.this, "Deletion successful",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                                 Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(intent);
@@ -160,15 +166,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
 
                                                         user.updateData(data);
 
-                                                        emailEditText.setEnabled(false);
-                                                        phoneEditText.setEnabled(false);
-                                                        usernameEditText.setEnabled(false);
-                                                        lnameEditText.setEnabled(false);
-                                                        fnameEditText.setEnabled(false);
-
-                                                        saveButton.setVisibility(View.GONE);
-                                                        deleteButton.setVisibility(View.GONE);
-                                                        editButton.setVisibility(View.VISIBLE);
+                                                        switchButtons(false);
 
                                                     } else {
                                                         Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -184,6 +182,27 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                 }
             }
         });
+
+    }
+
+    private void switchButtons(Boolean on) {
+
+        emailEditText.setEnabled(on);
+        phoneEditText.setEnabled(on);
+        usernameEditText.setEnabled(on);
+        lnameEditText.setEnabled(on);
+        fnameEditText.setEnabled(on);
+
+        if (on) {
+            saveButton.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.VISIBLE);
+            editButton.setVisibility(View.GONE);
+        }
+        else {
+            saveButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
+            editButton.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -205,8 +224,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         if (email.isEmpty()) {
             error += "Email field is empty \n";
             valid = false;
-        }
-        if (username.isEmpty()) {
+        } if (username.isEmpty()) {
             error += "Email field is empty \n";
             valid = false;
         } if (phone.isEmpty()) {
