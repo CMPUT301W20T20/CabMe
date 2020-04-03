@@ -48,7 +48,7 @@ public class Pop extends Activity {
 
     public Driver driver;
     private Rating rating;
-    public User user;
+    public User rider;
 
     TextView username;
     ImageButton thumbsUp;
@@ -85,7 +85,7 @@ public class Pop extends Activity {
 
         //create driver object
         driver = new Driver(driverUID);
-        user = new User(riderUID);
+        rider = new User(riderUID);
 
         //create rating object
         rating = new Rating();
@@ -118,7 +118,8 @@ public class Pop extends Activity {
 
                 //need to pass through amount
                 intent.putExtra("fare", fare);
-                intent.putExtra("user", riderUID);
+                intent.putExtra("riderUID", riderUID);
+                intent.putExtra("driverUID", driverUID);
                 startActivity(intent);
             }
         });
@@ -149,7 +150,8 @@ public class Pop extends Activity {
 
                 //need to pass through amount
                 intent.putExtra("fare", fare);
-                intent.putExtra("user", riderUID);
+                intent.putExtra("riderUID", riderUID);
+                intent.putExtra("driverUID", driverUID);
                 startActivity(intent);
             }
         });
@@ -168,8 +170,8 @@ public class Pop extends Activity {
      */
     private String getIncomingIntentDriverUID(){
 
-        Log.d(TAG, "Driver UID: " +getIntent().getStringExtra("uid"));
-        return getIntent().getStringExtra("uid");
+        Log.d(TAG, "Driver UID: " +getIntent().getStringExtra("driverUID"));
+        return getIntent().getStringExtra("driverUID");
 
     }
 
@@ -178,8 +180,8 @@ public class Pop extends Activity {
      */
     private String getIncomingIntentRiderUID(){
 
-        Log.d(TAG, "Rider UID: " + getIntent().getStringExtra("user"));
-        return getIntent().getStringExtra("user");
+        //Log.d(TAG, "Rider UID: " + getIntent().getStringExtra("riderUID"));
+        return getIntent().getStringExtra("riderUID");
 
     }
 }
