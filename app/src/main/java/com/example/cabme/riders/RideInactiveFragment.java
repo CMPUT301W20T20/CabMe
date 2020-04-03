@@ -22,10 +22,6 @@ import com.example.cabme.User;
 public class RideInactiveFragment extends Fragment implements View.OnClickListener {
     private TextView helloUser;
     public User user;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

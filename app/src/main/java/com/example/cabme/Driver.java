@@ -50,10 +50,10 @@ public class Driver extends User implements Serializable {
     }
 
     public Driver(String uid){
+        super(uid);
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
         this.uid = uid;
-//        readData();
     }
 
     @Override
@@ -134,7 +134,4 @@ public class Driver extends User implements Serializable {
         return phone;
     }
 
-    public String getUid() {
-        return uid;
-    }
 }

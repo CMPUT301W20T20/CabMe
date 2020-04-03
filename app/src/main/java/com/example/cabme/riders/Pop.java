@@ -5,30 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.example.cabme.Driver;
 import com.example.cabme.R;
 import com.example.cabme.Rating;
-import com.example.cabme.User;
 import com.example.cabme.qrscanner.QRActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,15 +33,11 @@ import java.util.Map;
 
 public class Pop extends Activity {
 
-    private String TAG = "Firestore";
+    private final String TAG = "Firestore";
+    private Rating review;
 
-    public Driver driver;
-    private Rating rating;
-    public User user;
-
-    TextView username;
-    ImageButton thumbsUp;
-    ImageButton thumbsDown;
+    private ImageButton thumbsUp;
+    private ImageButton thumbsDown;
 
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
@@ -75,51 +60,27 @@ public class Pop extends Activity {
 
 
         //get driver UID & fare using intent
-        String driverUID = getIncomingIntentDriverUID();
-        String fare = getIncomingIntentFare();
-        String riderUID = getIncomingIntentRiderUID();
+        String driverUID = getIntent().getStringExtra("driverUID");
+        String fare = getIntent().getStringExtra("fare");
+        String riderUID = getIntent().getStringExtra("riderUID");
 
         //database references
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("users");
 
-        //create driver object
-        driver = new Driver(driverUID);
-        user = new User(riderUID);
-
         //create rating object
-        rating = new Rating();
+        Driver driver = new Driver(driverUID);
+        driver.readData((email, firstname, lastname, username, phone, rating) -> {
+            review = rating;
+        });
 
         //make button click to set driver uid into the database
         thumbsUp = findViewById(R.id.thumb_up_popup);
         thumbsUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Map<String, Object> data = new HashMap<>();
-                //data.put("rating",rating);
-                rating.pos_rev();
-                Map<String, Object> data = new HashMap<>();
-                data.put("rating",rating);
-                Log.d(TAG, " driverUID: " + driverUID);
-
-                db.collection("users").document(driverUID).update(data)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Log.d(TAG, "onComplete: successful");
-                                }else{
-                                    Log.d(TAG, "onComplete: not successful");
-                                }
-                            }
-                        });
-                //after rating is finished we want to start QRActivity
-                Intent intent = new Intent(Pop.this, QRActivity.class);
-
-                //need to pass through amount
-                intent.putExtra("fare", fare);
-                intent.putExtra("user", riderUID);
-                startActivity(intent);
+                review.posRev();
+                finishReview(driverUID, riderUID, fare);
             }
         });
 
@@ -128,58 +89,38 @@ public class Pop extends Activity {
         thumbsDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rating.neg_rev();
-                Map<String, Object> data = new HashMap<>();
-                data.put("rating",rating);
-                Log.d(TAG, " driverUID: " + driverUID);
-
-                db.collection("users").document(driverUID).update(data)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Log.d(TAG, "onComplete: successful");
-                                }else{
-                                    Log.d(TAG, "onComplete: not successful");
-                                }
-                            }
-                        });
-                //after rating is finished we want to start QRActivity
-                Intent intent = new Intent(Pop.this, QRActivity.class);
-
-                //need to pass through amount
-                intent.putExtra("fare", fare);
-                intent.putExtra("user", riderUID);
-                startActivity(intent);
+                review.negRev();
+                finishReview(driverUID, riderUID, fare);
             }
         });
 
   }
-    /**
-     * Purpose: get fare amount from intent
-     */
-    private String getIncomingIntentFare(){
-        Log.d(TAG, "Ride Fare: " +getIntent().getStringExtra("fare"));
-        return getIntent().getStringExtra("fare");
+
+    private void finishReview(String driverUID, String riderUID, String fare) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("rating",review);
+        Log.d(TAG, " driverUID: " + driverUID);
+
+        collectionReference.document(driverUID).update(data)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG, "onComplete: successful");
+                        }else{
+                            Log.d(TAG, "onComplete: not successful");
+                        }
+                    }
+                });
+        //after rating is finished we want to start QRActivity
+        Intent intent = new Intent(Pop.this, QRActivity.class);
+
+        //need to pass through amount
+        intent.putExtra("fare", fare);
+        intent.putExtra("riderUID", riderUID);
+        intent.putExtra("driverUID", driverUID);
+        startActivity(intent);
+
     }
 
-    /**
-     * Purpose: get driver UID from intent
-     */
-    private String getIncomingIntentDriverUID(){
-
-        Log.d(TAG, "Driver UID: " +getIntent().getStringExtra("uid"));
-        return getIntent().getStringExtra("uid");
-
-    }
-
-    /**
-     * Purpose: get rider UID from intent
-     */
-    private String getIncomingIntentRiderUID(){
-
-        Log.d(TAG, "Rider UID: " + getIntent().getStringExtra("user"));
-        return getIntent().getStringExtra("user");
-
-    }
 }
