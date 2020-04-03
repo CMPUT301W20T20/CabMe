@@ -13,31 +13,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ *
+ * - Parses all the points for polylines int the directions API in driving mode
+ * - calls to draw poylines for the i-th row
+ *
+ * References & Sources:
+ * - https://github.com/divindvm/Android-DrawOnMap
+ * - https://github.com/Vysh01/android-maps-directions
+ *
+ */
 public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
     TaskLoadedCallback taskCallback;
     String directionMode;
 
-    /**
-     * This parses all the points for polylines in the directions API in driving mode and 
-     * calls to draw poylines for the i-th row
-     * References & Sources:
-     * - https://github.com/divindvm/Android-DrawOnMap
-     * - https://github.com/Vysh01/android-maps-directions
-     * @param mContext
-     * @param directionMode
-     */
     public PointsParser(Context mContext, String directionMode) {
         this.taskCallback = (TaskLoadedCallback) mContext;
         this.directionMode = directionMode;
     }
 
-    
+    // Parsing the data in non-ui thread
     @Override
-    /**
-     * This parses the data in non-ui thread
-     * @param jsonData
-     * @return
-     */
     protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
 
         JSONObject jObject;
@@ -61,11 +57,8 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
         return routes;
     }
 
+    // Executes in UI thread, after the parsing process
     @Override
-    /**
-     * This executes in UI thread, after the parsing process
-     * @param result
-     */
     protected void onPostExecute(List<List<HashMap<String, String>>> result) {
         ArrayList<LatLng> points;
         PolylineOptions lineOptions = null;

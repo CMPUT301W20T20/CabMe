@@ -19,11 +19,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-/**
- * Using ImageDownloaderClass it Generates the QR Code.
- * https://www.youtube.com/watch?v=0ClcWGX2-n8
- */
-
 
 public class QRActivity extends AppCompatActivity {
 
@@ -37,10 +32,7 @@ public class QRActivity extends AppCompatActivity {
 
     private String fare;
 
-    /**
-     * Using ImageDownloaderClass it Generates the QR Code.
-     * @param savedInstanceState
-     */
+    // https://www.youtube.com/watch?v=0ClcWGX2-n8
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +51,12 @@ public class QRActivity extends AppCompatActivity {
         Log.d(TAG, "Driver: " + user + "Rider: " + rider);
 
 
-        /**
-         * button is linked to "pay now", when pressed, the QR is Generated.
-         */
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String text =  fare + " QR bucks received";
+
 
                 if (!text.equals("")){
                     new ImageDownloaderClass(imageView).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text );
@@ -75,15 +64,11 @@ public class QRActivity extends AppCompatActivity {
                     backButton.setVisibility(View.VISIBLE);
                 }
                 else {
-                    Toast.makeText(QRActivity.this, "QR is Null", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QRActivity.this, "Text is Empty", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        /**
-         * Once the back button is pressed after paying, the rider is taken back to the title
-         * activity where they can log out, become driver or request another ride.
-         */
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -26,7 +26,7 @@ public class SignupTest {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
 
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-        solo.clickOnButton("Sign Up");
+        solo.clickOnButton("Signup Instead");
 
     }
 
@@ -35,13 +35,14 @@ public class SignupTest {
         solo.enterText((EditText) solo.getView(R.id.SignupFirstName), "te");
         solo.enterText((EditText) solo.getView(R.id.SignupLastName), "st");
         solo.enterText((EditText) solo.getView(R.id.SignupEmail), "test@test.com");
-        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "tested");
+        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "test9");
         solo.enterText((EditText) solo.getView(R.id.SignupPassword), "123123");
         solo.enterText((EditText) solo.getView(R.id.SignupREpassword), "123123");
         solo.enterText((EditText) solo.getView(R.id.SignupPhone), "1800123123");
 
         solo.clickOnButton("Sign Up");
         assertTrue(solo.waitForText("Successfully Registered, Upload complete!", 1, 2000));
+
         solo.assertCurrentActivity("Signup Succeeded", TitleActivity.class);
     }
 

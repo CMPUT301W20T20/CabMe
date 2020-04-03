@@ -12,32 +12,32 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ *
+ * Purposes:
+ * - Builds a url for routes
+ *
+ * References & Sources:
+ * - https://github.com/divindvm/Android-DrawOnMap
+ * - https://github.com/Vysh01/android-maps-directions
+ *
+ */
 public class FetchURL extends AsyncTask<String, Void, String> {
     @SuppressLint("StaticFieldLeak") // Not in production don't even worry about it :)
     private Context mContext;
     private String directionMode = "driving";
 
-    /**
-     * This builds a url for routes
-     * References & Sources:
-     * - https://github.com/divindvm/Android-DrawOnMap
-     * - https://github.com/Vysh01/android-maps-directions
-     * @param mContext
-     */
     public FetchURL(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
-    /**
-     * This is for storing data from web service and then fetching the data from web service
-     * @param strings
-     * @return
-     */
-    protected String doInBackground(String... strings) {    
+    protected String doInBackground(String... strings) {
+        // For storing data from web service
         String data = "";
         directionMode = strings[1];
         try {
+            // Fetching the data from web service
             data = downloadUrl(strings[0]);
             Log.d("MAPSLOG", "Background task data " + data);
         } catch (Exception e) {
@@ -47,29 +47,20 @@ public class FetchURL extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    /**
-     * This invokes the thread for parsing the JSON data
-     * @param s
-     */
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        PointsParser parserTask = new PointsParser(mContext, directionMode);    
+        PointsParser parserTask = new PointsParser(mContext, directionMode);
+        // Invokes the thread for parsing the JSON data
         parserTask.execute(s);
     }
 
-    /**
-     * This creats an http connection to communicate with url, connects to the url
-     * and reads from it
-     * @param strUrl
-     * @return
-     * @throws IOException
-     */
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;
         HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(strUrl);
+            // Creating an http connection to communicate with url
             urlConnection = (HttpURLConnection) url.openConnection();
             // Connecting to url
             urlConnection.connect();

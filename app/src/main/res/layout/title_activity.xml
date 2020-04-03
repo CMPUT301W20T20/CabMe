@@ -88,7 +88,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
         android:background="@color/quantum_white_100"
-        android:text="Account Details"
+        android:text="View Profile"
         android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/cabme_bg_dark_grey"

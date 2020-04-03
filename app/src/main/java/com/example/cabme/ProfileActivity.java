@@ -57,11 +57,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
     private FirebaseFirestore db;
 
     @Override
-    /**
-     * This adds various functions in form of buttons so a user profile can be saved,
-     * edited and deleted
-     * @param savedInstanceState
-     */
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity);
@@ -71,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         mauth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("users");
+
 
         saveButton = findViewById(R.id.saveprofile);
         editButton = findViewById(R.id.editprofile);
@@ -89,12 +85,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            /**
-             * This modifies the edit view on app when the user edits profile info
-             * and activates the save and delete profile buttons while deactivating
-             * the edit profile button
-             * @param v
-             */
             public void onClick(View v) {
                 switchButtons(true);
             }
@@ -102,10 +92,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            /**
-             * This fires a delete profile dialog box when a user clicks on delete profile button
-             * @param v
-             */
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
                 builder
@@ -114,12 +100,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                         .setNegativeButton("Cancel", null)
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             @Override
-                            /**
-                             * This deletes the user from the database when the user confirms delete
-                             * on the delete dialog box
-                             * @param dialogInterface
-                             * @param i
-                             */
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 collectionReference.document(user.getUid()).delete();
                                 mauth.getCurrentUser().delete()
@@ -148,11 +128,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            /**
-             * This allows to save the profile changes made by the user by saving them
-             * in the database
-             * @param v
-             */
             public void onClick(View v) {
                 nemail = emailEditText.getText().toString();
                 nphone = phoneEditText.getText().toString();
@@ -165,11 +140,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                 if (valid(nemail, nusername, nphone, nlname, nfname)) {
                     query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
-                        /**
-                         * This does validation checks on the new user information to ensure unique username
-                         * and correct formats of other profile details, and thus displays required messages
-                         * @param task
-                         */
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()){
                                 if (!task.getResult().isEmpty() && !user.getUsername().equals(nusername)) {
@@ -178,11 +148,6 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
                                     mauth.getCurrentUser().updateEmail(nemail)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
-                                                /**
-                                                 * This saves the new email, username, phone and other details
-                                                 * by replacing the old information on the database
-                                                 * @param task
-                                                 */
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
                                                         data.put("email", nemail);
@@ -256,6 +221,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
     private boolean valid(String email, String username, String phone, String lastname, String firstname) {
         boolean valid = true;
         String error = "";
+
         if (email.isEmpty()) {
             error += "Email field is empty \n";
             valid = false;
@@ -265,13 +231,25 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         } if (phone.isEmpty()) {
             error += "Phone number field is empty \n";
             valid = false;
-        } if (lastname.isEmpty()) {
-            error += "Last name field is empty \n";
-            valid = false;
-        } if (firstname.isEmpty()) {
+        }
+
+        if (firstname.isEmpty()) {
             error += "First name field is empty \n";
             valid = false;
-        }
+        }if (lastname.isEmpty()) {
+			error += "Last name field is empty \n";
+			valid = false;
+		}
+
+		if (email.isEmpty()) {
+			error += "Email field is empty \n";
+			valid = false;
+		}
+
+		if (phone.isEmpty()) {
+			error += "Phone number field is empty \n";
+			valid = false;
+		}
 
         if (!valid) {
             Toast.makeText(ProfileActivity.this, error, Toast.LENGTH_LONG).show();

@@ -24,22 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHistoryListModel, DriverRequestListAdapter.RequestsViewHolder> {
     private DriverRequestListAdapter.OnItemClickListener listener;
 
-    /**
-     * @param options
-     */
     public DriverRequestListAdapter(@NonNull FirestoreRecyclerOptions<RiderHistoryListModel> options) {
         super(options);
     }
 
     @Override
-    /**
-     * This gives a list of active rides with information such as rider id, start and end 
-     * location of the ride as well as ride fare
-     * Also allows the driver to fetch rider's info
-     * @param holder
-     * @param position
-     * @param model
-     */
     protected void onBindViewHolder(@NonNull RequestsViewHolder holder, int position, @NonNull RiderHistoryListModel model) {
         holder.itemView.setBackgroundColor(position == position ? Color.WHITE : Color.TRANSPARENT);
         String UID = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("UIDrider");
@@ -54,10 +43,6 @@ public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHist
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    /**
-                     * Show rider info and appropriate message in case the rider profile was deleted
-                     * @param documentSnapshot
-                     */
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Log.d("LOG", "Data Retrieved");
                         String fName = documentSnapshot.getString("first");
@@ -82,11 +67,6 @@ public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHist
 
     @NonNull
     @Override
-    /**
-     * @param parent
-     * @param viewType
-     * @return
-     */
     public RequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.d_reqlist_content, parent, false);
         return new RequestsViewHolder(view);
@@ -98,10 +78,6 @@ public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHist
         private TextView sLocation;
         private TextView driverUsername;
 
-        /**
-         * This passes snapshot of on click of the driver's user name
-         * @param itemView
-         */
         public RequestsViewHolder(@NonNull View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.name);
@@ -115,7 +91,7 @@ public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHist
                     listener.onItemClick(getSnapshots().getSnapshot(position), position);
                     notifyItemChanged(position);
                 }
-                
+                /* on click of the drivers user name, pass snapshot of it */
             });
             driverUsername.setOnClickListener(v -> {
                 if(listener != null){ /* only if the listener is not null */
@@ -131,9 +107,6 @@ public class DriverRequestListAdapter extends FirestoreRecyclerAdapter<RiderHist
         void onUsernameClick(DocumentSnapshot documentSnapshot, int position);
     }
 
-    /**
-     * @param listener
-     */
     public void setOnItemClickListener(DriverRequestListAdapter.OnItemClickListener listener) {
         this.listener = listener;
     }

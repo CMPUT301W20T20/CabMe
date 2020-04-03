@@ -10,18 +10,11 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Downloads the Barcode Image based on the String Provided
- */
+// This class is for the QR-Code generation
 
 public class ImageDownloaderClass extends AsyncTask<String, Void, Bitmap> {
 
     private final WeakReference<ImageView> imageViewReference;
-
-    /**
-     * Downloads the Image
-     * @param  imageView
-     */
 
     public ImageDownloaderClass(ImageView imageView){
         imageViewReference = new WeakReference<>(imageView);
@@ -32,10 +25,6 @@ public class ImageDownloaderClass extends AsyncTask<String, Void, Bitmap> {
         return downloadBitmap(strings[0]);
     }
 
-    /**
-     * sets the image view as the bitmap image that was downloaded if it is now null
-     * @param bitmap
-     */
     @Override
     protected void onPostExecute(Bitmap bitmap){
         if (isCancelled()) {
@@ -49,11 +38,6 @@ public class ImageDownloaderClass extends AsyncTask<String, Void, Bitmap> {
             }
         }
     }
-
-    /**
-     * Downloading Image Process from the URL connection if there are no errors in the URL
-     * @param url
-     */
 
     private Bitmap downloadBitmap(String url){
         HttpURLConnection urlConnection = null;

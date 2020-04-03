@@ -1,3 +1,5 @@
+//https://stackoverflow.com/questions/38423290/firebase-login-and-signup-with-username
+
 package com.example.cabme;
 
 import androidx.annotation.NonNull;
@@ -41,10 +43,6 @@ public class SignupActivity extends AppCompatActivity {
 	Button loginButton;
 
 	@Override
-	/**
-	 * This captures user input fields for a new user signup and saves them to the database
-	 * @param savedInstanceState
-	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign_up_activity);
@@ -66,10 +64,6 @@ public class SignupActivity extends AppCompatActivity {
 
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			/**
-			 * This allows the user to log in after authenticating the log in from database
-			 * @param v
-			 */
 			public void onClick(View v) {
 				finish();
 			}
@@ -77,10 +71,6 @@ public class SignupActivity extends AppCompatActivity {
 
 		signupButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			/**
-			 * This adds a new user to database users collection
-			 * @param view
-			 */
 			public void onClick(View view) {
 				fname = firstNameEditText.getText().toString().trim();
 				lname = lastNameEditText.getText().toString().trim();
@@ -94,12 +84,6 @@ public class SignupActivity extends AppCompatActivity {
 				Query query = collectionReference.whereEqualTo("username",uname);
 				query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 					@Override
-					/**
-					 * This does validation checks so all required fields are entered by the user and 
-					 * essential fields such as username are unique.
-					 * If conditions satisy, a user is created and stored in firebase
-					 * @param task
-					 */
 					public void onComplete(@NonNull Task<QuerySnapshot> task) {
 						if(task.isSuccessful()){
 							if (!task.getResult().isEmpty()) {
@@ -120,11 +104,6 @@ public class SignupActivity extends AppCompatActivity {
 									if (spass.equals(srepass)) {
 										mauth.createUserWithEmailAndPassword(semail, spass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 											@Override
-											/**
-											 * This creates and stores a new user in the database upon succeful pass 
-											 * of required conditions and shows the respective message on the app screen
-											 * @param task
-											 */
 											public void onComplete(@NonNull Task<AuthResult> task) {
 
 												if (task.isSuccessful()) {

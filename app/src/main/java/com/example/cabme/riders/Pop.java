@@ -22,8 +22,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Need to remove ride request from database to ridehistory
- 
+
+
+/**
+ *
+ * TODO: Need to remove ride request from database to ridehistory
+ *
+ *
+ * */
+
 public class Pop extends Activity {
 
     private final String TAG = "Firestore";
@@ -35,12 +42,8 @@ public class Pop extends Activity {
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
 
+
     @Override
-    /**
-     * This creates layout settings by getting device height and width
-     * Also gets driver uid, fare and creates driver and rating objects
-     * @param savedInstanceState
-     */
     protected void onCreate( Bundle savedInstanceState ){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rating_popup);
@@ -48,11 +51,13 @@ public class Pop extends Activity {
         //getting device screen height and width
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
+
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
         //setting layout settings
         getWindow().setLayout((int) (width * 0.8), (int) (height*0.3));
+
 
         //get driver UID & fare using intent
         String driverUID = getIntent().getStringExtra("driverUID");
@@ -83,10 +88,6 @@ public class Pop extends Activity {
         thumbsDown = findViewById(R.id.thumbs_down_popup);
         thumbsDown.setOnClickListener(new View.OnClickListener() {
             @Override
-            /**
-             * It adds rating if positive, starts QR scanner activity after rating is done
-             * @param v
-             */
             public void onClick(View v) {
                 review.negRev();
                 finishReview(driverUID, riderUID, fare);

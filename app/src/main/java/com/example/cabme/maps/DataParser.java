@@ -10,26 +10,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ *
+ * This method returns a list of lists containing lat and long, its pain purpose is for drawing
+ * polylines for a google route.
+ *
+ * References & Sources:
+ * - https://github.com/divindvm/Android-DrawOnMap
+ * - (user: 2398886) https://stackoverflow.com/questions/17425499/how-to-draw-interactive-polyline-on-route-google-maps-v2-android
+ * - https://github.com/Vysh01/android-maps-directions
+ *
+ */
 public class DataParser {
-
-    /**
-     * This class returns a list of lists containing latitude and longitude and draws
-     * a polyline for a route on google map
-     * References & Sources:
-     * - https://github.com/divindvm/Android-DrawOnMap
-     * https://stackoverflow.com/questions/17425499/how-to-draw-interactive-polyline-on-route-google-maps-v2-android
-     * https://github.com/Vysh01/android-maps-directions
-     * @param jObject
-     * @return
-     */
     public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
+
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
         JSONArray jRoutes;
         JSONArray jLegs;
         JSONArray jSteps;
         try {
             jRoutes = jObject.getJSONArray("routes");
-
             /* Traversing all routes */
             for (int i = 0; i < jRoutes.length(); i++) {
                 jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
@@ -63,14 +63,13 @@ public class DataParser {
         return routes;
     }
 
+
     /**
-     * This method decodes polyline points
-     * Source: 
-     * https://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
-     * @param encoded
-     * @return
+     * Method to decode polyline points
+     * Source : https://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
      */
     private List<LatLng> decodePoly(String encoded) {
+
         List<LatLng> poly = new ArrayList<>();
         int index = 0, len = encoded.length();
         int lat = 0, lng = 0;

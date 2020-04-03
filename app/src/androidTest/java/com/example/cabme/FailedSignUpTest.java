@@ -26,7 +26,7 @@ public class FailedSignUpTest {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
 
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-        solo.clickOnButton("Sign Up");
+        solo.clickOnButton("Signup Instead");
 
     }
 
@@ -40,7 +40,7 @@ public class FailedSignUpTest {
         solo.enterText((EditText) solo.getView(R.id.SignupFirstName), "te");
         solo.enterText((EditText) solo.getView(R.id.SignupLastName), "st");
         solo.enterText((EditText) solo.getView(R.id.SignupEmail), "test@test.com");
-        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "tested");
+        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "test9");
         solo.enterText((EditText) solo.getView(R.id.SignupPassword), "123123");
         solo.clickOnButton("Sign Up");
         assertTrue(solo.waitForText("Please enter all the details", 1, 2000));
@@ -51,7 +51,7 @@ public class FailedSignUpTest {
         solo.enterText((EditText) solo.getView(R.id.SignupFirstName), "te");
         solo.enterText((EditText) solo.getView(R.id.SignupLastName), "st");
         solo.enterText((EditText) solo.getView(R.id.SignupEmail), "test@test.com");
-        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "tested");
+        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "test9");
         solo.enterText((EditText) solo.getView(R.id.SignupPhone), "123123123");
         solo.enterText((EditText) solo.getView(R.id.SignupPassword), "123123");
         solo.enterText((EditText) solo.getView(R.id.SignupREpassword), "123");
@@ -67,7 +67,7 @@ public class FailedSignUpTest {
         solo.enterText((EditText) solo.getView(R.id.SignupPhone), "123123123");
         solo.enterText((EditText) solo.getView(R.id.SignupUserName), "LEL");
         solo.enterText((EditText) solo.getView(R.id.SignupPassword), "123123");
-        solo.enterText((EditText) solo.getView(R.id.SignupREpassword), "123");
+        solo.enterText((EditText) solo.getView(R.id.SignupREpassword), "123123");
         solo.clickOnButton("Sign Up");
         assertTrue(solo.waitForText("Please choose a unique username", 1, 2000));
     }
