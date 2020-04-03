@@ -3,7 +3,6 @@ package com.example.cabme;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -107,11 +106,9 @@ public class SignupActivity extends AppCompatActivity {
 												if (task.isSuccessful()) {
 													Toast.makeText(SignupActivity.this, "Successfully Registered, Upload complete!", Toast.LENGTH_SHORT).show();
 													String uid = mauth.getCurrentUser().getUid();
-													User user = new User(uid);
-													user.createUser(semail, sfname, slname, suname, sphone);
-													Intent intent = new Intent(SignupActivity.this, TitleActivity.class);
-													intent.putExtra("user", uid);
-													startActivity(intent);
+													new User(uid, semail, sfname, slname, suname, sphone);
+													finish();
+													//startActivity(new Intent(MainActivity.this, TitleActivity.class));
 												} else {
 													FirebaseAuthException e = (FirebaseAuthException) task.getException();
 													String s = "Sign up Failed" + task.getException();

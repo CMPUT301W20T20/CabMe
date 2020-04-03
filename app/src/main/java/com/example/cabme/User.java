@@ -50,16 +50,26 @@ public class User extends Observable implements Serializable {
     }
 
     /**
-     * This method is for users that are signing up for the CabMe application
+     * This constructor is for users that are signing up for the CabMe application
      *
+     * @param uid
      * @param email
      * @param firstName
      * @param lastName
      * @param username
      * @param phone
      */
+<<<<<<< HEAD
     public void createUser(String email, String firstName, String lastName, String username, String phone) {
         HashMap<String, Object> userData = new HashMap<>();
+=======
+    public User(final String uid, final String email, final String firstName, final String lastName,
+            final String username, final String phone) {
+        db = FirebaseFirestore.getInstance();
+        collectionReference = db.collection("users");
+        this.uid = uid;
+        final HashMap<String, Object> userData = new HashMap<>();
+>>>>>>> parent of 71e47d4... fix merge conflicts with zapansa8
         userData.put("email", email);
         userData.put("first", firstName);
         userData.put("last", lastName);

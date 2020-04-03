@@ -3,28 +3,29 @@ package com.example.cabme;
 import java.io.Serializable;
 
 public class Rating implements Serializable {
-    private int posRev;
-    private int negRev;
+    private int pos_rev;
+    private int neg_rev;
 
     public Rating() {
-        posRev = 0;
-        negRev = 0;
+        pos_rev = 0;
+        neg_rev = 0;
     }
 
     public boolean isReviewed() {
-        return (posRev + negRev != 0);
+        return (pos_rev + neg_rev != 0);
     }
 
     public double percentRating() {
-        return (double) posRev / (double) (posRev + negRev);
+        return (double) pos_rev/ (double) (pos_rev + neg_rev);
     }
 
-    public void posRev() {
-        posRev = posRev + 1;
+    public void pos_rev() {
+
+        pos_rev = pos_rev + 1;
     }
 
-    public void negRev() {
-        negRev = negRev + 1;
+    public void neg_rev() {
+        neg_rev = neg_rev + 1;
 
     }
 

@@ -24,6 +24,24 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
     public User user;
 
     @Override
+<<<<<<< HEAD
+=======
+    /**
+     * This is the fragment for when there is no active ride - displays on MapViewActivity
+     * @param savedInstanceState
+     */
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    /**
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
+>>>>>>> parent of 71e47d4... fix merge conflicts with zapansa8
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.r_ride_inactive_fragment, container, false);
         user = (User) getArguments().getSerializable("user");

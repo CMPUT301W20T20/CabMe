@@ -23,6 +23,7 @@ import com.example.cabme.drivers.DriveActiveFragment;
 import com.example.cabme.drivers.DriverRequestListActivity;
 import com.example.cabme.maps.FetchURL;
 import com.example.cabme.maps.TaskLoadedCallback;
+import com.example.cabme.riders.RecreateType;
 import com.example.cabme.riders.RideActiveFragment;
 import com.example.cabme.riders.RideInactiveFragment;
 import com.example.cabme.riders.RideRequest;
@@ -91,6 +92,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     private MarkerOptions markStart;
     private MarkerOptions markDest;
 
+    private RecreateType recreateType;
     private LatLng startLatLng;
     private LatLng destLatLng;
 

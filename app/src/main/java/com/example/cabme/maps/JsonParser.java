@@ -40,23 +40,23 @@ import java.net.URL;
 public class JsonParser {
 
     // API KEY
-    private String API_KEY;
+    String API_KEY;
 
     // Gets
-    private Integer distanceValue;
-    private Integer durationValue;
+    Integer distanceValue;
+    Integer durationValue;
 
-    private String distanceText;
-    private String durationText;
+    String distanceText;
+    String durationText;
 
-    private String endAddress;
-    private String startAddress;
+    String endAddress;
+    String startAddress;
 
     // Long and lat as doubles extracted from GeoPoint
-    private Double startLat;
-    private Double startLng;
-    private Double destLat;
-    private Double destLng;
+    Double startLat;
+    Double startLng;
+    Double destLat;
+    Double destLng;
 
     public JsonParser(GeoPoint startGeo, GeoPoint destGeo, String API_KEY) {
         this.API_KEY = API_KEY;
