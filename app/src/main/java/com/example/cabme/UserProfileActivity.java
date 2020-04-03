@@ -26,10 +26,6 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
     private User user;
     private Integer REQUEST_PERMISSION = 1;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
@@ -37,12 +33,10 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.profile_view_activity, container, false);
         String uid = (String) getArguments().getSerializable("uid");
         user = new User(uid);
-        Driver driver = new Driver(uid);
         findViewsSetListeners(view);
-        setInformation(user, driver);
+        setInformation(user);
 
         Log.wtf("USER", user+"");
-        Log.wtf("DRIVER", driver.getUid()+"");
 
         return view;
     }
@@ -68,24 +62,22 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
      * @param user the user model used to get data from
      * @param driver the driver model used to get data from
      */
-    private void setInformation(User user, Driver driver){
+    private void setInformation(User user){
         /* necessary to pull data like this bc firebase is async */
-        user.readData((email, firstname, lastname, username, phone, rating) -> {
-            String fullname = firstname + " " + lastname;
-            this.fullname.setText(fullname);
-            this.username.setText(String.format("@%s", username));
-            this.phoneNumber.setText(phone);
-            this.emailAddress.setText(email);
-        });
-        driver.readData((email, firstname, lastname, username, phone, rating) -> {
+        user.readData((email, firstname, lastname, uname, phone, rating) -> {
+            String name = firstname + " " + lastname;
+            fullname.setText(name);
+            username.setText(String.format("@%s", uname));
+            phoneNumber.setText(phone);
+            emailAddress.setText(email);
             if (rating.isReviewed()) {
                 driverRating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPosRev(), rating.getNegRev()) + "★");
             }
             else {
                 driverRating.setText("Not Reviewed ★");
             }
-
         });
+
     }
 
     /**
