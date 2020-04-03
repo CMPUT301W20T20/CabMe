@@ -54,11 +54,6 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.r_ride_active_fragment, container, false);
         user = (User) getArguments().getSerializable("user");

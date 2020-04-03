@@ -45,10 +45,6 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
     private User user;
     private String TAG;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

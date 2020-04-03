@@ -27,7 +27,6 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
     private final Integer REQUEST_PERMISSION = 1;
 
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.profile_view_activity, container, false);
