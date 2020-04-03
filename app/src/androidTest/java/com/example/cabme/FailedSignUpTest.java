@@ -65,7 +65,7 @@ public class FailedSignUpTest {
         solo.enterText((EditText) solo.getView(R.id.SignupLastName), "st");
         solo.enterText((EditText) solo.getView(R.id.SignupEmail), "test@test.com");
         solo.enterText((EditText) solo.getView(R.id.SignupPhone), "123123123");
-        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "LEL");
+        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "yoyo");
         solo.enterText((EditText) solo.getView(R.id.SignupPassword), "123123");
         solo.enterText((EditText) solo.getView(R.id.SignupREpassword), "123123");
         solo.clickOnButton("Sign Up");
