@@ -1,3 +1,5 @@
+//https://stackoverflow.com/questions/38423290/firebase-login-and-signup-with-username
+
 package com.example.cabme;
 
 import androidx.annotation.NonNull;
