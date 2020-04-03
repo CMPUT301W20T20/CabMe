@@ -60,7 +60,6 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
     /**
      * Sets the information of the user from the database
      * @param user the user model used to get data from
-     * @param driver the driver model used to get data from
      */
     private void setInformation(User user){
         /* necessary to pull data like this bc firebase is async */
