@@ -34,7 +34,7 @@ public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAd
         holder.name.setText(String.format("%s %s", firstname, lastname));
         holder.username.setText(String.format("@%s", username));
         if (rating.isReviewed()) {
-            holder.rating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPosRev(), rating.getNegRev()) + " ★");
+            holder.rating.setText(String.format("%3.0f%% ★  %d+ / %d-", rating.percentRating()*100, rating.getPosRev(), rating.getNegRev()));
         }
         else {
             holder.rating.setText("Not Reviewed ★");

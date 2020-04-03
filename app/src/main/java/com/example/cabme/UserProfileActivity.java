@@ -24,7 +24,7 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
     private TextView phoneNumber;
     private TextView emailAddress;
     private User user;
-    private Integer REQUEST_PERMISSION = 1;
+    private final Integer REQUEST_PERMISSION = 1;
 
 
     @Nullable
@@ -70,7 +70,7 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
             phoneNumber.setText(phone);
             emailAddress.setText(email);
             if (rating.isReviewed()) {
-                driverRating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPosRev(), rating.getNegRev()) + "★");
+                driverRating.setText(String.format("%3.0f%% ★  %d+ / %d-", rating.percentRating()*100, rating.getPosRev(), rating.getNegRev()));
             }
             else {
                 driverRating.setText("Not Reviewed ★");
