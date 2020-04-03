@@ -28,12 +28,6 @@ public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAd
     }
 
     @Override
-    /**
-     * This gets the info of driver that offfered ride along with their ratings if they are reviewwd.
-     * @param holder
-     * @param position
-     * @param model
-     */
     protected void onBindViewHolder(@NonNull RideOfferHolder holder, int position, @NonNull User model) {
         holder.itemView.setBackgroundColor(position == position ? Color.WHITE : Color.TRANSPARENT);
         String firstname = getSnapshots().getSnapshot(holder.getAdapterPosition()).getString("first");
@@ -51,28 +45,27 @@ public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAd
 
     }
 
+    /**
+     * Purpose: "container" that holds all the information we need to display to the rider
+     */
     @NonNull
     @Override
-    /**
-     * This is a "container" that holds all the information that is needed to display to the rider
-     * @param parent
-     * @param viewType
-     * @return
-     */
     public RideOfferHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.r_offerlist_content, parent, false);
         return new RideOfferHolder(view);
     }
 
+    /**
+     * Purpose: contains all the respective button and text views
+     */
     class RideOfferHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView username;
         private TextView rating;
 
         /**
-         * This contains all the respective button and text views
-         * It is the view of the item in holder
-         * @param itemView 
+         * Purpose: contains all the respective button and text views
+         * @param itemView the view of the item in holder
          */
         public RideOfferHolder(@NonNull View itemView) {
             super(itemView);

@@ -37,15 +37,21 @@ import java.util.Arrays;
 import static android.view.View.GONE;
 
 /**
- * Purposes:
- * - When a rider makes a new ride request, the places/maps/directions API used to parse JSON files 
- * from the request made, then use the information extracted from class to store ride requests from
- * the Firebase DB.
- * - It parses information (if there is any - some longitude & latitude may be null - UNHANDLED CASE)
- *   from a start and end location via google. 
- * - This an be used to get the actual address of a place
  *
- * TODO:
+ *
+ * Purposes:
+ * - When a rider makes a new ride request the places/maps/directions API used to parse JSON files from
+ *   the request made then use the information extracted from class to store ride requests from the
+ *   Firebase DB.
+ * - Literally just parses information (if there is any - some long&lats may be null - UNHANDLED CASE)
+ *   from a start and end location via google. You can use this to get the actual address of a place
+ *
+ * Params
+ * - Geopoint:: start location
+ * - Geopoint:: end location
+ * - String:: API key ==> *NEEDED* to access information from request. SEE URL
+ *
+ * TODO
  *  [ ] Text Watcher - err.ch. valid input
  *  [ ] OnClick - else
  *  [ ] Handle case where there is NO DRIVABLE ROUTE between locations coz app goes nuts and crashes
@@ -82,9 +88,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
     String rideCostPreview;
 
     @Override
-    /**
-     * @param savedInstance
-     */
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.r_ride_request_search_activity);
@@ -96,9 +99,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         destinationLocationSearch();
     }
 
-    /**
-     * This initializes the google map if not already there on ride request search
-     */
     private void initializePlacesClient(){
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
@@ -106,10 +106,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         placesClient = Places.createClient(this);
     }
 
-    /**
-     * This is for setting buttons for post ride search actions sucg as ride cost,
-     * adding tip and confirming fare
-     */
     private void findViewsSetListeners(){
         searchRideButton = (Button) findViewById(R.id.search_ride_button);
         rideCostEditText = (TextView) findViewById(R.id.pay_edit_text);
@@ -126,9 +122,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         changeTip.setOnClickListener(this);
     }
 
-    /**
-     * This gets the starting location  on ride request search
-     */
     public void startingLocationSearch(){
         asfStart = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_from);
         asfStart.setHint("Starting Location");
@@ -139,10 +132,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
                         Place.Field.NAME));
         asfStart.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            /**
-             * This gets the latitude and longitude of the start location for cost estimation
-             * @param place
-             */
             public void onPlaceSelected(@NonNull Place place) {
                 startLngLat = place.getLatLng();
                 if(destLngLat!= null){
@@ -150,18 +139,12 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
                 }
             }
             @Override
-            /**
-             * @param status
-             */
             public void onError(@NonNull Status status) {
                 Log.d("onPlaceSelected", "Error onPlaceSelected start location");
             }
         });
     }
 
-    /**
-     * This gets the destination location on ride request search
-     */
     public void destinationLocationSearch(){
         asfDest = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autosearch_to);
         asfDest.setHint("Destination Location");
@@ -172,10 +155,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
                         Place.Field.NAME));
         asfDest.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            /**
-             * This gets the latitude and longitude of the destination location for cost estimation
-             * @param place
-             */
             public void onPlaceSelected(@NonNull Place place) {
                 destLngLat = place.getLatLng();
                 if(startLngLat != null){
@@ -183,19 +162,12 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
                 }
             }
             @Override
-            /**
-             * @param status
-             */
             public void onError(@NonNull Status status) {
                 Log.d("onPlaceSelected", "Error onPlaceSelected destination location");
             }
         });
     }
 
-    /**
-     * This is for estiating cost of a ride based on the longitude and latitude of the start and 
-     * destination locations
-     */
     public void costEstimator(){
         destGeo = new GeoPoint(destLngLat.latitude, destLngLat.longitude);
         startGeo = new GeoPoint(startLngLat.latitude, startLngLat.longitude);
@@ -237,39 +209,19 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
     /* Correct input in the cost field - do this later */
     private TextWatcher costWatcher = new TextWatcher() {
         @Override
-        /**
-         * @param s
-         * @param start
-         * @param count
-         * @param after
-         */
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
         @Override
-        /**
-         * @param s
-         * @param start
-         * @param before
-         * @param count
-         */
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             textChanged = true;
         }
         @Override
-        /**
-         * @param s
-         */
         public void afterTextChanged(Editable s) {
             textChanged = true;
         }
     };
 
     @Override
-    /**
-     * This is for the view that shows actions for ride requests based on a switch case
-     * which is based on the current stage of the user with the ride request
-     * @param v
-     */
     public void onClick(View v) {
 
         switch (v.getId()){
@@ -308,10 +260,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
         }
     }
 
-    /**
-     * This is for recalculating the ride fare in case the rider adds a tip
-     * @param tip
-     */
     public void recalcRideCost(Double tip){
         if(rideCost != null){
             tip = Math.floor(tip * 100) / 100;
@@ -330,9 +278,6 @@ public class RideRequestSearchActivity extends AppCompatActivity implements View
     }
 
     @Override
-    /**
-     * This takes the user back from ride request
-     */
     public void onBackPressed() {
         super.onBackPressed();
     }

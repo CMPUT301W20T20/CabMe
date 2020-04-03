@@ -43,13 +43,11 @@ public class RideOfferActivity extends AppCompatActivity {
     private List<String> offers;
     private Button confirmRideButton;
 
+
     /* key */
     private User user;
 
     @Override
-    /**
-     * @param savedInstanceState
-     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.r_offerlist_activity);
@@ -60,7 +58,7 @@ public class RideOfferActivity extends AppCompatActivity {
     }
 
     /**
-     * This sets up the recycler view, its options and so on
+     * Sets up the recycler view, its options etc
      */
     private void setUpRecyclerView(){
         /* getting the offers subcollection in testrequests */
@@ -69,10 +67,6 @@ public class RideOfferActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    /**
-                     * This gets the documnet snapshot from the recycler view for offers
-                     * @param ddocumentSnapshot
-                     */
                     public void onSuccess(DocumentSnapshot ddocumentSnapshot) {
                         offers = (List<String>) ddocumentSnapshot.get("offers");
 
@@ -105,10 +99,6 @@ public class RideOfferActivity extends AppCompatActivity {
 
                             adapter.setOnItemClickListener(new RideOfferAdapter.OnItemClickListener() {
                                 @Override
-                                /**
-                                 * @param documentSnapshot
-                                 * @param position
-                                 */
                                 public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                                     String driverID = documentSnapshot.getId();
                                     bundle = new Bundle();
@@ -121,22 +111,15 @@ public class RideOfferActivity extends AppCompatActivity {
                                             .commit();
                                 }
                                 @Override
-                                /**
-                                 * @param documentSnapshot
-                                 * @param position
-                                 */
                                 public void onDriverSelect(DocumentSnapshot documentSnapshot, int position) {
                                     String driverID = documentSnapshot.getId();
                                     confirmRideButton.setText(String.format("Ride with %s", documentSnapshot.getString("first")));
                                     confirmRideButton.setVisibility(View.VISIBLE);
                                     confirmRideButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
-                                        /**
-                                         * This changes the fields in requests and also removes the fragment.
-                                         * It also starts the HomeMapActivity recreation here
-                                         * @param v
-                                         */
-                                        public void onClick(View v) {  
+                                        public void onClick(View v) {
+                                            // change fields in requests
+                                            /* Removes the fragment and starts the HomeMapActivity recreation here*/
                                             RideRequest rideRequest = new RideRequest(user.getUid());
                                             rideRequest.updateRideStatus("Rider Ready");
                                             rideRequest.updateDriver(driverID);
@@ -153,10 +136,10 @@ public class RideOfferActivity extends AppCompatActivity {
                 });
     }
 
-    @Override
     /**
-     * This sets the listener on start of activity
+     * Purpose: set listener on start of activity
      */
+    @Override
     protected void onStart() {
         super.onStart();
         if(adapter != null){
@@ -164,10 +147,10 @@ public class RideOfferActivity extends AppCompatActivity {
         }
     }
 
-    @Override
     /**
-     * This stops the listener at end of activity
+     * Purpose: stop listener at end of activity
      */
+    @Override
     protected void onStop() {
         super.onStop();
         if(adapter != null){

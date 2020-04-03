@@ -62,13 +62,7 @@ public class DriverRequestListActivity extends FragmentActivity implements View.
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-
     @Override
-    /**
-     * This creates request list activity with information like driver's id and the last active location
-     * and allows the driver to conform a ride request
-     * @param savedInstanceState
-     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_reqlist_activity);
@@ -83,12 +77,9 @@ public class DriverRequestListActivity extends FragmentActivity implements View.
 
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    /**
-                     * This gets the last known location. In some rare situations this can be null.
-                     * @param location
-                     */
                     @Override
                     public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             driver = new Driver(uid, location);
                             driver.setDocumentListener();
@@ -120,12 +111,6 @@ public class DriverRequestListActivity extends FragmentActivity implements View.
 
         firestoreRecyclerAdapter.setOnItemClickListener(new DriverRequestListAdapter.OnItemClickListener() {
             @Override
-            /**
-             * This gets the rider info from the database using rider's id and displays rider's name
-             * on the confirm ride message for the driver
-             * @param documentSnapshot
-             * @param position
-             */
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Log.wtf("RIDERUID", documentSnapshot.getString("UIDrider"));
                 String riderID = documentSnapshot.getString("UIDrider");
@@ -143,11 +128,6 @@ public class DriverRequestListActivity extends FragmentActivity implements View.
             }
 
             @Override
-            /**
-             * This takes the driver to the rider's profile upon clicking on rider's username
-             * @param documentSnapshot
-             * @param position
-             */
             public void onUsernameClick(DocumentSnapshot documentSnapshot, int position) {
                 String riderID = documentSnapshot.getString("UIDrider");
                 bundle = new Bundle();
@@ -163,9 +143,6 @@ public class DriverRequestListActivity extends FragmentActivity implements View.
     }
 
     @Override
-    /**
-     * @param v
-     */
     public void onClick(View v) {
         HamburgerFragment hamburgerFragment = new HamburgerFragment();
         hamburgerFragment.setArguments(bundle);
@@ -187,5 +164,7 @@ public class DriverRequestListActivity extends FragmentActivity implements View.
         super.onStart();
         firestoreRecyclerAdapter.startListening();
     }
+
+
 
 }

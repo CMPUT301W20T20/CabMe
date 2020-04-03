@@ -26,22 +26,8 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
     private User user;
     private final Integer REQUEST_PERMISSION = 1;
 
-    @Override
-    /**
-     * @param savedInstanceState
-     */
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
-    /**
-     * Creates profile view for a new user registered as a driver
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.profile_view_activity, container, false);
         String uid = (String) getArguments().getSerializable("uid");

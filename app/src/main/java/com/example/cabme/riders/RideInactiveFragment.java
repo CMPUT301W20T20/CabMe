@@ -16,16 +16,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.cabme.R;
 import com.example.cabme.User;
 
+/**
+ * This is the fragment for when there is not active ride - displays on MapViewActivity
+ */
 public class RideInactiveFragment extends Fragment implements View.OnClickListener {
     private TextView helloUser;
     public User user;
+
     @Override
-    /**
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.r_ride_inactive_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
@@ -35,8 +33,8 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     * This sets the listeners and finding views here
-     * @param view
+     * Setting the listeners and finding views here
+     * @param view the view bro lol
      */
     private void findViewsSetListeners(View view){
         Button rideHistoryBtn = view.findViewById(R.id.ride_history);
@@ -47,7 +45,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     * This sets the welcome message for the user
+     * Sets the welcome message of the user
      */
     private void setWelcome(){
         user.readData((email, firstname, lastname, username, phone, rating) -> {
@@ -56,12 +54,11 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
         });
     }
 
-    @Override
     /**
-     * This overrides the onclick and has buttons for requesting a new ride and 
-     * viewing the ride history
-     * @param v
+     * overrides the onclick and has the buttons for requesting a new ride and viewing the ride history
+     * @param v the view
      */
+    @Override
     public void onClick(View v) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Intent intent;
@@ -87,13 +84,14 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    @Override
+
     /**
-     * This removes this fragment from the stack upon the finishing of the last activity
+     * On finish of the last activity go hereto remove this fragment from the stack
      * @param requestCode
      * @param resultCode
      * @param data
      */
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         FragmentManager manager = getActivity().getSupportFragmentManager();

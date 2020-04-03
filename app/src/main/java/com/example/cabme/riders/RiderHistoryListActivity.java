@@ -35,24 +35,19 @@ public class RiderHistoryListActivity extends AppCompatActivity{
     private User user;
 
     @Override
-    /**
-     * This gets the intent and starts the database references
-     * @param savedInstance
-     */
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.r_rider_historylist_activity);
-        user = (User)getIntent().getSerializableExtra("user"); 
-        mFirestore = FirebaseFirestore.getInstance();
+        user = (User)getIntent().getSerializableExtra("user"); // get intent
+        mFirestore = FirebaseFirestore.getInstance(); // starting the database references
         setUpRecyclerView();
     }
 
     /**
-     * This sets up the recycler view, its options and so on and allows to get the 
-     * ridehistory collection in the user's document
+     * Sets up the recycler view, its options etc
      */
     private void setUpRecyclerView(){
-        query = mFirestore 
+        query = mFirestore //getting the ridehistory collection in the user's document
                 .collection("users")
                 .document(user.getUid())
                 .collection("ridehistory");
@@ -86,19 +81,19 @@ public class RiderHistoryListActivity extends AppCompatActivity{
         });
     }
 
-    @Override
     /**
-     * This stops the listener at the end of activity
+     * Stop listener at end of activity
      */
+    @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
     }
 
-    @Override
     /**
-     * This sets the listener on the start of activity
+     * Set listener on start of activity
      */
+    @Override
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
