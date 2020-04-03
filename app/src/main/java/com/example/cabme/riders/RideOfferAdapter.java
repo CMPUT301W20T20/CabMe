@@ -16,6 +16,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+/**
+ * This adap
+ */
 public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAdapter.RideOfferHolder>{
     private String driverUID;
     public OnItemClickListener listener;
