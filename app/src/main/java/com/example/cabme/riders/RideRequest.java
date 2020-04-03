@@ -39,9 +39,7 @@ import java.util.Map;
  * Purpose:
  * - Puts parsed stuff into a document in the requests (testrequests) collection
  *
- * FIREBASE RATIONALE:
- *
- * ** RIDER **
+ * FIREBASE RATIONALE: FOR RIDER
  * - Rider is limited to only one active ride request
  * - Rider has sub-collection ridehistory
  * - When a rider sends in a ride request it will go the requests collection for drivers to view
@@ -95,8 +93,8 @@ public class RideRequest implements Serializable {
 
     /**
      * This contructs a ride request with specificed rider ID.
-     *
-     * @param reqUserID the user ID which is also the request ID of the ride request
+     * reqUserID is the user ID which is also the request ID of the ride request
+     * @param reqUserID 
      */
     public RideRequest(String reqUserID) {
         UIDrider = reqUserID;
@@ -105,11 +103,12 @@ public class RideRequest implements Serializable {
 
     /**
      * This constructs a ride request with the specified start and end location and rider ID.
-     *
      * @param startGeo start location of the ride request
-     * @param endGeo   end location of the ride request
+     * @param endGeo end location of the ride request
      * @param UIDrider ID of the rider
-     * @param API_KEY  the Google API key
+     * @param API_KEY the Google API key
+     * @param rideCost
+     * @param requestCallback
      */
     public RideRequest(GeoPoint startGeo, GeoPoint endGeo,
                        String UIDrider, String API_KEY, Double rideCost, requestCallback requestCallback) {
@@ -121,10 +120,8 @@ public class RideRequest implements Serializable {
     }
 
     /**
-     * This method sets the given variables.
-     * This method is called in the RideRequest() method.
-     * Purpose: set the given variables, used in NewRideRequest
-     *
+     * This method sets the given variables and is called in the RideRequest() method.
+     * It sets the given variables, used in NewRideRequest
      * @param startGeo start location of the ride request
      * @param endGeo   end location of the ride request
      * @param UIDrider ID of the rider
@@ -139,9 +136,7 @@ public class RideRequest implements Serializable {
     }
 
     /**
-     * This method sets the cost of the ride request.
-     * This method is called in the RideRequest method.
-     *
+     * This method sets the cost of the ride request and is called in the RideRequest method.
      * @param rideCost the cost of the ride
      */
     private void setRideCost(Double rideCost) {
@@ -149,8 +144,8 @@ public class RideRequest implements Serializable {
     }
 
     /**
-     * This method uses the JsonParser Class to parse the start and end location and sets the
-     * JSON parsed information of the ride request to its appropriate variable.
+     * This method uses the JsonParser Class to parse the start and end location 
+     * and sets the JSON parsed information of the ride request to its appropriate variable.
      */
     private void setParsedGeoPoints() {
         jsonParser = new JsonParser(startGeo, endGeo, API_KEY);
@@ -164,7 +159,7 @@ public class RideRequest implements Serializable {
 
     /**
      * This method initializes the FireBase and and the collection and document reference.
-     * This method is called in the constructors.
+     * It is called in the constructors.
      */
     private void initializeFireBase() {
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -173,8 +168,9 @@ public class RideRequest implements Serializable {
     }
 
     /**
-     * This method put the ride request information from the variables to a document in the Firebase
-     * collection where the drivers can view each riders' ride request.
+     * This method put the ride request information from the variables to a document in the 
+     * Firebase collection where the drivers can view each riders' ride request.
+     * @param requestCallback
      */
     public void putInFirebaseCollection(requestCallback requestCallback) {
         HashMap<String, Object> newRideRequest = new HashMap<>();
@@ -203,8 +199,9 @@ public class RideRequest implements Serializable {
     }
 
     /**
-     * This method removes a the ride request tied to a user's ID in the Firebase collection where
-     * the drivers can view each riders' ride request. .
+     * This method removes the ride request tied to a user's ID in the Firebase collection 
+     * where the drivers can view each riders' ride request. .
+     * @param requestCallback
      */
     public void removeRequest(requestCallback requestCallback) {
         String DOCID = FirebaseDatabase.getInstance().getReference("ridehistory").push().getKey();
@@ -228,6 +225,9 @@ public class RideRequest implements Serializable {
                                                     .addOnFailureListener(e -> Log.d(TAG, "Ride request unable to be deleted "+ e.toString()))
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
+                                                        /**
+                                                         * @param aVoid
+                                                         */
                                                         public void onSuccess(Void aVoid) {
                                                             Log.d(TAG, "Ride request deleted ");
                                                             requestCallback.onCallback();
@@ -249,7 +249,7 @@ public class RideRequest implements Serializable {
     }
 
     /**
-     * This method update the rideStatus field of the ride request
+     * This method updates the rideStatus field of the ride request
      * @param status the status of the current ride (cancelled, completed)
      */
     public void updateRideStatus(String status){
@@ -261,7 +261,7 @@ public class RideRequest implements Serializable {
     }
 
     /**
-     * This method update the UIDdriver field of the ride request
+     * This method updates the UIDdriver field of the ride request
      * @param UIDdriver the id of the driver
      */
     public void updateDriver(String UIDdriver){
@@ -272,24 +272,40 @@ public class RideRequest implements Serializable {
                 .set(data, SetOptions.merge());
     }
 
+    /**
+     * This method adds offer by taking the UIDdriver field of the ride request
+     * @param UIDdriver the id of the driver
+     */
     public void addOffer(String UIDdriver){
         collectionReference
                 .document(UIDrider)
                 .update("offers", FieldValue.arrayUnion(UIDdriver));
     }
 
+    /**
+     * This method removes offer by taking the UIDdriver field of the ride request
+     * @param UIDdriver
+     */
     public void removeOffer(String UIDdriver){
         collectionReference
                 .document(UIDrider)
                 .update("offers", FieldValue.arrayRemove(UIDdriver));
     }
 
+    /**
+     * This reads ride data from the collection
+     * @param rideCallBack
+     */
     public void readData(RideRequest.rideCallBack rideCallBack) {
         collectionReference
                 .document(UIDrider)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
+                    /**
+                     * It gets the document snapshot of ride details
+                     * @param documentSnapshot
+                     */
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Log.d(TAG, "Data retrieval successful");
 
@@ -302,6 +318,10 @@ public class RideRequest implements Serializable {
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
+                    /**
+                     * This raises an exception on failure of data retrieval
+                     * @param e
+                     */
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "Data retrieval failed " + e.toString());
                     }
@@ -312,12 +332,19 @@ public class RideRequest implements Serializable {
         void onCallback(LatLng start, LatLng end);
     }
 
+    /**
+     * @param dataCallBack
+     */
     public void readData(RideRequest.dataCallBack dataCallBack) {
         collectionReference
                 .document(UIDrider)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
+                    /**
+                     * It gets the document snapshot of ride details
+                     * @param documentSnapshot
+                     */
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Log.d(TAG, "Data retrieval successful");
                         String UID = documentSnapshot.getString("UIDdriver");
@@ -331,6 +358,10 @@ public class RideRequest implements Serializable {
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
+                    /**
+                     * This raises an exception on failure of data retrieval
+                     * @param e
+                     */
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "Data retrieval failed " + e.toString());
                     }

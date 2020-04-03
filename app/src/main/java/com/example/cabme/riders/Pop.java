@@ -33,15 +33,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
-/**
- *
- * TODO: Need to remove ride request from database to ridehistory
- *
- *
- * */
-
+// TODO: Need to remove ride request from database to ridehistory
+ 
 public class Pop extends Activity {
 
     private String TAG = "Firestore";
@@ -57,8 +50,12 @@ public class Pop extends Activity {
     private transient FirebaseFirestore db;
     private transient CollectionReference collectionReference;
 
-
     @Override
+    /**
+     * This creates layout settings by getting device height and width
+     * Also gets driver uid, fare and creates driver and rating objects
+     * @param savedInstanceState
+     */
     protected void onCreate( Bundle savedInstanceState ){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rating_popup);
@@ -66,13 +63,11 @@ public class Pop extends Activity {
         //getting device screen height and width
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
         //setting layout settings
         getWindow().setLayout((int) (width * 0.8), (int) (height*0.3));
-
 
         //get driver UID & fare using intent
         String driverUID = getIncomingIntentDriverUID();
@@ -94,6 +89,10 @@ public class Pop extends Activity {
         thumbsUp = findViewById(R.id.thumb_up_popup);
         thumbsUp.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * It adds rating if positive, starts QR scanner activity after rating is done
+             * @param v
+             */
             public void onClick(View v) {
                 //Map<String, Object> data = new HashMap<>();
                 //data.put("rating",rating);
@@ -105,6 +104,10 @@ public class Pop extends Activity {
                 db.collection("users").document(driverUID).update(data)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
+                            /**
+                             * This logs the success or fail message on positive rating capture
+                             * @param task
+                             */
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Log.d(TAG, "onComplete: successful");
@@ -127,6 +130,10 @@ public class Pop extends Activity {
         thumbsDown = findViewById(R.id.thumbs_down_popup);
         thumbsDown.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * It adds rating if positive, starts QR scanner activity after rating is done
+             * @param v
+             */
             public void onClick(View v) {
                 rating.neg_rev();
                 Map<String, Object> data = new HashMap<>();
@@ -136,6 +143,10 @@ public class Pop extends Activity {
                 db.collection("users").document(driverUID).update(data)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
+                            /**
+                             * This logs the success or fail message on negative rating capture
+                             * @param task
+                             */
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Log.d(TAG, "onComplete: successful");
@@ -156,7 +167,8 @@ public class Pop extends Activity {
 
   }
     /**
-     * Purpose: get fare amount from intent
+     * This gets the fare amount from intent
+     * @return
      */
     private String getIncomingIntentFare(){
         Log.d(TAG, "Ride Fare: " +getIntent().getStringExtra("fare"));
@@ -164,7 +176,8 @@ public class Pop extends Activity {
     }
 
     /**
-     * Purpose: get driver UID from intent
+     * This gets the driver UID from intent
+     * @return
      */
     private String getIncomingIntentDriverUID(){
 
@@ -174,7 +187,8 @@ public class Pop extends Activity {
     }
 
     /**
-     * Purpose: get rider UID from intent
+     * This gets the rider UID from intent
+     * @return
      */
     private String getIncomingIntentRiderUID(){
 

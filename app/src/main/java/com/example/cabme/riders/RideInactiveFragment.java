@@ -16,18 +16,25 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.cabme.R;
 import com.example.cabme.User;
 
-/**
- * This is the fragment for when there is not active ride - displays on MapViewActivity
- */
 public class RideInactiveFragment extends Fragment implements View.OnClickListener {
     private TextView helloUser;
     public User user;
     @Override
+    /**
+     * This is the fragment for when there is no active ride - displays on MapViewActivity
+     * @param savedInstanceState
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
+    /**
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.r_ride_inactive_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
@@ -37,8 +44,8 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Setting the listeners and finding views here
-     * @param view the view bro lol
+     * This sets the listeners and finding views here
+     * @param view
      */
     private void findViewsSetListeners(View view){
         Button rideHistoryBtn = view.findViewById(R.id.ride_history);
@@ -49,7 +56,7 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Sets the welcome message of the user
+     * This sets the welcome message for the user
      */
     private void setWelcome(){
         user.readData((email, firstname, lastname, username, phone, rating) -> {
@@ -58,11 +65,12 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
         });
     }
 
-    /**
-     * overrides the onclick and has the buttons for requesting a new ride and viewing the ride history
-     * @param v the view
-     */
     @Override
+    /**
+     * This overrides the onclick and has buttons for requesting a new ride and 
+     * viewing the ride history
+     * @param v
+     */
     public void onClick(View v) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Intent intent;
@@ -88,14 +96,13 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
         }
     }
 
-
+    @Override
     /**
-     * On finish of the last activity go hereto remove this fragment from the stack
+     * This removes this fragment from the stack upon the finishing of the last activity
      * @param requestCode
      * @param resultCode
      * @param data
      */
-    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         FragmentManager manager = getActivity().getSupportFragmentManager();
