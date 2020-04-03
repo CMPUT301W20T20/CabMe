@@ -38,22 +38,14 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
     private String docID;
     private RideRequest rideRequest;
 
+
+
     @Override
-    /**
-     * @param savedInstanceState
-     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    /**
-     * This creates a view for active requests
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.d_ride_active_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
@@ -67,10 +59,6 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
         return view;
     }
 
-    /**
-     * This reads data from an active ride request and provides information such as
-     * ride status, message for the user, start and end location as well as fare
-     */
     private void setAll(){
         rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
             if(status.equals("")){
@@ -86,15 +74,6 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
         });
     }
 
-    /**
-     * This gets the status of an active ride from the database and updates it based on 
-     * the rider's or driver's actions
-     * Based on the actions, the status messages are displayed and corresponding dialog
-     * boxes are fired to get further user input
-     * The method essentially guides the driver for future actions based on rider's actions
-     * 
-     * @param rideRequest
-     */
     public void updateStatusThread(RideRequest rideRequest) {
         Query query = FirebaseFirestore.getInstance().collection("testrequests").whereEqualTo("UIDdriver", user.getUid());
         query.addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -174,11 +153,6 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
         });
     }
 
-    /**
-     * This creates a view for the driver that shows information (status, to and from locations,
-     * cost) about a ride as well as subsequent actions such as cancel ride and qrscan
-     * @param view
-     */
     private void findViewsSetListeners(View view){
         cancel = view.findViewById(R.id.cancel);
         qrScan = view.findViewById(R.id.qr_scan);
@@ -191,11 +165,6 @@ public class DriveActiveFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    /**
-     * This removes a request offer or to completes a request,
-     * hence, to finish a request on the driver's side
-     * @param v
-     */
     public void onClick(View v) {
         RideRequest rideRequest = new RideRequest(docID);
         switch(v.getId()){
