@@ -161,7 +161,7 @@ public class Pop extends Activity {
      * Purpose: get fare amount from intent
      */
     private String getIncomingIntentFare(){
-        Log.d(TAG, "Ride Fare: " +getIntent().getStringExtra("fare"));
+//        Log.d(TAG, "Ride Fare: " +getIntent().getStringExtra("fare"));
         return getIntent().getStringExtra("fare");
     }
 
@@ -169,8 +169,7 @@ public class Pop extends Activity {
      * Purpose: get driver UID from intent
      */
     private String getIncomingIntentDriverUID(){
-
-        Log.d(TAG, "Driver UID: " +getIntent().getStringExtra("driverUID"));
+//        Log.d(TAG, "Driver UID: " +getIntent().getStringExtra("driverUID"));
         return getIntent().getStringExtra("driverUID");
 
     }
