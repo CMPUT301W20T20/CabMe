@@ -83,8 +83,6 @@ public class QRActivity extends AppCompatActivity {
                 //get from location
                 DocumentReference from = firebaseFirestore.collection("testrequests").document(rider);
 
-                //get user UID
-
                 //get to location
                 DocumentReference to = firebaseFirestore.collection("users").document(rider).collection("ridehistory").document();
 
