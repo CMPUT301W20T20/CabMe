@@ -42,15 +42,15 @@ public class Rating implements Serializable {
      * This returns a negative review when a user gets negative review
      * @return
      */
-    public int getNeg_rev() {
-        return neg_rev;
+    public int getNegRev() {
+        return negRev;
     }
 
     /**
      * This returns a positive review when a user gets positive review
      * @return
      */
-    public int getPos_rev() {
-        return pos_rev;
+    public int getPosRev() {
+        return posRev;
     }
 }
