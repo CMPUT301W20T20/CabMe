@@ -79,7 +79,7 @@ public class UserProfileActivity extends Fragment implements View.OnClickListene
         });
         driver.readData((email, firstname, lastname, username, phone, rating) -> {
             if (rating.isReviewed()) {
-                driverRating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPos_rev(), rating.getNeg_rev()) + "★");
+                driverRating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPosRev(), rating.getNegRev()) + "★");
             }
             else {
                 driverRating.setText("Not Reviewed ★");

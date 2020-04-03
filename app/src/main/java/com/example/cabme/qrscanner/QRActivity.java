@@ -7,30 +7,29 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cabme.HomeMapActivity;
 import com.example.cabme.R;
 import com.example.cabme.TitleActivity;
-import com.example.cabme.User;
-import com.example.cabme.UserType;
+
 import com.example.cabme.riders.RideRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
+
 public class QRActivity extends AppCompatActivity {
 
     private static final String TAG = "PLS";
-    ImageView imageView;
-    Button button;
-    Button GoBackButton;
+
     private String user;
     private String  rider;
+    private ImageView imageView;
+    private Button button;
+    private Button backButton;
+
     private String fare;
 
     // https://www.youtube.com/watch?v=0ClcWGX2-n8
@@ -42,9 +41,9 @@ public class QRActivity extends AppCompatActivity {
 
         button = findViewById(R.id.button);
         imageView = findViewById(R.id.GenBarCode);
-        GoBackButton = findViewById(R.id.GoBack);
-
         user = getIntent().getStringExtra("driverUID");
+        backButton = findViewById(R.id.GoBack);
+
         fare = getIntent().getStringExtra("fare");
         rider = getIntent().getStringExtra("riderUID");
 
@@ -56,16 +55,13 @@ public class QRActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                String currentRider = (user.getFirstName());
-//                String currentFair = fare;
-
-                String text = ( " Payment Received" );
+                String text =  fare + " QR bucks received";
 
 
                 if (!text.equals("")){
-                    new ImageDownloaderClass(imageView).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text);
+                    new ImageDownloaderClass(imageView).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text );
                     button.setVisibility(View.GONE);
-                    GoBackButton.setVisibility(View.VISIBLE);
+                    backButton.setVisibility(View.VISIBLE);
                 }
                 else {
                     Toast.makeText(QRActivity.this, "Text is Empty", Toast.LENGTH_SHORT).show();
@@ -73,7 +69,7 @@ public class QRActivity extends AppCompatActivity {
             }
         });
 
-        GoBackButton.setOnClickListener(new View.OnClickListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
