@@ -16,9 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cabme.Driver;
-import com.example.cabme.HomeMapActivity;
-import com.example.cabme.Rating;
+
 import com.example.cabme.User;
 import com.example.cabme.UserProfileActivity;
 import com.example.cabme.R;
@@ -28,7 +26,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.type.LatLng;
 
 import java.util.List;
 
@@ -47,7 +44,7 @@ public class RideOfferActivity extends AppCompatActivity {
     private Button confirmRideButton;
 
     /* key */
-    private com.example.cabme.User user;
+    private User user;
 
     @Override
     /**
@@ -56,7 +53,7 @@ public class RideOfferActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.r_offerlist_activity);
-        user = (com.example.cabme.User) getIntent().getSerializableExtra("user"); // get intent
+        user = (User) getIntent().getSerializableExtra("user"); // get intent
         mFirestore = FirebaseFirestore.getInstance(); // starting the database references
         confirmRideButton = findViewById(R.id.confirm_ride);
         setUpRecyclerView();
@@ -162,7 +159,9 @@ public class RideOfferActivity extends AppCompatActivity {
      */
     protected void onStart() {
         super.onStart();
-
+        if(adapter != null){
+            adapter.startListening();
+        }
     }
 
     @Override

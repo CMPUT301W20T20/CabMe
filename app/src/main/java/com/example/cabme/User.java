@@ -49,9 +49,8 @@ public class User extends Observable implements Serializable {
     }
 
     /**
-     * This constructor is for users that are signing up for the CabMe application
+     * This method is for users that are signing up for the CabMe application
      *
-     * @param uid
      * @param email
      * @param firstName
      * @param lastName
@@ -64,6 +63,8 @@ public class User extends Observable implements Serializable {
         collectionReference = db.collection("users");
         this.uid = uid;
         final HashMap<String, Object> userData = new HashMap<>();
+    public void createUser(String email, String firstName, String lastName, String username, String phone) {
+        HashMap<String, Object> userData = new HashMap<>();
         userData.put("email", email);
         userData.put("first", firstName);
         userData.put("last", lastName);

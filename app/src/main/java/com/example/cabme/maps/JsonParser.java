@@ -26,23 +26,23 @@ import java.net.URL;
 public class JsonParser {
 
     // API KEY
-    String API_KEY;
+    private String API_KEY;
 
     // Gets
-    Integer distanceValue;
-    Integer durationValue;
+    private Integer distanceValue;
+    private Integer durationValue;
 
-    String distanceText;
-    String durationText;
+    private String distanceText;
+    private String durationText;
 
-    String endAddress;
-    String startAddress;
+    private String endAddress;
+    private String startAddress;
 
     // Long and lat as doubles extracted from GeoPoint
-    Double startLat;
-    Double startLng;
-    Double destLat;
-    Double destLng;
+    private Double startLat;
+    private Double startLng;
+    private Double destLat;
+    private Double destLng;
 
     /**
      * This parses the json file from the url created for longitude and latitude.

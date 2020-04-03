@@ -1,7 +1,6 @@
 package com.example.cabme.riders;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cabme.Driver;
 import com.example.cabme.R;
 import com.example.cabme.Rating;
 import com.example.cabme.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.gson.internal.$Gson$Preconditions;
 
 public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAdapter.RideOfferHolder>{
     private String driverUID;
@@ -43,7 +40,7 @@ public class RideOfferAdapter extends FirestoreRecyclerAdapter<User, RideOfferAd
         holder.name.setText(String.format("%s %s", firstname, lastname));
         holder.username.setText(String.format("@%s", username));
         if (rating.isReviewed()) {
-            holder.rating.setText(String.format("%f  %d/%d", rating.percentRating(), rating.getPos_rev(), rating.getNeg_rev()) + " ★");
+            holder.rating.setText(String.format("%3.0f%% ★  %d+ / %d-", rating.percentRating()*100, rating.getPosRev(), rating.getNegRev()));
         }
         else {
             holder.rating.setText("Not Reviewed ★");

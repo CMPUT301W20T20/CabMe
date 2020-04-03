@@ -47,7 +47,7 @@ import com.example.cabme.riders.RiderHistoryListModel;
 
 import java.util.Comparator;
 
-public class DriverRequestListActivity extends FragmentActivity implements LocationListener, View.OnClickListener {
+public class DriverRequestListActivity extends FragmentActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private DriverRequestListAdapter firestoreRecyclerAdapter;
@@ -78,9 +78,7 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
-        if (checkLocationPermission()) {
-            Log.d("D", "Permissions passed");
-        }
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         mFusedLocationClient.getLastLocation()
@@ -112,17 +110,6 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
                 .setQuery(query, RiderHistoryListModel.class)
                 .build();
 
-        // Sample Sort --- REMOVE
-        options.getSnapshots().sort(new Comparator<RiderHistoryListModel>() {
-            @Override
-            public int compare(RiderHistoryListModel o1, RiderHistoryListModel o2) {
-                Location dLoc = driver.getLocation();
-                GeoPoint dGeo = new GeoPoint(dLoc.getLatitude(), dLoc.getLongitude());
-                JsonParser jp1 = new JsonParser(dGeo, o1.getStartLocation(), getString(R.string.google_maps_key));
-                JsonParser jp2 = new JsonParser(dGeo, o2.getStartLocation(), getString(R.string.google_maps_key));
-                return jp1.getDistanceValue().compareTo(jp2.getDistanceValue());
-            }
-        });
 
         firestoreRecyclerAdapter = new DriverRequestListAdapter(options);
 
@@ -201,148 +188,4 @@ public class DriverRequestListActivity extends FragmentActivity implements Locat
         firestoreRecyclerAdapter.startListening();
     }
 
-    /**
-     * This checks the user permission to retrieve location information
-     * @return
-     */
-    public boolean checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(this)
-                        .setTitle("Get Location")
-                        .setMessage("here")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            /**
-                             * @param dialogInterface
-                             * @param i
-                             */
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(DriverRequestListActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION);
-                            }
-                        })
-                        .create()
-                        .show();
-
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-        }
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    @Override
-    /**
-     * This shows the result array based on permissions
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // Permission was granted, Do the location-related task
-                    if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED) {
-
-                        // Request location updates:
-                        locationManager.requestLocationUpdates(provider, 400, 1, this);
-                    }
-
-                } else {
-
-                    finish();
-
-                }
-                return;
-            }
-
-        }
-    }
-
-    @Override
-    /**
-     * This gets latitude and longitude updates on location change and save them as strings
-     * @param location
-     */
-    public void onLocationChanged(Location location) {
-
-        Double lat = location.getLatitude();
-        Double lng = location.getLongitude();
-
-        Log.i("Location info: Lat", lat.toString());
-        Log.i("Location info: Lng", lng.toString());
-
-    }
-    @Override
-    /**
-     * @param provider
-     * @param status
-     * @param extras
-     */
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    /**
-     * @param provider
-     */
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    /**
-     * @param provider
-     */
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-
-            locationManager.requestLocationUpdates(provider, 400, 1, this);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-
-            locationManager.removeUpdates(this);
-        }
-    }
 }

@@ -21,15 +21,6 @@ public class RideInactiveFragment extends Fragment implements View.OnClickListen
     public User user;
     @Override
     /**
-     * This is the fragment for when there is no active ride - displays on MapViewActivity
-     * @param savedInstanceState
-     */
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    /**
      * @param inflater
      * @param container
      * @param savedInstanceState

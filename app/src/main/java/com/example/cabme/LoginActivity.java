@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param password
      * @return
      */
+
     public boolean valid(String email, String password) {
 
         String error = "";

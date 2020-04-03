@@ -37,8 +37,6 @@ public class TitleActivity extends AppCompatActivity {
         user = new User(uid);
         user.setDocumentListener();
 
-        user = new User(uid);
-        user.setDocumentListener();
 
         profileButton = findViewById(R.id.profile);
         logoutButton = findViewById(R.id.logout);
@@ -97,5 +95,12 @@ public class TitleActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+    }
+    @Override
+    public void onBackPressed() {
+        FirebaseAuth.getInstance().signOut();
+        finish();
     }
 }

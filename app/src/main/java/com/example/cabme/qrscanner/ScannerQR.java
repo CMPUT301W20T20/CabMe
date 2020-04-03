@@ -31,7 +31,7 @@ public class ScannerQR extends AppCompatActivity implements ZXingScannerView.Res
 
     private ZXingScannerView scannerView;
     private TextView txtResult;
-    Vibrator vibrate;
+    private Vibrator vibrate;
 
     /**
      * This Class used phone camera and scans the QR Genereated by the Customer
