@@ -17,6 +17,11 @@ import com.example.cabme.TitleActivity;
 import com.example.cabme.User;
 import com.example.cabme.UserType;
 
+/**
+ * Using ImageDownloaderClass it Generates the QR Code.
+ * https://www.youtube.com/watch?v=0ClcWGX2-n8
+ */
+
 
 public class QRActivity extends AppCompatActivity {
 
@@ -26,7 +31,10 @@ public class QRActivity extends AppCompatActivity {
     private User user;
     private String fare;
 
-    // https://www.youtube.com/watch?v=0ClcWGX2-n8
+    /**
+     * Using ImageDownloaderClass it Generates the QR Code.
+     * @param savedInstanceState
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,10 @@ public class QRActivity extends AppCompatActivity {
         user = (User)getIntent().getSerializableExtra("user");
         fare = getIntent().getStringExtra("fare");
 
+        /**
+         * button is linked to "pay now", when pressed, the QR is Generated.
+         */
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +58,7 @@ public class QRActivity extends AppCompatActivity {
 //                String currentRider = (user.getFirstName());
 //                String currentFair = fare;
 
-                String text = ( " Payment Received" );
+                String text = ( " Payment Received" ); // This can be changed to be a bit more particular
 
 
                 if (!text.equals("")){
@@ -55,10 +67,15 @@ public class QRActivity extends AppCompatActivity {
                     GoBackButton.setVisibility(View.VISIBLE);
                 }
                 else {
-                    Toast.makeText(QRActivity.this, "Text is Empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QRActivity.this, "QR is Null", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        /**
+         * Once the back button is pressed after paying, the rider is taken back to the title
+         * activity where they can log out, become driver or request another ride.
+         */
 
         GoBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
