@@ -51,6 +51,9 @@ public class Driver extends User implements Serializable {
 
     public Driver(String uid){
         super(uid);
+        db = FirebaseFirestore.getInstance();
+        collectionReference = db.collection("users");
+        this.uid = uid;
     }
 
     @Override

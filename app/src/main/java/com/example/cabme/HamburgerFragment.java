@@ -42,7 +42,7 @@ public class HamburgerFragment extends Fragment implements View.OnClickListener 
     private Button balanceBtn;
     private Button logoutBtn;
 
-    public User user;
+    private User user;
     private String TAG;
 
     @Override
