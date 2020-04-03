@@ -25,7 +25,8 @@ public class ScannerTest {
 
     @Test
     public void CheckQR() {
-        solo.
+
+
     }
 
 
