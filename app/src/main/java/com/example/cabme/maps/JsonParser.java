@@ -29,11 +29,6 @@ import java.net.URL;
  *   tbh any of the information i got out - check the JSON file in the log tagged "urldirection" it will
  *   be a link to the JSON file. Take whatever needed :)
  *
- * Params
- * - Geopoint:: start location
- * - Geopoint:: end location
- * - String:: API key ==> *NEEDED* to access information from request. SEE URL
- *
  * References & Sources:
  * - https://stackoverflow.com/questions/10339353/parsing-json-directions-google-maps
  *
@@ -45,23 +40,23 @@ import java.net.URL;
 public class JsonParser {
 
     // API KEY
-    String API_KEY;
+    private String API_KEY;
 
     // Gets
-    Integer distanceValue;
-    Integer durationValue;
+    private Integer distanceValue;
+    private Integer durationValue;
 
-    String distanceText;
-    String durationText;
+    private String distanceText;
+    private String durationText;
 
-    String endAddress;
-    String startAddress;
+    private String endAddress;
+    private String startAddress;
 
     // Long and lat as doubles extracted from GeoPoint
-    Double startLat;
-    Double startLng;
-    Double destLat;
-    Double destLng;
+    private Double startLat;
+    private Double startLng;
+    private Double destLat;
+    private Double destLng;
 
     public JsonParser(GeoPoint startGeo, GeoPoint destGeo, String API_KEY) {
         this.API_KEY = API_KEY;

@@ -54,11 +54,6 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.r_ride_active_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
@@ -219,8 +214,11 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                         Intent intent = new Intent(getActivity(), Pop.class);
 
                         //pass through driver uid, and user uid
-                        intent.putExtra("uid", driverID);
+                        intent.putExtra("driverUID", driverID);
                         intent.putExtra("fare",fare);
+                        intent.putExtra("riderUID", user.getUid());
+
+                        Log.d("UID","Driver : " + driverID + "  Rider : " + user.getUid());
                         /*
                          * TODO: pass "uid" through to Pop.java -> QRActivity.java -> TitleActivity.java
                          *  TitleActivity is crashing because don't have "user":

@@ -15,7 +15,6 @@ import java.util.List;
 
 /**
  *
- * Purposes:
  * - Parses all the points for polylines int the directions API in driving mode
  * - calls to draw poylines for the i-th row
  *

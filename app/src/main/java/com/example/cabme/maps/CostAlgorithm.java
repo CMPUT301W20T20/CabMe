@@ -1,10 +1,7 @@
 package com.example.cabme.maps;
 
 /**
- * Purpose:
- * - calculate the ride cost based on duration and distance
- * - literally can be anything change if it u wanna
- *
+ * Calculates the cost of the ride based on distance.
  */
 public class CostAlgorithm {
     private Integer distanceValue; // Int metres

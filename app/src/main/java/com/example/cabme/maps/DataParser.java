@@ -12,16 +12,12 @@ import java.util.List;
 
 /**
  *
- * Purposes:
- * - to return a list of lists containing lat and long
- * - drawing a polyline for a google route
- *
- * Params:
- * - JSONobject:: jObject
+ * This method returns a list of lists containing lat and long, its pain purpose is for drawing
+ * polylines for a google route.
  *
  * References & Sources:
  * - https://github.com/divindvm/Android-DrawOnMap
- * - https://stackoverflow.com/questions/17425499/how-to-draw-interactive-polyline-on-route-google-maps-v2-android
+ * - (user: 2398886) https://stackoverflow.com/questions/17425499/how-to-draw-interactive-polyline-on-route-google-maps-v2-android
  * - https://github.com/Vysh01/android-maps-directions
  *
  */
