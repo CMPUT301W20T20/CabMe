@@ -344,6 +344,9 @@ public class RideRequest implements Serializable {
     /**
      * Purpose: to move documents to another collection. This will copy and delete the original document
      *
+     * Credits: Stack Overflow: Alex Mamo (user:5246885) and Rafa (user:2619107)
+     *          link: https://stackoverflow.com/questions/47244403/how-to-move-a-document-in-cloud-firestore
+     *
      * @param fromPath
      * @param toPath
      */

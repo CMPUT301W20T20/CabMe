@@ -95,6 +95,7 @@ public class Pop extends Activity {
         });
 
   }
+
     private void finishReview(String driverUID, String riderUID, String fare) {
         Map<String, Object> data = new HashMap<>();
         data.put("rating",review);
@@ -119,6 +120,7 @@ public class Pop extends Activity {
         intent.putExtra("riderUID", riderUID);
         intent.putExtra("driverUID", driverUID);
         startActivity(intent);
+
     }
 
 }
