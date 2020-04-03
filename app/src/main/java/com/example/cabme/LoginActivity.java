@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    // https://emailregex.com/
+
     public boolean valid(String email, String password) {
 
         String error = "";

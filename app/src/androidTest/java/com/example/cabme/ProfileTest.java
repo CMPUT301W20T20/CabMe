@@ -35,12 +35,9 @@ public class ProfileTest {
         solo.enterText((EditText) solo.getView(R.id.SignupREpassword), "123123");
         solo.enterText((EditText) solo.getView(R.id.SignupPhone), "1800123123");
 
-        solo.clickOnButton("Sign Up");
-        solo.waitForActivity(LoginActivity.class);
-        solo.enterText((EditText) solo.getView(R.id.email), "test@test.com");
-        solo.enterText((EditText) solo.getView(R.id.password), "123123");
-        solo.clickOnButton("Login");
-        solo.clickOnButton("View Profile");
+        solo.clickOnButton("Signup Instead");
+        solo.waitForActivity(TitleActivity.class);
+        solo.clickOnButton("Account Details");
     }
 
     @Test

@@ -42,16 +42,14 @@ public class SignupTest {
 
         solo.clickOnButton("Sign Up");
         assertTrue(solo.waitForText("Successfully Registered, Upload complete!", 1, 2000));
-        solo.assertCurrentActivity("Signup Successful", LoginActivity.class);
+
+        solo.assertCurrentActivity("Signup Succeeded", TitleActivity.class);
     }
 
 
     @After
     public void tearDown() throws Exception{
-        solo.waitForActivity(LoginActivity.class);
-        solo.enterText((EditText) solo.getView(R.id.email), "test@test.com");
-        solo.enterText((EditText) solo.getView(R.id.password), "123123");
-        solo.clickOnButton("Login");
+        solo.waitForActivity(TitleActivity.class);
         solo.clickOnButton("View Profile");
         solo.clickOnButton("Edit Profile");
         solo.clickOnButton("Delete Profile");

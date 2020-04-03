@@ -50,19 +50,15 @@ public class User extends Observable implements Serializable {
     }
 
     /**
-     * This constructor is for users that are signing up for the CabMe application
+     * This method is for users that are signing up for the CabMe application
      *
-     * @param uid
      * @param email
      * @param firstName
      * @param lastName
      * @param username
      * @param phone
      */
-    public User (String uid, String email, String firstName, String lastName, String username, String phone) {
-        db = FirebaseFirestore.getInstance();
-        collectionReference = db.collection("users");
-        this.uid = uid;
+    public void createUser(String email, String firstName, String lastName, String username, String phone) {
         HashMap<String, Object> userData = new HashMap<>();
         userData.put("email", email);
         userData.put("first", firstName);
