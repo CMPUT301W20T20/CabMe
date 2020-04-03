@@ -25,12 +25,22 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
     private TextView question;
     private boolean offered;
     public User user;
+
     @Override
+    /**
+     * @param savedInstanceState
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
+    /**
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.d_ride_inactive_fragment, container, false);
         user = (User) getArguments().getSerializable("user");
@@ -41,6 +51,10 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
         return view;
     }
 
+    /**
+     * This creates a view that shows offer for a specific ride
+     * @param view
+     */
     private void findViewsSetListeners(View view){
         offer = view.findViewById(R.id.new_offer);
         question = view.findViewById(R.id.question);
@@ -48,6 +62,9 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
         offer.setOnClickListener(this);
     }
 
+    /**
+     * This creates a welcomemessage for the driver and reads driver info
+     */
     private void setWelcome(){
         user.readData((email, firstname, lastname, username, phone, rating) -> {
             String welcomeText = "Hello " + firstname +",";
@@ -56,6 +73,10 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
+    /**
+     * This creates a list of active requests for the driver
+     * @param v
+     */
     public void onClick(View v) {
 //        if (offered) {
 //            offer.setText("Offer");
@@ -73,6 +94,11 @@ public class DriveInactiveFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
+    /**
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 //        FragmentManager manager = getActivity().getSupportFragmentManager();

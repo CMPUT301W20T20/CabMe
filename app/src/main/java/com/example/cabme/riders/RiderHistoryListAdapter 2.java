@@ -23,13 +23,6 @@ public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHisto
     }
 
     @Override
-    /**
-     * This sets all the data in the holders from driver and if there is no driver,
-     * it just sets the views to gone
-     * @param holder
-     * @param position
-     * @param model
-     */
     protected void onBindViewHolder(@NonNull RiderRequestsViewHolder holder, int position, @NonNull RiderHistoryListModel model) {
         driverUID = model.getUIDdriver();
         String dollarSign = "$" + model.getRideCost();
@@ -57,19 +50,14 @@ public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHisto
 
     @NonNull
     @Override
-    /**
-     * This is for holding all the textviews, finding the right view and assign as well as
-     * passing snapshot of it upon on click of the drivers user name
-     * @param parent
-     * @param viewType
-     * @return
-     */
     public RiderRequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.r_rider_historylist_content, parent, false);
         return new RiderRequestsViewHolder(view);
     }
-    
-    // Holds all the textviews
+
+    /**
+     * Holds all the textviews
+     */
     class RiderRequestsViewHolder extends RecyclerView.ViewHolder{
         private TextView status;
         private TextView to;
@@ -78,7 +66,7 @@ public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHisto
         private TextView cost;
         private TextView driverUsername;
 
-        // ind the right view and assign
+        /* find the right view and assign */
         public RiderRequestsViewHolder(@NonNull View itemView) {
             super(itemView);
             status = itemView.findViewById(R.id.status);
@@ -87,7 +75,7 @@ public class RiderHistoryListAdapter extends FirestoreRecyclerAdapter<RiderHisto
             from = itemView.findViewById(R.id.from);
             driverName = itemView.findViewById(R.id.driver_name);
             driverUsername = itemView.findViewById(R.id.driver_username);
-            // on click of the drivers user name, pass snapshot of it
+            /* on click of the drivers user name, pass snapshot of it */
             driverUsername.setOnClickListener(v -> {
                 if(listener != null){ /* only if the listener is not null */
                     int position = getAdapterPosition();

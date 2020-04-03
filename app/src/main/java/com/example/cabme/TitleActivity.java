@@ -24,6 +24,11 @@ public class TitleActivity extends AppCompatActivity {
     private String uid;
 
     @Override
+    /**
+     * This is for the title activity to have buttons and attached functionalities
+     * so a user can logout, sign in as a sriver or a rider
+     * @param savedInstanceState
+     */
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_activity);
@@ -40,6 +45,10 @@ public class TitleActivity extends AppCompatActivity {
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * This adds the current user
+             * @param v
+             */
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, ProfileActivity.class);
                 intent.putExtra("user", user);
@@ -49,6 +58,10 @@ public class TitleActivity extends AppCompatActivity {
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * This logs out the current user from the database
+             * @param v
+             */
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 finish();
@@ -57,6 +70,10 @@ public class TitleActivity extends AppCompatActivity {
 
         riderButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * This logs in the user as a rider
+             * @param v
+             */
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
                 intent.putExtra("uid", uid);
@@ -67,6 +84,10 @@ public class TitleActivity extends AppCompatActivity {
 
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * This logs in the user as a driver
+             * @param v
+             */
             public void onClick(View v) {
                 Intent intent = new Intent(TitleActivity.this, HomeMapActivity.class);
                 intent.putExtra("uid", uid);

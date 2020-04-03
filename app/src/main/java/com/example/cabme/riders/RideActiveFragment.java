@@ -52,7 +52,6 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
     private TextView from;
     private TextView stats;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.r_ride_active_fragment, container, false);
@@ -67,6 +66,10 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    /**
+     * This reads ride data such as driver id, start and end location.
+     * Also, based on ride status, buttons such as cancel ride, offer, complete ride are shown or hidden
+     */
     private void setAll(){
         rideRequest.readData((driverID, status, startAddress, endAddress, fare) -> {
             if(status.equals("")){
@@ -83,6 +86,11 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
         });
     }
 
+    /**
+     * This gets and updates the ride status based on the user actions and also
+     * enables or disables certain ride actions based on that status
+     * @param rideRequest
+     */
     public void updateStatusThread(RideRequest rideRequest) {
         Query query = FirebaseFirestore.getInstance().collection("testrequests").whereEqualTo("UIDrider", user.getUid());
         query.addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -153,7 +161,10 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
         });
     }
 
-
+    /**
+     * This is a view that is dependent on switch cases based on actions taken for rides
+     * @param view
+     */
     private void findViewsSetListeners(View view){
         rideOffersBtn = view.findViewById(R.id.ViewOffers);
         rideCancelBtn = view.findViewById(R.id.Cancel);
@@ -204,10 +215,17 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                 rideRequest.updateRideStatus("Completed");
                 stats.setText("Completed");
 
-
                 //pass through diver id, to get driver id we need to call RideRequest.readData
                 rideRequest.readData(new RideRequest.dataCallBack() {
                     @Override
+                    /**
+                     * This starts a new activity upon getting ride information
+                     * @param driverID
+                     * @param status
+                     * @param startAddress
+                     * @param endAddress
+                     * @param fare
+                     */
                     public void onCallback(String driverID, String status, String startAddress, String endAddress, Double fare) {
 
                         //start pop-up intent
@@ -232,8 +250,6 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
                         startActivity(intent);
                     }
                 });
-
-
 
                 /* TODO
                  *  - barcode thing goes here.
@@ -284,6 +300,11 @@ public class RideActiveFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
+    /**
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }

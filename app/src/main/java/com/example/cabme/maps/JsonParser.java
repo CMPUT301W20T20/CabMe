@@ -58,12 +58,31 @@ public class JsonParser {
     private Double destLat;
     private Double destLng;
 
+    /**
+     * This parses the json file from the url created for longitude and latitude.
+     * The information extracted is used for a riders ride request, Setters are not needed
+     *
+     * Purposes:
+     * - When a rider makes a new ride request the places/maps/directions API used to parse JSON
+     * files from the request made then use the information extracted from class to store ride requests
+     * from the Firebase DB.
+     * - It parses information (if there is any - some longitude and latitude may be null - UNHANDLED CASE)
+     * from a start and end location via google. This can be used to get the actual address of a place.
+     * Check the JSON file in the log tagged "urldirection" for a link to the JSON file.
+     * @param startGeo
+     * @param destGeo
+     * @param API_KEY
+     */
     public JsonParser(GeoPoint startGeo, GeoPoint destGeo, String API_KEY) {
         this.API_KEY = API_KEY;
         GeoPointToDouble(startGeo, destGeo);
         GeoParsing();
     }
 
+    /**
+     * @param startGeo
+     * @param destGeo
+     */
     private void GeoPointToDouble(GeoPoint startGeo, GeoPoint destGeo){
         startLat = startGeo.getLatitude();
         startLng = startGeo.getLongitude();

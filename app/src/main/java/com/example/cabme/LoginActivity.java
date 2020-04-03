@@ -22,7 +22,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -31,6 +30,11 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mauth;
 
     @Override
+    /**
+     * This method creates he login page with email, password, signup and login buttons
+     * and authenticates with the database
+     * @param savedInstanceState
+     */
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
@@ -45,6 +49,11 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * This captures the login info (email and password) from the user
+             * and validates it with the database to allow a user to log in.
+             * @param v
+             */
             public void onClick(View v) {
                 final String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
@@ -53,6 +62,12 @@ public class LoginActivity extends AppCompatActivity {
                     mauth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
+                                /**
+                                 * This method logs in a user with email and password upon
+                                 * succesful validation of these details in the database
+                                 * and takes from login activity to the title activity
+                                 * @param task
+                                 */
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         emailEditText.setText("");
@@ -69,11 +84,24 @@ public class LoginActivity extends AppCompatActivity {
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * This takes a user from login activity to signup activity
+             * @param v
+             */
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             }
         });
     }
+    // https://emailregex.com/
+    /**
+     * This does validation checks on email and password so only a user with correct
+     * and complete login details can log into the app. If not, it displays the required
+     * messages to the user
+     * @param email
+     * @param password
+     * @return
+     */
 
     public boolean valid(String email, String password) {
 
@@ -91,6 +119,11 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Upon successful login, a user is assigned a unique user id and is taken to
+     * the title activity of the app
+     * @param uid
+     */
     public void startTitleActivity(String uid) {
         Intent intent = new Intent(this, TitleActivity.class);
         intent.putExtra("user", uid);

@@ -49,12 +49,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  *
- * This this the 'Home Screen' if they are a rider.
+ * This is the 'Home Screen' if the user is a rider.
  *
  * - Shows a button to view ride history
  * - Shows a button to request a new ride
  * - A map menu that shows current location
- * - Profile button thing to view profile, change the 'User type' and balance
+ * - Profile button to view profile, change the 'User type' and balance
  *
  * Used sources:
  * (1) https://www.tutorialspoint.com/how-to-show-current-location-on-a-google-map-on-android
@@ -70,6 +70,7 @@ import com.google.firebase.firestore.QuerySnapshot;
  *
  *
  */
+
 public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener {
     private User user;
     private Bundle bundle;
@@ -117,13 +118,11 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         NO_RIDE
     }
 
+    @Override
     /**
      * Checks for the bundle.
-     *
-     * @param savedInstanceState savedInstanceState
-     *
+     * @param savedInstanceState
      */
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_map_activity);
@@ -151,6 +150,11 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
+    /**
+     * This checks active request from firebase with details such as start and end location
+     * as well as ride status
+     * @param UID
+     */
     public void checkFireBaseRide(String UID){
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection("testrequests");
@@ -201,8 +205,11 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         });
     }
 
+    /**
+     * This check firebase if you are in an active ride
+     * @param UID
+     */
     public void checkFireBaseDrive(String UID){
-        // check firebase if you are in an active ride
         Log.wtf("8888888888", "0000000000");
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -212,6 +219,9 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
+                    /**
+                     * @param task
+                     */
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot documentSnapshots : task.getResult()){
@@ -235,6 +245,9 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
+                    /**
+                     * @param task
+                     */
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot documentSnapshots : task.getResult()){
@@ -283,6 +296,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     /**
      * Shows the fragment types shown to either type of user
+     * @param docID
      */
     public void getFragmentType(String docID) {
         bundle = new Bundle();
@@ -348,7 +362,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     /**
-     * I mean, it finds the views and sets the listeners
+     * Finds the views and sets the listeners
      */
     public void findViewsSetListeners(){
         ImageButton hamburgerMenuBtn = findViewById(R.id.hamburger);
@@ -357,13 +371,13 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     /*----------------------------- OVERRIDES -----------------------------------------------------*/
 
+    @Override
     /**
      * When an activity is started for a result
      * @param requestCode
      * @param resultCode
      * @param data
      */
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         FragmentManager fm = this.getSupportFragmentManager();
@@ -373,11 +387,11 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     }
 
+    @Override
     /**
      * Handle the clicking in the acitvity
      * @param v
      */
-    @Override
     public void onClick(View v) {
         HamburgerFragment hamburgerFragment = new HamburgerFragment();
         hamburgerFragment.setArguments(bundle);
@@ -398,6 +412,11 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
+                        /**
+                         * This ipens up a dialog box when a offer is made in order to manage it
+                         * @param dialogInterface
+                         * @param i
+                         */
                         public void onClick(DialogInterface dialogInterface, int i) {
                             manageOffer();
                             finish();
@@ -424,7 +443,6 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     /**
      * This is a callback function. It is called when the map is ready.
-     *
      * @param googleMap
      */
     @Override
@@ -519,7 +537,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     /**
      * Method to get the phone permissions of the user
      * - This is optional.
-     * - If they deny long,late will be 0, 0
+     * - If they deny long, late will be 0, 0
      * - If they accept it will show their current location
      */
     private void getLocationPermission(){
@@ -546,6 +564,12 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     @Override
+    /**
+     * This initializes the map with the locations
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult: called.");
         mLocationPermissionsGranted = false;
@@ -587,7 +611,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     /**
-     * Just a method to set up the map
+     * Method to set up the map
      */
     public void activeRideMapOnReady(){
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -606,7 +630,7 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     /**
-     *  gets the url of the google maps directions info
+     * Gets the url of the google maps directions info
      */
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
@@ -623,10 +647,11 @@ public class HomeMapActivity extends FragmentActivity implements OnMapReadyCallb
         return url;
     }
 
-    /**
-     * when done with the map set up, draw the polylines between locations
-     */
     @Override
+    /**
+     * When done with the map set up, this draws the polylines between locations
+     * @param values
+     */
     public void onTaskDone(Object... values) {
         if (currPolyline != null)
             currPolyline.remove();
