@@ -30,12 +30,12 @@ public class ProfileTest {
         solo.enterText((EditText) solo.getView(R.id.SignupFirstName), "te");
         solo.enterText((EditText) solo.getView(R.id.SignupLastName), "st");
         solo.enterText((EditText) solo.getView(R.id.SignupEmail), "test@test.com");
-        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "test9");
+        solo.enterText((EditText) solo.getView(R.id.SignupUserName), "test889999");
         solo.enterText((EditText) solo.getView(R.id.SignupPassword), "123123");
         solo.enterText((EditText) solo.getView(R.id.SignupREpassword), "123123");
         solo.enterText((EditText) solo.getView(R.id.SignupPhone), "1800123123");
 
-        solo.clickOnButton("Signup Instead");
+        solo.clickOnButton("Sign Up");
         solo.waitForActivity(TitleActivity.class);
         solo.clickOnButton("Account Details");
     }
@@ -82,6 +82,7 @@ public class ProfileTest {
 
     @Test
     public void checkUsername() {
+		solo.clickOnButton("View Profile");
         solo.clickOnButton("Edit Profile");
         solo.clearEditText((EditText) solo.getView(R.id.username));
         solo.enterText((EditText) solo.getView(R.id.username), "yoyo");
@@ -125,6 +126,7 @@ public class ProfileTest {
 
     @After
     public void tearDown() throws Exception{
+		solo.clickOnButton("View Profile");
         solo.clickOnButton("Edit Profile");
         solo.clickOnButton("Delete Profile");
         solo.clickOnButton("Confirm");
