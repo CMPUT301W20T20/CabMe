@@ -37,7 +37,7 @@ public class ProfileTest {
 
         solo.clickOnButton("Sign Up");
         solo.waitForActivity(TitleActivity.class);
-        solo.clickOnButton("Account Details");
+        solo.clickOnButton("View Profile");
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ProfileTest {
         assertTrue(solo.waitForText("te", 1, 1000));
         assertTrue(solo.waitForText("st", 1, 1000));
         assertTrue(solo.waitForText("test@test.com", 1, 1000));
-        assertTrue(solo.waitForText("test9", 1, 1000));
+        assertTrue(solo.waitForText("test889999", 1, 1000));
         assertTrue(solo.waitForText("1800123123", 1, 1000));
     }
 
@@ -82,7 +82,6 @@ public class ProfileTest {
 
     @Test
     public void checkUsername() {
-		solo.clickOnButton("View Profile");
         solo.clickOnButton("Edit Profile");
         solo.clearEditText((EditText) solo.getView(R.id.username));
         solo.enterText((EditText) solo.getView(R.id.username), "yoyo");
@@ -126,6 +125,8 @@ public class ProfileTest {
 
     @After
     public void tearDown() throws Exception{
+    	solo.goBack();
+
 		solo.clickOnButton("View Profile");
         solo.clickOnButton("Edit Profile");
         solo.clickOnButton("Delete Profile");
