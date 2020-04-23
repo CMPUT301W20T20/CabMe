@@ -221,6 +221,7 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
     private boolean valid(String email, String username, String phone, String lastname, String firstname) {
         boolean valid = true;
         String error = "";
+
         if (email.isEmpty()) {
             error += "Email field is empty \n";
             valid = false;
@@ -230,13 +231,25 @@ public class ProfileActivity extends AppCompatActivity implements Observer {
         } if (phone.isEmpty()) {
             error += "Phone number field is empty \n";
             valid = false;
-        } if (lastname.isEmpty()) {
-            error += "Last name field is empty \n";
-            valid = false;
-        } if (firstname.isEmpty()) {
+        }
+
+        if (firstname.isEmpty()) {
             error += "First name field is empty \n";
             valid = false;
-        }
+        }if (lastname.isEmpty()) {
+			error += "Last name field is empty \n";
+			valid = false;
+		}
+
+		if (email.isEmpty()) {
+			error += "Email field is empty \n";
+			valid = false;
+		}
+
+		if (phone.isEmpty()) {
+			error += "Phone number field is empty \n";
+			valid = false;
+		}
 
         if (!valid) {
             Toast.makeText(ProfileActivity.this, error, Toast.LENGTH_LONG).show();
